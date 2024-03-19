@@ -49,6 +49,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>macscode-dummy</finalName>
     </build>
 
 </project>
