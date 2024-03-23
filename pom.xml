@@ -9,5 +9,6 @@
     <version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>macscode</module>
+        <module>executor</module>
     </modules>
 </project>
