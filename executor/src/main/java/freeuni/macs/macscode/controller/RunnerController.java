@@ -1,10 +1,14 @@
 package freeuni.macs.macscode.controller;
 
+import freeuni.macs.macscode.dto.ProblemSolution;
+import freeuni.macs.macscode.dto.ProblemTestCases;
+import freeuni.macs.macscode.dto.RunCodeRequest;
+import freeuni.macs.macscode.dto.SingleTestCaseResult;
 import freeuni.macs.macscode.service.JavaCodeRunner;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/test")
@@ -13,9 +17,13 @@ public class RunnerController {
 
     private final JavaCodeRunner javaCodeRunner;
 
-    @GetMapping
-    public void nothingYet() {
-        javaCodeRunner.run();
+    @PostMapping
+    public List<SingleTestCaseResult> runCode(@RequestBody RunCodeRequest runCodeRequest) {
+        ProblemSolution problemSolution = runCodeRequest.getSrcFiles();
+        ProblemTestCases problemTestCases = new ProblemTestCases();
+        problemTestCases.setTestCases(runCodeRequest.getTestCases());
+
+        return javaCodeRunner.run(problemSolution, problemTestCases);
     }
 
 }
