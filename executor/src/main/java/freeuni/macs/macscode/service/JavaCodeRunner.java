@@ -2,6 +2,7 @@ package freeuni.macs.macscode.service;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
+import com.github.dockerjava.api.command.WaitContainerResultCallback;
 import com.github.dockerjava.api.model.Bind;
 import com.sun.security.auth.module.UnixSystem;
 import freeuni.macs.macscode.dto.*;
@@ -16,12 +17,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+// TODO: we can refactor many code into another classes that can be used in parent CodeRunner
 public class JavaCodeRunner implements CodeRunner {
 
     private final DockerClient dockerClient;
     private final UnixSystem unixSystem;
 
-    private Path createExecutionDir(ProblemSolution problemSolution, ProblemTestCases problemTestCases) {
+    private Path createExecutionDir(ProblemSolution problemSolution, List<SingleTestCase> problemTestCases) {
         try {
             Path executionDir = Files.createTempDirectory("java_code_running");
             String executionDirAbsPath = executionDir.toFile().getAbsolutePath();
@@ -39,10 +41,11 @@ public class JavaCodeRunner implements CodeRunner {
             // Create tests dir with test cases
             Path testsDir = Files.createDirectory(Path.of(executionDirAbsPath + "/tests"));
             String testsDirAbsPath = testsDir.toFile().getAbsolutePath();
-            for (int i = 0; i < problemTestCases.getTestCases().size(); ++i) {
-                SingleTestCase test = problemTestCases.getTestCases().get(i);
+            for (int i = 0; i < problemTestCases.size(); ++i) {
+                SingleTestCase test = problemTestCases.get(i);
 
                 int testIndex = i + 1;
+                // TODO: somewhat duplicated code below
                 String inputAbsPath = String.format("%s/in_%d.txt", testsDirAbsPath, testIndex);
                 Path inputFilePath = Files.createFile(Path.of(inputAbsPath));
                 BufferedWriter inputBufferedWriter = new BufferedWriter(new FileWriter(inputFilePath.toFile().getAbsolutePath()));
@@ -61,9 +64,9 @@ public class JavaCodeRunner implements CodeRunner {
         }
     }
 
+    // TODO: currently I don't like that we pass testCount in this method and as env variable
     private void runContainer(Path executionDir, int testCount) {
-//         TODO todo_zken: create random directory
-//        String left = "/home/zkenshinx/macscode/code-execution/java/example";
+        // TODO: needs refactoring
         String left = executionDir.toFile().getAbsolutePath();
         String right = "/app/execution";
         String bindStr = String.format("%s:%s", left, right);
@@ -80,22 +83,24 @@ public class JavaCodeRunner implements CodeRunner {
                 .withUser(userStr)
                 .exec();
 
-        // TODO todo_zken: remove container after finished
+        // TODO: maybe use resultCallBack?
         dockerClient.startContainerCmd(container.getId()).exec();
-        // TODO todo_zken: wait till container finishes
+        WaitContainerResultCallback resultCallback = new WaitContainerResultCallback();
+        dockerClient.waitContainerCmd(container.getId()).exec(resultCallback);
         try {
-            Thread.sleep(500);
+            resultCallback.awaitCompletion();
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        dockerClient.removeContainerCmd(container.getId()).exec();
     }
 
-    private List<SingleTestCaseResult> getResultsFromExecutionDir(Path executionDir, ProblemTestCases problemTestCases) {
+    // TODO: maybe create some class ExecutionResultExtractor and have
+    private List<SingleTestCaseResult> getResultsFromExecutionDir(Path executionDir, int testCasesCount) {
         String resultsFilePath = String.format("%s/result/result.txt", executionDir.toFile().getAbsolutePath());
         List<SingleTestCaseResult> allTestCaseResults = new ArrayList<>();
         try {
             BufferedReader resultsReader = new BufferedReader(new FileReader(resultsFilePath));
-            int testCasesCount = problemTestCases.getTestCases().size();
             for (int i = 0; i < testCasesCount; ++i) {
                 String result = resultsReader.readLine();
                 allTestCaseResults.add(new SingleTestCaseResult(i, result));
@@ -107,9 +112,10 @@ public class JavaCodeRunner implements CodeRunner {
     }
 
     @Override
-    public List<SingleTestCaseResult> run(ProblemSolution problemSolution, ProblemTestCases problemTestCases) {
+    public List<SingleTestCaseResult> run(ProblemSolution problemSolution,
+                                          List<SingleTestCase> problemTestCases) {
         Path executionDir = createExecutionDir(problemSolution, problemTestCases);
-        runContainer(executionDir, problemTestCases.getTestCases().size());
-        return getResultsFromExecutionDir(executionDir, problemTestCases);
+        runContainer(executionDir, problemTestCases.size());
+        return getResultsFromExecutionDir(executionDir, problemTestCases.size());
     }
 }
