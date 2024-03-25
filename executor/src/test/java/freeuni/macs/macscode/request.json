@@ -1,6 +1,5 @@
 {
-  "srcFiles": {
-    "files": [
+  "srcFiles": [
       {
         "name": "Main.java",
         "content": "import java.io.*;\npublic class Main {\npublic static void main(String[] args) throws IOException {\nBufferedReader inputReader = new BufferedReader(new FileReader(args[0]));\nBufferedReader outputReader = new BufferedReader(new FileReader(args[1]));\nint a = Integer.parseInt(inputReader.readLine());\nint b = Integer.parseInt(inputReader.readLine());\nint userResult = new Problem().add(a, b);\nint expectedResult = Integer.parseInt(outputReader.readLine());\n// For testing purposes let's fail it\nif (userResult == 300) {\nuserResult++;\n}\nif (userResult == expectedResult) {\nResultWriter.Pass();\n} else {\nResultWriter.Fail();\n}\ninputReader.close();\n}\n}"
@@ -13,8 +12,7 @@
         "name": "ResultWriter.java",
         "content": "import java.io.BufferedWriter;\nimport java.io.FileWriter;\nimport java.io.IOException;\npublic class ResultWriter {\nprivate static final String resultRelativePath = \"result/result.txt\";\nprivate static final BufferedWriter writer;\nstatic {\ntry {\nwriter = new BufferedWriter(new FileWriter(resultRelativePath, true));\n} catch (IOException e) {\nthrow new RuntimeException(e);\n}\n}\npublic static void Pass() throws IOException {\nwriter.write(\"Pass\\n\");\nwriter.flush();\n}\npublic static void Fail() throws IOException {\nwriter.write(\"Fail\\n\");\nwriter.flush();\n}\n}\n"
       }
-    ]
-  },
+  ],
   "testCases": [
     {
       "in": "3\n5",
