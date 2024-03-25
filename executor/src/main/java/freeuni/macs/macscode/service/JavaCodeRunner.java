@@ -7,35 +7,38 @@ import com.github.dockerjava.api.model.Bind;
 import com.sun.security.auth.module.UnixSystem;
 import freeuni.macs.macscode.dto.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-// TODO: we can refactor many code into another classes that can be used in parent CodeRunner
+@Slf4j
 public class JavaCodeRunner implements CodeRunner {
 
+    public static final String DOCKER_EXECUTION_PATH = "/app/execution";
+
+    private final ExecutionResultsExtractor executionResultsExtractorService;
     private final DockerClient dockerClient;
     private final UnixSystem unixSystem;
 
-    private Path createExecutionDir(ProblemSolution problemSolution, List<SingleTestCase> problemTestCases) {
+    private Path createExecutionDir(List<ProblemSolutionFile> problemSolutions,
+                                    List<SingleTestCase> problemTestCases) {
         try {
-            Path executionDir = Files.createTempDirectory("java_code_running");
+            Path executionDir = Files.createTempDirectory("code_running");
             String executionDirAbsPath = executionDir.toFile().getAbsolutePath();
+            log.info("Creating execution dir: {}", executionDirAbsPath);
 
             // Create src dir with java code
             Path srcDir = Files.createDirectory(Path.of(executionDirAbsPath + "/src"));
             String srcDirAbsPath = srcDir.toFile().getAbsolutePath();
-            for (ProblemSolution.ProblemSolutionFile file : problemSolution.getFiles()) {
-                Path filePath = Files.createFile(Path.of(srcDirAbsPath + "/" + file.getName()));
-                BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath.toFile().getAbsolutePath()));
-                bufferedWriter.write(file.getContent());
-                bufferedWriter.close();
+            for (ProblemSolutionFile codeFile : problemSolutions) {
+                Path destFilePath = Files.createFile(Path.of(srcDirAbsPath + "/" + codeFile.getName()));
+                writeTofile(destFilePath, codeFile.getContent());
             }
 
             // Create tests dir with test cases
@@ -43,37 +46,28 @@ public class JavaCodeRunner implements CodeRunner {
             String testsDirAbsPath = testsDir.toFile().getAbsolutePath();
             for (int i = 0; i < problemTestCases.size(); ++i) {
                 SingleTestCase test = problemTestCases.get(i);
-
                 int testIndex = i + 1;
-                // TODO: somewhat duplicated code below
+
                 String inputAbsPath = String.format("%s/in_%d.txt", testsDirAbsPath, testIndex);
                 Path inputFilePath = Files.createFile(Path.of(inputAbsPath));
-                BufferedWriter inputBufferedWriter = new BufferedWriter(new FileWriter(inputFilePath.toFile().getAbsolutePath()));
-                inputBufferedWriter.write(test.getIn());
-                inputBufferedWriter.close();
+                writeTofile(inputFilePath, test.getIn());
 
                 String outputAbsPath = String.format("%s/out_%d.txt", testsDirAbsPath, testIndex);
                 Path outputFilePath = Files.createFile(Path.of(outputAbsPath));
-                BufferedWriter outputBufferedWriter = new BufferedWriter(new FileWriter(outputFilePath.toFile().getAbsolutePath()));
-                outputBufferedWriter.write(test.getOut());
-                outputBufferedWriter.close();
+                writeTofile(outputFilePath, test.getOut());
             }
             return executionDir;
         } catch (IOException e) {
+            log.error("Error while creating execution dir: {}", e.getMessage());
             throw new RuntimeException(e);
         }
     }
 
     // TODO: currently I don't like that we pass testCount in this method and as env variable
     private void runContainer(Path executionDir, int testCount) {
-        // TODO: needs refactoring
-        String left = executionDir.toFile().getAbsolutePath();
-        String right = "/app/execution";
-        String bindStr = String.format("%s:%s", left, right);
+        String bindStr = String.format("%s:%s", executionDir.toFile().getAbsolutePath(), DOCKER_EXECUTION_PATH);
         Bind bind = Bind.parse(bindStr);
-
         String userStr = String.format("%s:%s", unixSystem.getUid(), unixSystem.getGid());
-
         String env = String.format("test_count=%d", testCount);
 
         CreateContainerResponse container = dockerClient
@@ -83,39 +77,37 @@ public class JavaCodeRunner implements CodeRunner {
                 .withUser(userStr)
                 .exec();
 
-        // TODO: maybe use resultCallBack?
-        dockerClient.startContainerCmd(container.getId()).exec();
-        WaitContainerResultCallback resultCallback = new WaitContainerResultCallback();
-        dockerClient.waitContainerCmd(container.getId()).exec(resultCallback);
         try {
+            dockerClient.startContainerCmd(container.getId()).exec();
+            log.info("Started container with id: {}", container.getId());
+            WaitContainerResultCallback resultCallback = new WaitContainerResultCallback();
+            dockerClient.waitContainerCmd(container.getId()).exec(resultCallback);
             resultCallback.awaitCompletion();
+            log.info("Finished container with id: {}", container.getId());
+            dockerClient.removeContainerCmd(container.getId()).exec();
         } catch (InterruptedException e) {
+            log.error("Docker container error with id: {} , error: {}", container.getId(), e.getMessage());
             throw new RuntimeException(e);
         }
-        dockerClient.removeContainerCmd(container.getId()).exec();
-    }
-
-    // TODO: maybe create some class ExecutionResultExtractor and have
-    private List<SingleTestCaseResult> getResultsFromExecutionDir(Path executionDir, int testCasesCount) {
-        String resultsFilePath = String.format("%s/result/result.txt", executionDir.toFile().getAbsolutePath());
-        List<SingleTestCaseResult> allTestCaseResults = new ArrayList<>();
-        try {
-            BufferedReader resultsReader = new BufferedReader(new FileReader(resultsFilePath));
-            for (int i = 0; i < testCasesCount; ++i) {
-                String result = resultsReader.readLine();
-                allTestCaseResults.add(new SingleTestCaseResult(i, result));
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return allTestCaseResults;
     }
 
     @Override
-    public List<SingleTestCaseResult> run(ProblemSolution problemSolution,
+    public List<SingleTestCaseResult> run(List<ProblemSolutionFile> problemSolution,
                                           List<SingleTestCase> problemTestCases) {
         Path executionDir = createExecutionDir(problemSolution, problemTestCases);
         runContainer(executionDir, problemTestCases.size());
-        return getResultsFromExecutionDir(executionDir, problemTestCases.size());
+        return executionResultsExtractorService.getResultsFromExecutionDir(executionDir);
     }
+
+    private void writeTofile(Path path, String content) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path.toFile().getAbsolutePath()));
+            bufferedWriter.write(content);
+            bufferedWriter.close();
+        } catch (IOException e) {
+            log.error("Error while writing to file: {}", e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class RunCodeRequest {
 
-    private ProblemSolution srcFiles;
+    private List<ProblemSolutionFile> srcFiles;
     private List<SingleTestCase> testCases;
 
 }
