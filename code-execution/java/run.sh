@@ -3,7 +3,8 @@
 
 cd execution
 
-mkdir result && touch result/result.txt
+mkdir result
+echo ${test_count} > result/result.txt
 
 javac src/*.java
 
