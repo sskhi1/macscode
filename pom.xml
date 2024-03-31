@@ -10,5 +10,6 @@
     <modules>
         <module>macscode</module>
         <module>executor</module>
+        <module>problems</module>
     </modules>
 </project>

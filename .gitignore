@@ -35,3 +35,8 @@ replay_pid*
 
 # Maven
 target/
+/problems/HELP.md
+/problems/mvnw
+/problems/mvnw.cmd
+/problems/.mvn/
+/docker/problemsdb/
