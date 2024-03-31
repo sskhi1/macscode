@@ -25,7 +25,6 @@ public class ProblemController {
 
     @Autowired
     public ProblemController(ProblemService problemService) {
-        problemService.generateAndInsertRandomProblems(10);
         this.problemService = problemService;
     }
 
