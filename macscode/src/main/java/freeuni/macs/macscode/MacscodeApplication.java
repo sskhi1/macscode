@@ -1,4 +1,4 @@
-package com.freeuni.macs.macscode;
+package freeuni.macs.macscode;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

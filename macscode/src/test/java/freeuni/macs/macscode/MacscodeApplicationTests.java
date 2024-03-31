@@ -1,4 +1,4 @@
-package com.freeuni.macs.macscode;
+package freeuni.macs.macscode;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
