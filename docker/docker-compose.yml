@@ -10,3 +10,10 @@ services:
       context: ../macscode
     ports:
       - "8080:8080"
+  problems-db:
+    container_name: problems-db
+    image: mongo:latest
+    ports:
+      - 9100:27017
+    volumes:
+      - ./problemsdb:/data/db

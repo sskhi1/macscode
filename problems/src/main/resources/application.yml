@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: problems
+  data:
+    mongodb:
+      database: problems-db
+      host: localhost
+      port: 9100
