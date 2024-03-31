@@ -38,7 +38,7 @@ public class JavaCodeRunner implements CodeRunner {
             String srcDirAbsPath = srcDir.toFile().getAbsolutePath();
             for (ProblemSolutionFile codeFile : problemSolutions) {
                 Path destFilePath = Files.createFile(Path.of(srcDirAbsPath + "/" + codeFile.getName()));
-                writeTofile(destFilePath, codeFile.getContent());
+                writeToFile(destFilePath, codeFile.getContent());
             }
 
             // Create tests dir with test cases
@@ -50,11 +50,11 @@ public class JavaCodeRunner implements CodeRunner {
 
                 String inputAbsPath = String.format("%s/in_%d.txt", testsDirAbsPath, testIndex);
                 Path inputFilePath = Files.createFile(Path.of(inputAbsPath));
-                writeTofile(inputFilePath, test.getIn());
+                writeToFile(inputFilePath, test.getIn());
 
                 String outputAbsPath = String.format("%s/out_%d.txt", testsDirAbsPath, testIndex);
                 Path outputFilePath = Files.createFile(Path.of(outputAbsPath));
-                writeTofile(outputFilePath, test.getOut());
+                writeToFile(outputFilePath, test.getOut());
             }
             return executionDir;
         } catch (IOException e) {
@@ -99,7 +99,7 @@ public class JavaCodeRunner implements CodeRunner {
         return executionResultsExtractorService.getResultsFromExecutionDir(executionDir);
     }
 
-    private void writeTofile(Path path, String content) {
+    private void writeToFile(Path path, String content) {
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(path.toFile().getAbsolutePath()));
             bufferedWriter.write(content);

@@ -25,15 +25,25 @@ class ExecutorApplicationTests {
     private MockMvc mockMvc;
 
     @Test
-    void shouldPassAddTests() throws Exception {
+    void shouldPass_WhenGivenCorrectSolution_ToNumberAdditionProblemTest() throws Exception {
         this.mockMvc.perform(post("/submission")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(fromFile("request.json")))
+                .content(fromFile("twoNumberAdditionCorrectSolutionRequest.json")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(3)))
                 .andExpect(jsonPath("$[0].result", is("Pass")))
                 .andExpect(jsonPath("$[1].result", is("Pass")))
-                .andExpect(jsonPath("$[2].result", is("Fail")));
+                .andExpect(jsonPath("$[2].result", is("Pass")));
+    }
+
+    @Test
+    void shouldFail_WhenGivenWrongSolution_ToNumberAdditionProblemTest() throws Exception {
+        this.mockMvc.perform(post("/submission")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(fromFile("twoNumberAdditionWrongSolutionRequest.json")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(1)))
+                .andExpect(jsonPath("$[0].result", is("Fail")));
     }
 
     private byte[] fromFile(String fileName) throws IOException {

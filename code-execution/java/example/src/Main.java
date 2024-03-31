@@ -4,6 +4,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader inputReader = new BufferedReader(new FileReader(args[0]));
         BufferedReader outputReader = new BufferedReader(new FileReader(args[1]));
+        BufferedWriter outputWriter = new BufferedWriter(new FileWriter(args[2], true));
 
         int a = Integer.parseInt(inputReader.readLine());
         int b = Integer.parseInt(inputReader.readLine());
@@ -12,14 +13,12 @@ public class Main {
 
         int expectedResult = Integer.parseInt(outputReader.readLine());
 
-        // For testing purposes let's fail it
-        if (userResult == 300) {
-            userResult++;
-        }
         if (userResult == expectedResult) {
-            ResultWriter.Pass();
+            outputWriter.write("Pass\n");
+            outputWriter.flush();
         } else {
-            ResultWriter.Fail();
+            outputWriter.write("Fail\n");
+            outputWriter.flush();
         }
 
         inputReader.close();

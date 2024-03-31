@@ -1,0 +1,18 @@
+{
+  "srcFiles": [
+    {
+      "name": "Main.java",
+      "content": "import java.io.*;\n\npublic class Main {\n    public static void main(String[] args) throws IOException {\n        BufferedReader inputReader = new BufferedReader(new FileReader(args[0]));\n        BufferedReader outputReader = new BufferedReader(new FileReader(args[1]));\n        BufferedWriter outputWriter = new BufferedWriter(new FileWriter(args[2], true));\n\n        int a = Integer.parseInt(inputReader.readLine());\n        int b = Integer.parseInt(inputReader.readLine());\n\n        int userResult = new Solution().add(a, b);\n\n        int expectedResult = Integer.parseInt(outputReader.readLine());\n\n        if (userResult == expectedResult) {\n            outputWriter.write(\"Pass\\n\");\n            outputWriter.flush();\n        } else {\n            outputWriter.write(\"Fail\\n\");\n            outputWriter.flush();\n        }\n\n        inputReader.close();\n    }\n}"
+    },
+    {
+      "name": "Solution.java",
+      "content": "class Solution {\n    public int add(int a, int b) {\n        return a + b + 1;\n    }\n}"
+    }
+  ],
+  "testCases": [
+    {
+      "in": "3\n5",
+      "out": "8"
+    }
+  ]
+}
