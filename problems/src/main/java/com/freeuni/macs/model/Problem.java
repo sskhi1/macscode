@@ -1,8 +1,6 @@
 package com.freeuni.macs.model;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -14,7 +12,6 @@ import java.util.List;
 public class Problem {
 
     @Id
-    @Field(name = "id")
     private String id;
 
     @Field(name = "problem_id")
@@ -30,10 +27,10 @@ public class Problem {
     private String difficulty;
 
     @Field(name = "topics")
-    private List<String> topics; // TODO: Create Topic class
+    private List<String> topics;
 
-    @Field(name = "solution_file")
-    private String solutionFile;
+    @Field(name = "solution_file_template")
+    private String solutionFileTemplate;
 
     @Field(name = "main_file")
     private String mainFile;

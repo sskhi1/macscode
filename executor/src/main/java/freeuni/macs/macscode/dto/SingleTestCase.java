@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SingleTestCase {
-    private String in;
-    private String out;
+    private String input;
+    private String output;
 }

@@ -50,11 +50,11 @@ public class JavaCodeRunner implements CodeRunner {
 
                 String inputAbsPath = String.format("%s/in_%d.txt", testsDirAbsPath, testIndex);
                 Path inputFilePath = Files.createFile(Path.of(inputAbsPath));
-                writeToFile(inputFilePath, test.getIn());
+                writeToFile(inputFilePath, test.getInput());
 
                 String outputAbsPath = String.format("%s/out_%d.txt", testsDirAbsPath, testIndex);
                 Path outputFilePath = Files.createFile(Path.of(outputAbsPath));
-                writeToFile(outputFilePath, test.getOut());
+                writeToFile(outputFilePath, test.getOutput());
             }
             return executionDir;
         } catch (IOException e) {
