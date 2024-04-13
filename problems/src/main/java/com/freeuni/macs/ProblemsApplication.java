@@ -18,7 +18,7 @@ public class ProblemsApplication {
     @Bean
     public CommandLineRunner initializeData(ProblemService problemService) {
         return args -> {
-            problemService.generateAndInsertRandomProblems(10);
+
         };
     }
 

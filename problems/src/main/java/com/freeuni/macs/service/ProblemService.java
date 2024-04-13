@@ -67,9 +67,12 @@ public class ProblemService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<SubmissionRequest> requestEntity = new HttpEntity<>(submissionRequest, headers);
 
-        ParameterizedTypeReference<List<SubmitResponse>> typeRef = new ParameterizedTypeReference<>() {
-        };
-        ResponseEntity<List<SubmitResponse>> responseEntity = restTemplate.exchange(String.format("%s/submission", EXECUTION_API_URL), HttpMethod.POST, requestEntity, typeRef);
+        ParameterizedTypeReference<List<SubmitResponse>> typeRef = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<SubmitResponse>> responseEntity = restTemplate.exchange(
+                String.format("%s/submission", EXECUTION_API_URL),
+                HttpMethod.POST,
+                requestEntity,
+                typeRef);
 
         return responseEntity.getBody();
 
