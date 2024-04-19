@@ -1,27 +1,41 @@
 package com.freeuni.macs.service;
 
 import com.freeuni.macs.exception.ProblemNotFoundException;
-import com.freeuni.macs.model.Course;
-import com.freeuni.macs.model.Problem;
-import com.freeuni.macs.model.ProblemId;
+import com.freeuni.macs.model.*;
 import com.freeuni.macs.repository.ProblemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProblemService {
     private final ProblemRepository problemRepository;
+    private final TestService testService;
+    private final String EXECUTION_API_URL;
 
     @Autowired
-    public ProblemService(ProblemRepository problemRepository) {
+    public ProblemService(final ProblemRepository problemRepository,
+                          final TestService testService,
+                          final @Value("${execution.service.url}") String executionApiUrl) {
         this.problemRepository = problemRepository;
+        this.testService = testService;
+        this.EXECUTION_API_URL = executionApiUrl;
     }
 
     public List<Problem> getAll() {
         return problemRepository.findAll();
+    }
+
+    public Problem getProblemById(final String id) throws ProblemNotFoundException {
+        Optional<Problem> problem = problemRepository.findById(id);
+        String errorMessage = String.format("Problem with id %s does not exist.", id);
+        return problem.orElseThrow(() -> new ProblemNotFoundException(errorMessage));
     }
 
     public Problem getProblem(final Long order, final Course course) throws ProblemNotFoundException {
@@ -31,47 +45,36 @@ public class ProblemService {
         return problem.orElseThrow(() -> new ProblemNotFoundException(errorMessage));
     }
 
-    public List<Problem> getProblemsByCourse(Course course) {
+    public List<Problem> getProblemsByCourse(final Course course) {
         return problemRepository.findAllByProblemIdCourse(course);
     }
 
+    public List<SubmitResponse> submitProblem(final SubmitRequest solution) {
+        String problemId = solution.getProblemId();
+        List<Test> problemTests = testService.getTestsByProblemId(problemId);
 
-    public void generateAndInsertRandomProblems(int count) {
-        for (int i = 0; i < count; i++) {
-            Problem problem = createRandomProblem();
-            problemRepository.save(problem);
-        }
-    }
+        Problem currentProblem = getProblemById(problemId);
+        String mainFile = currentProblem.getMainFile();
 
-    private Problem createRandomProblem() {
-        Problem problem = new Problem();
-        problem.setName("Problem " + getRandomNumber());
-        List<Course> courses = Arrays.asList(Course.MET, Course.ABS, Course.PAR);
-        problem.setProblemId(new ProblemId(new Random().nextLong(100), courses.get(new Random().nextInt(2))));
-        problem.setDescription("Description for Problem " + getRandomNumber());
-        problem.setDifficulty(getRandomDifficulty());
-        problem.setTopics(getRandomTopics());
-        problem.setSolutionFile("solution_" + getRandomNumber() + ".java");
-        problem.setMainFile("main_" + getRandomNumber() + ".java");
-        return problem;
-    }
+        SubmissionRequest submissionRequest = new SubmissionRequest(
+                List.of(new SolutionFile("Main.java", mainFile),
+                        new SolutionFile("Solution.java", solution.getSolution())),
+                problemTests);
 
-    private int getRandomNumber() {
-        return new Random().nextInt(1000);
-    }
+        RestTemplate restTemplate = new RestTemplate();
 
-    private String getRandomDifficulty() {
-        List<String> difficulties = Arrays.asList("Easy", "Medium", "Hard");
-        return difficulties.get(new Random().nextInt(difficulties.size()));
-    }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<SubmissionRequest> requestEntity = new HttpEntity<>(submissionRequest, headers);
 
-    private List<String> getRandomTopics() {
-        List<String> topics = Arrays.asList("Array", "String", "LinkedList", "Tree", "Graph");
-        List<String> randomTopics = new ArrayList<>();
-        int numberOfTopics = new Random().nextInt(3) + 1; // Randomly select 1 to 3 topics
-        for (int i = 0; i < numberOfTopics; i++) {
-            randomTopics.add(topics.get(new Random().nextInt(topics.size())));
-        }
-        return randomTopics;
+        ParameterizedTypeReference<List<SubmitResponse>> typeRef = new ParameterizedTypeReference<>() {};
+        ResponseEntity<List<SubmitResponse>> responseEntity = restTemplate.exchange(
+                String.format("%s/submission", EXECUTION_API_URL),
+                HttpMethod.POST,
+                requestEntity,
+                typeRef);
+
+        return responseEntity.getBody();
+
     }
 }
