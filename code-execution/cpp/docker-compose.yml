@@ -1,0 +1,12 @@
+version: '3'
+services:
+  cpp-code-runner:
+    image: cpp-code-runner
+    volumes:
+      - ./example:/app/execution
+    container_name: cpp-example-container
+    user: "${UID}:${GID}"
+    environment:
+      - test_count=2
+      - time_limit=1
+      - memory_limit=26210

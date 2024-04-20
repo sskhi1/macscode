@@ -1,8 +1,7 @@
 version: '3'
 services:
   java-code-runner:
-    build:
-      context: .
+    image: java-code-runner
     volumes:
       - ./example:/app/execution
     container_name: java-example-container

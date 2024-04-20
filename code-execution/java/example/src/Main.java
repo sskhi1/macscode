@@ -22,5 +22,7 @@ public class Main {
         }
 
         inputReader.close();
+        outputWriter.close();
+        outputReader.close();
     }
 }
