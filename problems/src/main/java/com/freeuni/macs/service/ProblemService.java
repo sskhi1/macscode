@@ -3,6 +3,7 @@ package com.freeuni.macs.service;
 import com.freeuni.macs.exception.ProblemNotFoundException;
 import com.freeuni.macs.model.*;
 import com.freeuni.macs.repository.ProblemRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -30,7 +31,7 @@ public class ProblemService {
 
     private ProblemDto convertProblemToProblemDto(Problem problem) {
         ProblemDto problemDto = new ProblemDto();
-        problemDto.setId(problem.getId());
+        problemDto.setId(problem.getId().toString());
         problemDto.setProblemId(problem.getProblemId());
         problemDto.setName(problem.getName());
         problemDto.setDescription(problem.getDescription());
@@ -56,7 +57,7 @@ public class ProblemService {
     }
 
     public ProblemDto getProblemById(final String id) throws ProblemNotFoundException {
-        Optional<Problem> problem = problemRepository.findById(id);
+        Optional<Problem> problem = problemRepository.findById(new ObjectId(id));
         if (problem.isEmpty()) {
             String errorMessage = String.format("Problem with id %s does not exist.", id);
             throw new ProblemNotFoundException(errorMessage);
@@ -82,7 +83,7 @@ public class ProblemService {
     }
 
     public List<SubmitResponse> submitProblem(final SubmitRequest solution) {
-        String problemId = solution.getProblemId();
+        ObjectId problemId = new ObjectId(solution.getProblemId());
         List<Test> problemTests = testService.getTestsByProblemId(problemId);
 
         Optional<Problem> problem = problemRepository.findById(problemId);
