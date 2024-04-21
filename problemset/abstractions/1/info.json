@@ -1,0 +1,13 @@
+{
+  "description": "Calculate the sum of two numbers",
+  "name": "Two Sum",
+  "problem_id": {
+    "order": 1,
+    "course": "ABS"
+  },
+  "topics": ["Math"],
+  "type": "CPP",
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 3
+}

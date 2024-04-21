@@ -11,5 +11,5 @@ public class RunCodeRequest {
 
     private List<ProblemSolutionFile> srcFiles;
     private List<SingleTestCase> testCases;
-
+    private String type;
 }

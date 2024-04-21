@@ -94,10 +94,26 @@ public class ProblemService {
         Problem currentProblem = problem.get();
         String mainFile = currentProblem.getMainFile();
 
+        String problemType = currentProblem.getType();
+
+        String mainFileName;
+        String solutionFileName = switch (problemType) {
+            case "JAVA" -> {
+                mainFileName = "Main.java";
+                yield "Solution.java";
+            }
+            case "CPP" -> {
+                mainFileName = "main.cpp";
+                yield "solution.h";
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + problemType);
+        };
+
         SubmissionRequest submissionRequest = new SubmissionRequest(
-                List.of(new SolutionFile("Main.java", mainFile),
-                        new SolutionFile("Solution.java", solution.getSolution())),
-                problemTests);
+                List.of(new SolutionFile(mainFileName, mainFile),
+                        new SolutionFile(solutionFileName, solution.getSolution())),
+                problemTests,
+                problemType);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -105,7 +121,8 @@ public class ProblemService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<SubmissionRequest> requestEntity = new HttpEntity<>(submissionRequest, headers);
 
-        ParameterizedTypeReference<List<SubmitResponse>> typeRef = new ParameterizedTypeReference<>() {};
+        ParameterizedTypeReference<List<SubmitResponse>> typeRef = new ParameterizedTypeReference<>() {
+        };
         ResponseEntity<List<SubmitResponse>> responseEntity = restTemplate.exchange(
                 String.format("%s/submission", EXECUTION_API_URL),
                 HttpMethod.POST,
