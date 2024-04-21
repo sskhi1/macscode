@@ -1,0 +1,12 @@
+{
+  "description": "Find the least common multiple of given 2 numbers",
+  "name": "Least common multiple",
+  "problem_id": {
+    "order": 19,
+    "course": "MET"
+  },
+  "topics": ["Math"],
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}

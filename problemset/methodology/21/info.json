@@ -1,0 +1,12 @@
+{
+  "description": "Find the power of n to the m",
+  "name": "Power",
+  "problem_id": {
+    "order": 21,
+    "course": "MET"
+  },
+  "topics": ["Math"],
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}

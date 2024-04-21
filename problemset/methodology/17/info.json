@@ -1,0 +1,12 @@
+{
+  "description": "Find the sum of first n numbers",
+  "name": "First sum",
+  "problem_id": {
+    "order": 17,
+    "course": "MET"
+  },
+  "topics": ["Math"],
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}

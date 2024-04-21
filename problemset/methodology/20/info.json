@@ -1,0 +1,12 @@
+{
+  "description": "Find the greatest common divisor of 2 numbers",
+  "name": "Greatest common divisor",
+  "problem_id": {
+    "order": 20,
+    "course": "MET"
+  },
+  "topics": ["Math"],
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}
