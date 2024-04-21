@@ -6,6 +6,7 @@
     "course": "MET"
   },
   "topics": ["Math"],
+  "type": "JAVA",
   "test_count": 4,
   "difficulty": "Easy",
   "public_test_count": 2

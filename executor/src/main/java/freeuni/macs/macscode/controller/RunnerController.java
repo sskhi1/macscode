@@ -4,7 +4,7 @@ import freeuni.macs.macscode.dto.ProblemSolutionFile;
 import freeuni.macs.macscode.dto.RunCodeRequest;
 import freeuni.macs.macscode.dto.SingleTestCase;
 import freeuni.macs.macscode.dto.SingleTestCaseResult;
-import freeuni.macs.macscode.service.JavaCodeRunner;
+import freeuni.macs.macscode.service.CodeRunner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +15,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RunnerController {
 
-    private final JavaCodeRunner javaCodeRunner;
+    private final CodeRunner codeRunner;
 
     @PostMapping
     public List<SingleTestCaseResult> runCode(@RequestBody RunCodeRequest runCodeRequest) {
         List<ProblemSolutionFile> problemSolutions = runCodeRequest.getSrcFiles();
         List<SingleTestCase> problemTestCases = runCodeRequest.getTestCases();
-
-        return javaCodeRunner.run(problemSolutions, problemTestCases);
+        return codeRunner.run(problemSolutions, problemTestCases, runCodeRequest.getType());
     }
 
 }

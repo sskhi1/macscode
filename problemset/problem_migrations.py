@@ -44,6 +44,7 @@ for subject in arr:
             "name": problem_info["name"],
             "problem_id": problem_info["problem_id"],
             "topics": problem_info["topics"],
+            "type": problem_info["type"],
             "difficulty": problem_info["difficulty"]
         }
 

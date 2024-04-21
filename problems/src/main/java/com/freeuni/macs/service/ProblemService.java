@@ -104,7 +104,7 @@ public class ProblemService {
             }
             case "CPP" -> {
                 mainFileName = "main.cpp";
-                yield "solution.cpp";
+                yield "solution.h";
             }
             default -> throw new IllegalStateException("Unexpected value: " + problemType);
         };
@@ -112,7 +112,8 @@ public class ProblemService {
         SubmissionRequest submissionRequest = new SubmissionRequest(
                 List.of(new SolutionFile(mainFileName, mainFile),
                         new SolutionFile(solutionFileName, solution.getSolution())),
-                problemTests);
+                problemTests,
+                problemType);
 
         RestTemplate restTemplate = new RestTemplate();
 

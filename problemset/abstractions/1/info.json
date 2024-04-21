@@ -6,6 +6,7 @@
     "course": "ABS"
   },
   "topics": ["Math"],
+  "type": "CPP",
   "test_count": 4,
   "difficulty": "Easy",
   "public_test_count": 3
