@@ -28,32 +28,69 @@ public class ProblemService {
         this.EXECUTION_API_URL = executionApiUrl;
     }
 
-    public List<Problem> getAll() {
-        return problemRepository.findAll();
+    private ProblemDto convertProblemToProblemDto(Problem problem) {
+        ProblemDto problemDto = new ProblemDto();
+        problemDto.setId(problem.getId());
+        problemDto.setProblemId(problem.getProblemId());
+        problemDto.setName(problem.getName());
+        problemDto.setDescription(problem.getDescription());
+        problemDto.setDifficulty(problem.getDifficulty());
+        problemDto.setTopics(problem.getTopics());
+        problemDto.setSolutionFileTemplate(problem.getSolutionFileTemplate());
+        List<Test> publicTests = testService.getPublicTestsByProblemId(problem.getId());
+        problemDto.setPublicTestCases(publicTests.stream()
+                .map(singleTest -> TestDto.builder()
+                        .input(singleTest.getInput())
+                        .testNum(singleTest.getTestNum())
+                        .build())
+                .toList()
+        );
+        return problemDto;
     }
 
-    public Problem getProblemById(final String id) throws ProblemNotFoundException {
+    public List<ProblemDto> getAll() {
+        return problemRepository.findAll()
+                .stream()
+                .map(this::convertProblemToProblemDto)
+                .toList();
+    }
+
+    public ProblemDto getProblemById(final String id) throws ProblemNotFoundException {
         Optional<Problem> problem = problemRepository.findById(id);
-        String errorMessage = String.format("Problem with id %s does not exist.", id);
-        return problem.orElseThrow(() -> new ProblemNotFoundException(errorMessage));
+        if (problem.isEmpty()) {
+            String errorMessage = String.format("Problem with id %s does not exist.", id);
+            throw new ProblemNotFoundException(errorMessage);
+        }
+        return convertProblemToProblemDto(problem.get());
     }
 
-    public Problem getProblem(final Long order, final Course course) throws ProblemNotFoundException {
+    public ProblemDto getProblem(final Long order, final Course course) throws ProblemNotFoundException {
         ProblemId problemId = new ProblemId(order, course);
         Optional<Problem> problem = problemRepository.findByProblemId(problemId);
-        String errorMessage = String.format("Problem with order %d in %s course does not exist.", order, course.getValue());
-        return problem.orElseThrow(() -> new ProblemNotFoundException(errorMessage));
+        if (problem.isEmpty()) {
+            String errorMessage = String.format("Problem with order %d in %s course does not exist.", order, course.getValue());
+            throw new ProblemNotFoundException(errorMessage);
+        }
+        return convertProblemToProblemDto(problem.get());
     }
 
-    public List<Problem> getProblemsByCourse(final Course course) {
-        return problemRepository.findAllByProblemIdCourse(course);
+    public List<ProblemDto> getProblemsByCourse(final Course course) {
+        return problemRepository.findAllByProblemIdCourse(course)
+                .stream()
+                .map(this::convertProblemToProblemDto)
+                .toList();
     }
 
     public List<SubmitResponse> submitProblem(final SubmitRequest solution) {
         String problemId = solution.getProblemId();
         List<Test> problemTests = testService.getTestsByProblemId(problemId);
 
-        Problem currentProblem = getProblemById(problemId);
+        Optional<Problem> problem = problemRepository.findById(problemId);
+        if (problem.isEmpty()) {
+            String errorMessage = String.format("Problem with id %s does not exist.", problemId);
+            throw new ProblemNotFoundException(errorMessage);
+        }
+        Problem currentProblem = problem.get();
         String mainFile = currentProblem.getMainFile();
 
         SubmissionRequest submissionRequest = new SubmissionRequest(

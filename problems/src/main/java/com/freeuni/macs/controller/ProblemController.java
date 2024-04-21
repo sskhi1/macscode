@@ -1,9 +1,6 @@
 package com.freeuni.macs.controller;
 
-import com.freeuni.macs.model.Course;
-import com.freeuni.macs.model.Problem;
-import com.freeuni.macs.model.SubmitRequest;
-import com.freeuni.macs.model.SubmitResponse;
+import com.freeuni.macs.model.*;
 import com.freeuni.macs.service.ProblemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -32,7 +29,7 @@ public class ProblemController {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @GetMapping(value = "/all", produces = "application/json")
-    public List<Problem> getAll() {
+    public List<ProblemDto> getAll() {
         return problemService.getAll();
     }
 
@@ -42,7 +39,7 @@ public class ProblemController {
             @ApiResponse(responseCode = "404", description = "not found")
     })
     @GetMapping(value = "/{course}/{order}", produces = "application/json")
-    public Problem getProblem(
+    public ProblemDto getProblem(
             @PathVariable(name = "order") @Parameter(description = "Problem order", in = ParameterIn.PATH) Long order,
             @PathVariable(name = "course") @Parameter(description = "Problem Course", in = ParameterIn.PATH) Course course
     ) {
@@ -54,7 +51,7 @@ public class ProblemController {
             @ApiResponse(responseCode = "200", description = "successful operation")
     })
     @GetMapping(value = "/{course}", produces = "application/json")
-    public List<Problem> getProblemsByCourse(
+    public List<ProblemDto> getProblemsByCourse(
             @PathVariable(name = "course") @Parameter(description = "Problem Course") Course course
     ) {
         return problemService.getProblemsByCourse(course);

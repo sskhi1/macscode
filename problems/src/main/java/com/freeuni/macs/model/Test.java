@@ -18,4 +18,7 @@ public class Test {
 
     @Field(name = "output")
     private String output;
+
+    @Field(name = "is_public")
+    private Boolean isPublic;
 }

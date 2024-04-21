@@ -6,7 +6,6 @@ spring:
       database: problems-db
       host: localhost
       port: 9100
-
 execution:
   service:
     url: http://localhost:8085

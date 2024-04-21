@@ -20,4 +20,8 @@ public class TestService {
     public List<Test> getTestsByProblemId(String problemId) {
         return testRepository.findTestsByProblemId(problemId);
     }
+
+    public List<Test> getPublicTestsByProblemId(String problemId) {
+        return testRepository.getAllPublicTests(problemId);
+    }
 }
