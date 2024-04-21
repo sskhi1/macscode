@@ -7,7 +7,19 @@ mkdir result
 
 echo ${test_count} > result/test_count.txt
 
-g++ src/main.cpp -o src/main -std=c++11
+compile_error_tmp_file=$(mktemp)
+g++ src/main.cpp -o src/main -std=c++11 2> "$compile_error_tmp_file"
+
+# Check and write compile errors to every test result
+if [ $? -ne 0 ]; then
+  for test_num in $(seq 1 "${test_count}")
+  do
+    output_file=result/result_"${test_num}".txt
+    echo "COMPILE_ERROR" > "$output_file"
+    cat "$compile_error_tmp_file" >> "$output_file"
+  done
+  exit
+fi
 
 ulimit -t ${time_limit}
 

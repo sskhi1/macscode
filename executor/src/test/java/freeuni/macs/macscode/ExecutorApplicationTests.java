@@ -31,9 +31,9 @@ class ExecutorApplicationTests {
                 .content(fromFile("twoNumberAdditionCorrectSolutionRequest.json")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(3)))
-                .andExpect(jsonPath("$[0].result", is("Pass")))
-                .andExpect(jsonPath("$[1].result", is("Pass")))
-                .andExpect(jsonPath("$[2].result", is("Pass")));
+                .andExpect(jsonPath("$[0].result", is("PASS")))
+                .andExpect(jsonPath("$[1].result", is("PASS")))
+                .andExpect(jsonPath("$[2].result", is("PASS")));
     }
 
     @Test
@@ -43,7 +43,7 @@ class ExecutorApplicationTests {
                         .content(fromFile("twoNumberAdditionWrongSolutionRequest.json")))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(1)))
-                .andExpect(jsonPath("$[0].result", is("Fail")));
+                .andExpect(jsonPath("$[0].result", is("FAIL")));
     }
 
     private byte[] fromFile(String fileName) throws IOException {

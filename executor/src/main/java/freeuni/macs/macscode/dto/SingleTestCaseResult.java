@@ -13,5 +13,11 @@ public class SingleTestCaseResult {
 
     private Integer testNum;
     private String result;
+    private String additionalInfo;
+
+    public SingleTestCaseResult(Integer testNum, String result) {
+        this.testNum = testNum;
+        this.result = result;
+    }
 
 }
