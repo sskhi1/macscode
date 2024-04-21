@@ -20,6 +20,9 @@ public class Problem {
     @Field(name = "name")
     private String name;
 
+    @Field(name = "type")
+    private String type;
+
     @Field(name = "description")
     private String description;
 
