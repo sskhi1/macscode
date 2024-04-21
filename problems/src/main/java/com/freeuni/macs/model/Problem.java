@@ -1,6 +1,7 @@
 package com.freeuni.macs.model;
 
 import lombok.Data;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -12,7 +13,7 @@ import java.util.List;
 public class Problem {
 
     @Id
-    private String id;
+    private ObjectId id;
 
     @Field(name = "problem_id")
     private ProblemId problemId;
