@@ -22,9 +22,9 @@ int main(int argc, char* argv[]) {
     outputReader >> expectedResult;
 
     if (userResult == expectedResult) {
-        outputWriter << "Pass\n";
+        outputWriter << "PASS\n";
     } else {
-        outputWriter << "Fail\n";
+        outputWriter << "FAIL\n";
     }
 
     outputWriter.close();

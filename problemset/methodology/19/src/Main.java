@@ -14,10 +14,10 @@ public class Main {
         int expectedResult = Integer.parseInt(outputReader.readLine());
 
         if (userResult == expectedResult) {
-            outputWriter.write("Pass\n");
+            outputWriter.write("PASS\n");
             outputWriter.flush();
         } else {
-            outputWriter.write("Fail\n");
+            outputWriter.write("FAIL\n");
             outputWriter.flush();
         }
 

@@ -65,4 +65,13 @@ public class ProblemController {
     public List<SubmitResponse> submitProblem(@RequestBody SubmitRequest submission) {
         return problemService.submitProblem(submission);
     }
+
+    @Operation(summary = "Run a problem on public tests")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @PostMapping(value = "/run")
+    public List<SubmitResponse> runProblemOnPublicTests(@RequestBody SubmitRequest submission) {
+        return problemService.runProblemOnPublicTests(submission);
+    }
 }

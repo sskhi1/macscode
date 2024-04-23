@@ -56,15 +56,6 @@ public class ProblemService {
                 .toList();
     }
 
-    public ProblemDto getProblemById(final String id) throws ProblemNotFoundException {
-        Optional<Problem> problem = problemRepository.findById(new ObjectId(id));
-        if (problem.isEmpty()) {
-            String errorMessage = String.format("Problem with id %s does not exist.", id);
-            throw new ProblemNotFoundException(errorMessage);
-        }
-        return convertProblemToProblemDto(problem.get());
-    }
-
     public ProblemDto getProblem(final Long order, final Course course) throws ProblemNotFoundException {
         ProblemId problemId = new ProblemId(order, course);
         Optional<Problem> problem = problemRepository.findByProblemId(problemId);
@@ -85,35 +76,21 @@ public class ProblemService {
     public List<SubmitResponse> submitProblem(final SubmitRequest solution) {
         ObjectId problemId = new ObjectId(solution.getProblemId());
         List<Test> problemTests = testService.getTestsByProblemId(problemId);
+        Problem problem = getProblemById(problemId);
 
-        Optional<Problem> problem = problemRepository.findById(problemId);
-        if (problem.isEmpty()) {
-            String errorMessage = String.format("Problem with id %s does not exist.", problemId);
-            throw new ProblemNotFoundException(errorMessage);
-        }
-        Problem currentProblem = problem.get();
-        String mainFile = currentProblem.getMainFile();
+        return runProblemOnTests(solution, problem, problemTests);
+    }
 
-        String problemType = currentProblem.getType();
+    public List<SubmitResponse> runProblemOnPublicTests(final SubmitRequest solution) {
+        ObjectId problemId = new ObjectId(solution.getProblemId());
+        List<Test> problemPublicTests = testService.getPublicTestsByProblemId(problemId);
+        Problem problem = getProblemById(problemId);
 
-        String mainFileName;
-        String solutionFileName = switch (problemType) {
-            case "JAVA" -> {
-                mainFileName = "Main.java";
-                yield "Solution.java";
-            }
-            case "CPP" -> {
-                mainFileName = "main.cpp";
-                yield "solution.h";
-            }
-            default -> throw new IllegalStateException("Unexpected value: " + problemType);
-        };
+        return runProblemOnTests(solution, problem, problemPublicTests);
+    }
 
-        SubmissionRequest submissionRequest = new SubmissionRequest(
-                List.of(new SolutionFile(mainFileName, mainFile),
-                        new SolutionFile(solutionFileName, solution.getSolution())),
-                problemTests,
-                problemType);
+    private List<SubmitResponse> runProblemOnTests(SubmitRequest solution, Problem problem, List<Test> problemTests) {
+        SubmissionRequest submissionRequest = getSubmissionRequest(solution, problem, problemTests);
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -130,6 +107,39 @@ public class ProblemService {
                 typeRef);
 
         return responseEntity.getBody();
+    }
 
+    private Problem getProblemById(final ObjectId id) throws ProblemNotFoundException {
+        Optional<Problem> problem = problemRepository.findById(id);
+        if (problem.isEmpty()) {
+            String errorMessage = String.format("Problem with id %s does not exist.", id);
+            throw new ProblemNotFoundException(errorMessage);
+        }
+        return problem.get();
+    }
+
+    private static SubmissionRequest getSubmissionRequest(SubmitRequest solution, Problem problem, List<Test> problemTests) {
+        String mainFile = problem.getMainFile();
+
+        String problemType = problem.getType();
+
+        String mainFileName;
+        String solutionFileName = switch (problemType) {
+            case "JAVA" -> {
+                mainFileName = "Main.java";
+                yield "Solution.java";
+            }
+            case "CPP" -> {
+                mainFileName = "main.cpp";
+                yield "solution.h";
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + problemType);
+        };
+
+        return new SubmissionRequest(
+                List.of(new SolutionFile(mainFileName, mainFile),
+                        new SolutionFile(solutionFileName, solution.getSolution())),
+                problemTests,
+                problemType);
     }
 }
