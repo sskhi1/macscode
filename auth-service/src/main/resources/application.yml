@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: auth-service
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://localhost:5432/macscode_db
+    username: postgres
+    password: pass
+    driverClassName: org.postgresql.Driver
+  flyway:
+    baseline-on-migrate: true
+    default-schema: macscode_schema
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+server:
+  context-path: /auth
+  port: 8081
+
+jwt:
+  secret: macscodesecretkeymacscodesecretkeymacscodesecretkeymacscodese
+  expiration-time: 43200000  # 12 hours in millis

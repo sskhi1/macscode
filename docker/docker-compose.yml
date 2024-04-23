@@ -1,11 +1,14 @@
 version: '3'
 services:
   front:
+    container_name: front-container
     build:
-      context: ../macscode-front
+      context: ../macscode-ui
     ports:
       - "3000:3000"
+
   macscode-dummy-back:
+    container_name: macscode-dummy
     build:
       context: ../macscode
     ports:
@@ -17,3 +20,35 @@ services:
       - 9100:27017
     volumes:
       - ./problemsdb:/data/db
+
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: ../auth-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - macscode_network
+    env_file:
+      - .env
+
+  db:
+    image: 'postgres:16.2'
+    container_name: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - macscode_network
+    env_file:
+      - .env
+
+volumes:
+  pgdata:
+networks:
+  macscode_network:
