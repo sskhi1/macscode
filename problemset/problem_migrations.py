@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import json
+import os
 
 def read_file(file_path):
     with open(file_path, 'r') as file:
@@ -13,16 +14,22 @@ problems_collection = db.problems
 tests_collection = db.tests
 
 arr = {
-  "methodology": [16, 21],
-  "abstractions": [1, 1]
+  "methodology",
+  "abstractions"
 }
 
+def get_all_dirs(main_dir):
+    child_dirs = []
+    for item in os.listdir(main_dir):
+        full_path = os.path.join(subject, item)
+        if os.path.isdir(full_path):
+            child_dirs.append(full_path)
+    child_dirs.sort()
+    return child_dirs
+
 for subject in arr:
-    start = arr[subject][0]
-    end = arr[subject][1]
-    for i in range(start, end + 1):
-        prefix = f"{subject}/{i}"
-        problem_info = json.load(open(f"{prefix}/info.json", "rb"))
+    for dir in get_all_dirs(subject):
+        problem_info = json.load(open(f"{dir}/info.json", "rb"))
 
         # Check if a document with the same problem_id exists and delete it
         existing_problem = problems_collection.find_one({"problem_id": problem_info["problem_id"]})
@@ -38,8 +45,8 @@ for subject in arr:
             solution_file = "Solution.java"
 
         new_problem = {
-            "solution_file_template": read_file(f"{prefix}/src/{solution_file}"),
-            "main_file": read_file(f"{prefix}/src/{main_file}"),
+            "solution_file_template": read_file(f"{dir}/src/{solution_file}"),
+            "main_file": read_file(f"{dir}/src/{main_file}"),
             "description": problem_info["description"],
             "name": problem_info["name"],
             "problem_id": problem_info["problem_id"],
@@ -57,8 +64,8 @@ for subject in arr:
                 "problem_id": inserted_id,
                 "is_public": is_public,
                 "test_num": test_num,
-                "input": read_file(f"{prefix}/tests/in_{test_num}.txt"),
-                "output": read_file(f"{prefix}/tests/out_{test_num}.txt")
+                "input": read_file(f"{dir}/tests/in_{test_num}.txt"),
+                "output": read_file(f"{dir}/tests/out_{test_num}.txt")
             }
             tests_collection.insert_one(new_test)
 
