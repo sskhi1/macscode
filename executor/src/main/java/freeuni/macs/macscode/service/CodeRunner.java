@@ -4,7 +4,6 @@ import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.WaitContainerResultCallback;
 import com.github.dockerjava.api.model.Bind;
-import com.sun.security.auth.module.UnixSystem;
 import freeuni.macs.macscode.dto.ProblemSolutionFile;
 import freeuni.macs.macscode.dto.SingleTestCase;
 import freeuni.macs.macscode.dto.SingleTestCaseResult;
@@ -29,7 +28,7 @@ public class CodeRunner {
 
     private final ExecutionResultsExtractor executionResultsExtractorService;
     private final DockerClient dockerClient;
-    private final UnixSystem unixSystem;
+    private final PermissionsProvider permissionsProvider;
 
     private Path createExecutionDir(List<ProblemSolutionFile> problemSolutions,
                                     List<SingleTestCase> problemTestCases) {
@@ -72,7 +71,7 @@ public class CodeRunner {
     private void runContainer(Path executionDir, int testCount, String type) {
         String bindStr = String.format("%s:%s", executionDir.toFile().getAbsolutePath(), DOCKER_EXECUTION_PATH);
         Bind bind = Bind.parse(bindStr);
-        String userStr = String.format("%s:%s", unixSystem.getUid(), unixSystem.getGid());
+        String userStr = String.format("%s:%s", permissionsProvider.getUid(), permissionsProvider.getGid());
         String env = String.format("test_count=%d", testCount);
 
         String containerName = Objects.equals(type, "JAVA") ? "java" : "cpp";
