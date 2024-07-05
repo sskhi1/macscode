@@ -40,3 +40,4 @@ target/
 /problems/mvnw.cmd
 /problems/.mvn/
 /docker/problemsdb/
+macscode-root.iml

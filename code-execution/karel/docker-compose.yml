@@ -1,0 +1,10 @@
+version: '3'
+services:
+  karel-code-runner:
+    image: karel-code-runner
+    volumes:
+      - ./example:/app/execution
+    container_name: karel-example-container
+    user: "${UID}:${GID}"
+    environment:
+      - test_count=4

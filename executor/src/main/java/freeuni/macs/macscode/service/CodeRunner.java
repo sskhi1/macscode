@@ -74,7 +74,14 @@ public class CodeRunner {
         String userStr = String.format("%s:%s", permissionsProvider.getUid(), permissionsProvider.getGid());
         String env = String.format("test_count=%d", testCount);
 
-        String containerName = Objects.equals(type, "JAVA") ? "java" : "cpp";
+        String containerName;
+        if (Objects.equals(type, "JAVA")) {
+            containerName ="java";
+        } else if (Objects.equals(type, "CPP")) {
+            containerName ="cpp";
+        } else {
+            containerName = "karel";
+        }
 
         CreateContainerResponse container = dockerClient
                 .createContainerCmd(String.format("%s-code-runner", containerName))

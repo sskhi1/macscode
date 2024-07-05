@@ -37,16 +37,7 @@ for subject in arr:
             problems_collection.delete_one({"_id": existing_problem["_id"]})
             tests_collection.delete_many({"problem_id": existing_problem["_id"]})
 
-        if subject == "abstractions":
-            main_file = "main.cpp"
-            solution_file = "solution.h"
-        else:
-            main_file = "Main.java"
-            solution_file = "Solution.java"
-
         new_problem = {
-            "solution_file_template": read_file(f"{dir}/src/{solution_file}"),
-            "main_file": read_file(f"{dir}/src/{main_file}"),
             "description": problem_info["description"],
             "name": problem_info["name"],
             "problem_id": problem_info["problem_id"],
@@ -54,6 +45,20 @@ for subject in arr:
             "type": problem_info["type"],
             "difficulty": problem_info["difficulty"]
         }
+
+        if problem_info["type"] == "CPP":
+            main_file = "main.cpp"
+            solution_file = "solution.h"
+            new_problem["solution_file_template"] = read_file(f"{dir}/src/{solution_file}")
+            new_problem["main_file"] = read_file(f"{dir}/src/{main_file}")
+        elif problem_info["type"] == "JAVA":
+            main_file = "Main.java"
+            solution_file = "Solution.java"
+            new_problem["solution_file_template"] = read_file(f"{dir}/src/{solution_file}")
+            new_problem["main_file"] = read_file(f"{dir}/src/{main_file}")
+        else:
+            solution_file = "Solution.java"
+            new_problem["solution_file_template"] = read_file(f"{dir}/src/{solution_file}")
 
         result = problems_collection.insert_one(new_problem)
         inserted_id = result.inserted_id

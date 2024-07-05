@@ -15,6 +15,8 @@ import java.util.List;
 public class ExecutionResultsExtractor {
 
     private static final String COMPILE_ERROR = "COMPILE_ERROR";
+    private static final String KAREL_CRASHED = "KAREL_CRASHED";
+    private static final String NO_BEEPER = "NO_BEEPER";
 
     private String readOneLineFromFile(String filePath) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -31,6 +33,10 @@ public class ExecutionResultsExtractor {
                 String result = readOneLineFromFile(currentPath);
                 if (result.contains(COMPILE_ERROR)) {
                     allTestCaseResults.add(new SingleTestCaseResult(i, result, extractCompileError(currentPath)));
+                } else if (result.contains(KAREL_CRASHED)) {
+                    allTestCaseResults.add(new SingleTestCaseResult(i, result, "Karel crashed to a wall"));
+                } else if (result.contains(NO_BEEPER)) {
+                    allTestCaseResults.add(new SingleTestCaseResult(i, result, "No beepers present trying to pick beeper"));
                 } else {
                     allTestCaseResults.add(new SingleTestCaseResult(i, result));
                 }

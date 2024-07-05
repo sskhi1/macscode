@@ -11,6 +11,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,25 +121,27 @@ public class ProblemService {
 
     private static SubmissionRequest getSubmissionRequest(SubmitRequest solution, Problem problem, List<Test> problemTests) {
         String mainFile = problem.getMainFile();
+        String solutionFile = solution.getSolution();
 
         String problemType = problem.getType();
 
-        String mainFileName;
-        String solutionFileName = switch (problemType) {
+        List<SolutionFile> submissionFiles = new ArrayList<>();
+
+        switch (problemType) {
             case "JAVA" -> {
-                mainFileName = "Main.java";
-                yield "Solution.java";
+                submissionFiles.add(new SolutionFile("Solution.java", solutionFile));
+                submissionFiles.add(new SolutionFile("Main.java", mainFile));
             }
             case "CPP" -> {
-                mainFileName = "main.cpp";
-                yield "solution.h";
+                submissionFiles.add(new SolutionFile("solution.h", solutionFile));
+                submissionFiles.add(new SolutionFile("main.cpp", mainFile));
             }
+            case "KAREL" -> submissionFiles.add(new SolutionFile("Solution.java", solutionFile));
             default -> throw new IllegalStateException("Unexpected value: " + problemType);
-        };
+        }
 
         return new SubmissionRequest(
-                List.of(new SolutionFile(mainFileName, mainFile),
-                        new SolutionFile(solutionFileName, solution.getSolution())),
+                submissionFiles,
                 problemTests,
                 problemType);
     }

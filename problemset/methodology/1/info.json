@@ -1,0 +1,13 @@
+{
+  "description": "Fill last row with beepers and move karel on the bottom right corner facing east.",
+  "name": "Fill Last Row",
+  "problem_id": {
+    "order": 1,
+    "course": "MET"
+  },
+  "topics": ["Karel"],
+  "type": "KAREL",
+  "test_count": 1,
+  "difficulty": "Easy",
+  "public_test_count": 1
+}
