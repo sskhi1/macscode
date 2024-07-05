@@ -14,5 +14,6 @@
       "input": "3\n5",
       "output": "8"
     }
-  ]
+  ],
+  "type": "JAVA"
 }
