@@ -24,4 +24,4 @@ server:
 
 jwt:
   secret: macscodesecretkeymacscodesecretkeymacscodesecretkeymacscodese
-  expiration-time: 43200000  # 12 hours in millis
+  expiration-time: 1209600000  # 2 weeks

@@ -54,6 +54,10 @@ public class UserService {
         if (userDB.isPresent()) {
             throw new UserAuthException("Account with email {} already exists.", user.getEmail());
         }
+        Optional<User> userDB1 = userRepository.findByUsername(user.getUsername());
+        if (userDB1.isPresent()) {
+            throw new UserAuthException("Account with username {} already exists.", user.getUsername());
+        }
         userRepository.save(user);
         String jwt = jwtService.generateToken(user);
         return AuthResponse.builder()

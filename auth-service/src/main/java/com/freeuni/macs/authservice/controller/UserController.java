@@ -24,7 +24,7 @@ public class UserController {
 
     private final UserMapper userMapper;
 
-    @PostMapping
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> userSignIn(@Valid @RequestBody final SignInRequest signInRequest) {
         log.info("Signing in...");
         return ResponseEntity.ok(userService.validateUser(signInRequest));
