@@ -39,6 +39,7 @@ public class ProblemService {
         problemDto.setDifficulty(problem.getDifficulty());
         problemDto.setTopics(problem.getTopics());
         problemDto.setSolutionFileTemplate(problem.getSolutionFileTemplate());
+        problemDto.setType(problem.getType());
         List<Test> publicTests = testService.getPublicTestsByProblemId(problem.getId());
         problemDto.setPublicTestCases(publicTests.stream()
                 .map(singleTest -> TestDto.builder()
@@ -125,18 +126,18 @@ public class ProblemService {
 
         String problemType = problem.getType();
 
-        List<SolutionFile> submissionFiles = new ArrayList<>();
+        List<SingleFile> submissionFiles = new ArrayList<>();
 
         switch (problemType) {
             case "JAVA" -> {
-                submissionFiles.add(new SolutionFile("Solution.java", solutionFile));
-                submissionFiles.add(new SolutionFile("Main.java", mainFile));
+                submissionFiles.add(new SingleFile("Solution.java", solutionFile));
+                submissionFiles.add(new SingleFile("Main.java", mainFile));
             }
             case "CPP" -> {
-                submissionFiles.add(new SolutionFile("solution.h", solutionFile));
-                submissionFiles.add(new SolutionFile("main.cpp", mainFile));
+                submissionFiles.add(new SingleFile("solution.h", solutionFile));
+                submissionFiles.add(new SingleFile("main.cpp", mainFile));
             }
-            case "KAREL" -> submissionFiles.add(new SolutionFile("Solution.java", solutionFile));
+            case "KAREL" -> submissionFiles.add(new SingleFile("Solution.java", solutionFile));
             default -> throw new IllegalStateException("Unexpected value: " + problemType);
         }
 

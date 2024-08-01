@@ -15,4 +15,6 @@ public interface ProblemRepository extends MongoRepository<Problem, ObjectId> {
     Optional<Problem> findByProblemId(ProblemId problemId);
 
     List<Problem> findAllByProblemIdCourse(Course course);
+
+    Problem findTopByProblemIdCourseOrderByProblemIdOrderDesc(Course course);
 }

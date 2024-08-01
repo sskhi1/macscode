@@ -6,15 +6,15 @@ import java.util.List;
 
 @Data
 public class SubmissionRequest {
-    private List<SolutionFile> srcFiles;
+    private List<SingleFile> srcFiles;
     private List<Test> testCases;
-    private String type;
+    private String problemType;
 
-    public SubmissionRequest(List<SolutionFile> solutionFiles,
+    public SubmissionRequest(List<SingleFile> singleFiles,
                              List<Test> problemTests,
-                             String type) {
-        this.srcFiles = solutionFiles;
+                             String problemType) {
+        this.srcFiles = singleFiles;
         this.testCases = problemTests;
-        this.type = type;
+        this.problemType = problemType;
     }
 }
