@@ -2,17 +2,25 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Signup.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Signup = () => {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSignup = async (e) => {
         e.preventDefault();
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
         try {
             await axios.post('http://localhost:8081/auth/signup', {
                 name,
@@ -25,6 +33,14 @@ const Signup = () => {
             console.error('Error signing up', error);
             setError('Error signing up. Please check your details and try again.');
         }
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
     };
 
     return (
@@ -56,14 +72,32 @@ const Signup = () => {
                     className="signup-input"
                     required
                 />
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    className="signup-input"
-                    required
-                />
+                <div className="password-container">
+                    <input
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
+                        className="signup-input"
+                        required
+                    />
+                    <div className="eye-icon" onClick={togglePasswordVisibility}>
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </div>
+                </div>
+                <div className="password-container">
+                    <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Confirm Password"
+                        className="signup-input"
+                        required
+                    />
+                    <div className="eye-icon" onClick={toggleConfirmPasswordVisibility}>
+                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                    </div>
+                </div>
                 <button type="submit" className="signup-button">Sign Up</button>
                 <p className="login-link">
                     Already have an account? <a href="/login">Log in</a>
