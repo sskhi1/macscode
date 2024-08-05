@@ -1,5 +1,6 @@
 package com.freeuni.macs.model;
 
+import lombok.Builder;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.util.Date;
 
 @Data
+@Builder
 @Document(collection = "user_submissions")
 public class UserSubmission {
 
@@ -16,7 +18,7 @@ public class UserSubmission {
     private ObjectId id;
 
     @Field(name = "submitter_username")
-    private ObjectId submitterUsername;
+    private String submitterUsername;
 
     @Field(name = "problem_id")
     private ObjectId problemId;
@@ -28,5 +30,5 @@ public class UserSubmission {
     private Date submissionDate;
 
     @Field(name = "successful")
-    private boolean successful;
+    private String result;
 }

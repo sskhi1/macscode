@@ -20,7 +20,9 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
 
     private static final String[] WHITE_LIST_URL = {"/problems/**",
-            "/swagger-ui/**"
+            "/submissions/*",
+            "/swagger-ui/**",
+            "/v3/**"
     };
 
     @Bean

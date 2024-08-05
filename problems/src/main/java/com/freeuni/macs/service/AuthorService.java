@@ -1,6 +1,7 @@
 package com.freeuni.macs.service;
 
 import com.freeuni.macs.model.*;
+import com.freeuni.macs.model.api.InputOutputTestDto;
 import com.freeuni.macs.repository.ProblemRepository;
 import com.freeuni.macs.repository.TestRepository;
 import org.bson.types.ObjectId;

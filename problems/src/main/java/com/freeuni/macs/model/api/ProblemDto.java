@@ -1,5 +1,6 @@
-package com.freeuni.macs.model;
+package com.freeuni.macs.model.api;
 
+import com.freeuni.macs.model.ProblemId;
 import lombok.*;
 
 import java.util.List;

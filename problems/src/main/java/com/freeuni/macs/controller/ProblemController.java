@@ -1,6 +1,8 @@
 package com.freeuni.macs.controller;
 
 import com.freeuni.macs.model.*;
+import com.freeuni.macs.model.api.ProblemDto;
+import com.freeuni.macs.model.api.SubmitResponse;
 import com.freeuni.macs.service.ProblemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

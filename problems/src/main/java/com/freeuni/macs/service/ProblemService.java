@@ -2,7 +2,11 @@ package com.freeuni.macs.service;
 
 import com.freeuni.macs.exception.ProblemNotFoundException;
 import com.freeuni.macs.model.*;
+import com.freeuni.macs.model.api.ProblemDto;
+import com.freeuni.macs.model.api.SubmitResponse;
+import com.freeuni.macs.model.api.TestDto;
 import com.freeuni.macs.repository.ProblemRepository;
+import com.freeuni.macs.repository.UserSubmissionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +28,16 @@ import java.util.Optional;
 @Slf4j
 public class ProblemService {
     private final ProblemRepository problemRepository;
+    private final UserSubmissionRepository userSubmissionRepository;
     private final TestService testService;
     private final String EXECUTION_API_URL;
 
     @Autowired
     public ProblemService(final ProblemRepository problemRepository,
+                          final UserSubmissionRepository userSubmissionRepository,
                           final TestService testService,
                           final @Value("${execution.service.url}") String executionApiUrl) {
+        this.userSubmissionRepository = userSubmissionRepository;
         this.problemRepository = problemRepository;
         this.testService = testService;
         this.EXECUTION_API_URL = executionApiUrl;
@@ -85,7 +93,7 @@ public class ProblemService {
         List<Test> problemTests = testService.getTestsByProblemId(problemId);
         Problem problem = getProblemById(problemId);
 
-        return runProblemOnTests(solution, problem, problemTests);
+        return runProblemOnTests(solution, problem, problemTests, true);
     }
 
     public List<SubmitResponse> runProblemOnPublicTests(final SubmitRequest solution) {
@@ -93,10 +101,10 @@ public class ProblemService {
         List<Test> problemPublicTests = testService.getPublicTestsByProblemId(problemId);
         Problem problem = getProblemById(problemId);
 
-        return runProblemOnTests(solution, problem, problemPublicTests);
+        return runProblemOnTests(solution, problem, problemPublicTests, false);
     }
 
-    private List<SubmitResponse> runProblemOnTests(SubmitRequest solution, Problem problem, List<Test> problemTests) {
+    private List<SubmitResponse> runProblemOnTests(SubmitRequest solution, Problem problem, List<Test> problemTests, boolean isSubmission) {
         SubmissionRequest submissionRequest = getSubmissionRequest(solution, problem, problemTests);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -113,7 +121,28 @@ public class ProblemService {
                 requestEntity,
                 typeRef);
 
+        if (isSubmission) {
+            List<SubmitResponse> submitResponses = responseEntity.getBody();
+            assert submitResponses != null;
+            UserSubmission submission = UserSubmission.builder()
+                    .submitterUsername(getCurrentUser())
+                    .problemId(problem.getId())
+                    .solutionFileContent(solution.getSolution())
+                    .submissionDate(new Date())
+                    .result(determineSubmissionResult(submitResponses))
+                    .build();
+            userSubmissionRepository.save(submission);
+        }
+
         return responseEntity.getBody();
+    }
+
+    private String determineSubmissionResult(List<SubmitResponse> submitResponses) {
+        return submitResponses.stream()
+                .map(SubmitResponse::getResult)
+                .filter(result -> !"PASS".equals(result))
+                .findFirst()
+                .orElse("ACCEPTED");
     }
 
     private Problem getProblemById(final ObjectId id) throws ProblemNotFoundException {

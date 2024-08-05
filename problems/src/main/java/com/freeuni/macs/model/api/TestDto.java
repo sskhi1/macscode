@@ -1,4 +1,4 @@
-package com.freeuni.macs.model;
+package com.freeuni.macs.model.api;
 
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
