@@ -1,0 +1,34 @@
+.not-found-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #252525;
+    color: #fff;
+    text-align: center;
+}
+
+.not-found-container h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.not-found-container p {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+.not-found-container .home-button {
+    background-color: #292929;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.not-found-container .home-button:hover {
+    background-color: #444;
+}

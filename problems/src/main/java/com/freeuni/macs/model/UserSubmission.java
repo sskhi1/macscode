@@ -20,8 +20,8 @@ public class UserSubmission {
     @Field(name = "submitter_username")
     private String submitterUsername;
 
-    @Field(name = "problem_id")
-    private ObjectId problemId;
+    @Field(name = "problem")
+    private Problem problem;
 
     @Field(name = "solution_file_content")
     private String solutionFileContent;

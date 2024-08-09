@@ -3,6 +3,7 @@ package com.freeuni.macs.authservice.service;
 import com.freeuni.macs.authservice.exception.UserAuthException;
 import com.freeuni.macs.authservice.model.api.AuthResponse;
 import com.freeuni.macs.authservice.model.api.SignInRequest;
+import com.freeuni.macs.authservice.model.api.UserDTO;
 import com.freeuni.macs.authservice.model.db.User;
 import com.freeuni.macs.authservice.repository.UserRepository;
 import com.freeuni.macs.authservice.security.JwtService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -63,5 +65,19 @@ public class UserService {
         return AuthResponse.builder()
                 .token(jwt)
                 .build();
+    }
+
+    public User getUser(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        return user.orElse(null);
+    }
+
+    public void updateUser(String username, UserDTO userDto) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setName(userDto.getName());
+        user.setEmail(userDto.getEmail());
+
+        userRepository.save(user);
     }
 }

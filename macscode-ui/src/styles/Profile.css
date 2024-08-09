@@ -1,0 +1,301 @@
+body {
+    background-color: #252525;
+    margin: 0;
+    padding: 0;
+}
+
+.profile-page {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.profile-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    gap: 20px;
+}
+
+.profile-info-container {
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-header, .statistics-container {
+    background-color: #292929;
+    border-radius: 10px;
+    color: #e0e0e0;
+    padding: 20px;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+
+.profile-header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #fff;
+}
+
+.profile-header p {
+    margin: 5px 0;
+    color: #b0b0b0;
+}
+
+.submissions-container {
+    min-height: 100px;
+    flex-grow: 1;
+    background-color: #292929;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.submissions-container h3 {
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.submissions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.submission-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.submission-item div {
+    color: #e0e0e0;
+}
+
+.submission-item .problem-name {
+    flex: 2.5;
+}
+
+.submission-item .result {
+    flex: 2;
+    font-weight: bold;
+    text-align: center;
+}
+
+.submission-item .date {
+    flex: 2;
+    text-align: center;
+}
+
+.submission-item .result.accepted {
+    color: #219321;
+}
+
+.submission-item .result.rejected {
+    color: #cc0101;
+}
+
+.submission-item:hover {
+    background-color: #3a3a3a;
+    cursor: pointer;
+}
+
+.home-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+    z-index: 1000;
+}
+
+.home-button:hover {
+    opacity: 0.8;
+}
+
+.view-code-button {
+    background-color: #252525;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 3px;
+}
+
+.view-code-button:hover {
+    background-color: #000000;
+}
+
+.code-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.code-popup-content {
+    position: relative;
+    background: #343434;
+    color: #dcdcdc;
+    border-radius: 8px;
+    padding: 20px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 80%;
+    overflow-y: auto;
+}
+
+.code-popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.code-popup-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.code-popup-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+.code-popup-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.methodology-label {
+    color: purple;
+}
+
+.abstractions-label {
+    color: orange;
+}
+
+.count {
+    color: inherit;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    background-color: #444;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination-button.active {
+    background-color: #888;
+}
+
+.pagination-button:hover {
+    background-color: #666;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.topic-box-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.topic-box {
+    display: inline-block;
+    background-color: #363636;
+    color: #797171;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.topic-box:hover {
+    background-color: #4a4a4a;
+    color: #ffffff;
+}
+
+.edit-profile-container, .save-button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.profile-header input {
+    background-color: #444;
+    border: 1px solid #666;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+}
+
+.profile-header input::placeholder {
+    color: #888;
+}
+
+.profile-header button {
+    background-color: orange;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.profile-header button:hover {
+    background-color: #cbb111;
+}

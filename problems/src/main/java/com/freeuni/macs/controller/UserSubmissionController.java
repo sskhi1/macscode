@@ -41,6 +41,17 @@ public class UserSubmissionController {
         return userSubmissionService.getUserSubmissions(username);
     }
 
+    @Operation(summary = "Fetch last 10 submissions of a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful operation")
+    })
+    @GetMapping(value = "/users/{username}/last", produces = "application/json")
+    public List<UserSubmissionDto> getUserLastSubmissions(
+            @PathVariable(name = "username") @Parameter(description = "user name", in = ParameterIn.PATH) String username
+    ) {
+        return userSubmissionService.getUserLastSubmissions(username);
+    }
+
     @Operation(summary = "Fetch all submissions of a problem")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation")

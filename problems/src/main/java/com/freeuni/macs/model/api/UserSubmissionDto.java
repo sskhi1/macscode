@@ -18,7 +18,7 @@ public class UserSubmissionDto {
 
     private String submitterUsername;
 
-    private ObjectId problemId;
+    private ProblemDto problem;
 
     private String solutionFileContent;
 

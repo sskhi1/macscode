@@ -7,6 +7,9 @@ import com.freeuni.macs.repository.UserSubmissionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +21,7 @@ public class UserSubmissionService {
     private final UserSubmissionRepository userSubmissionRepository;
 
     @Autowired
-    public UserSubmissionService(UserSubmissionRepository userSubmissionRepository, UserSubmissionMapper userSubmissionMapper) {
+    public UserSubmissionService(UserSubmissionRepository userSubmissionRepository) {
         this.userSubmissionRepository = userSubmissionRepository;
     }
 
@@ -26,6 +29,14 @@ public class UserSubmissionService {
         List<UserSubmission> userSubmissions = userSubmissionRepository.findAllBySubmitterUsernameOrderBySubmissionDateDesc(username);
 
         return UserSubmissionMapper.toDtoList(userSubmissions);
+    }
+
+    public List<UserSubmissionDto> getUserLastSubmissions(final String username) {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<UserSubmission> userSubmissions = userSubmissionRepository.findBySubmitterUsernameOrderBySubmissionDateDesc(username, pageable);
+
+        List <UserSubmission> submissions = userSubmissions.getContent();
+        return UserSubmissionMapper.toDtoList(submissions);
     }
 
     public List<UserSubmissionDto> getProblemSubmissions(String problemId) {

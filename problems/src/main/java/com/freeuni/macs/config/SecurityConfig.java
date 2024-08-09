@@ -20,7 +20,7 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
 
     private static final String[] WHITE_LIST_URL = {"/problems/**",
-            "/submissions/*",
+            "/submissions/**",
             "/swagger-ui/**",
             "/v3/**"
     };

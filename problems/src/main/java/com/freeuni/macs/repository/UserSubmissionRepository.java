@@ -2,6 +2,8 @@ package com.freeuni.macs.repository;
 
 import com.freeuni.macs.model.UserSubmission;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +17,6 @@ public interface UserSubmissionRepository extends MongoRepository<UserSubmission
     List<UserSubmission> findAllByProblemIdOrderBySubmissionDateDesc(ObjectId problemId);
 
     List<UserSubmission> findAllBySubmitterUsernameAndProblemIdOrderBySubmissionDateDesc(String username, ObjectId problemId);
+
+    Page<UserSubmission> findBySubmitterUsernameOrderBySubmissionDateDesc(String username, Pageable pageable);
 }

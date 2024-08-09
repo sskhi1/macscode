@@ -21,7 +21,7 @@ public class RunnerController {
     public List<SingleTestCaseResult> runCode(@RequestBody RunCodeRequest runCodeRequest) {
         List<ProblemSolutionFile> problemSolutions = runCodeRequest.getSrcFiles();
         List<SingleTestCase> problemTestCases = runCodeRequest.getTestCases();
-        return codeRunner.run(problemSolutions, problemTestCases, runCodeRequest.getType());
+        return codeRunner.run(problemSolutions, problemTestCases, runCodeRequest.getProblemType());
     }
 
 }
