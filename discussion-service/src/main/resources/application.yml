@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: discussion-service
+  data:
+    mongodb:
+      database: problems-db
+      host: localhost
+      port: 9100
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+server:
+  context-path: /discussion
+  port: 8082
+
+jwt:
+  secret: macscodesecretkeymacscodesecretkeymacscodesecretkeymacscodese
+  expiration-time: 1209600000  # 2 weeks

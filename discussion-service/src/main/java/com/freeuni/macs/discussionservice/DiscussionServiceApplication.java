@@ -1,4 +1,4 @@
-package com.freeuni.macs;
+package com.freeuni.macs.discussionservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 @SpringBootApplication
 @EnableMongoRepositories
-public class ProblemsApplication {
+public class DiscussionServiceApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ProblemsApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(DiscussionServiceApplication.class, args);
+	}
 
 }

@@ -16,5 +16,6 @@
         <module>auth-service</module>
         <module>executor</module>
         <module>problems</module>
+        <module>discussion-service</module>
     </modules>
 </project>
