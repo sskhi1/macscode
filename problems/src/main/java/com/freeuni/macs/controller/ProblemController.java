@@ -18,6 +18,7 @@ import java.util.List;
 @Tag(name = "Problems", description = "The Problem API")
 @RestController()
 @RequestMapping("/problems")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ProblemController {
     private final ProblemService problemService;
 

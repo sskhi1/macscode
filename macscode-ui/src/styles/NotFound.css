@@ -20,15 +20,12 @@
 }
 
 .not-found-container .home-button {
-    background-color: #292929;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-    border-radius: 5px;
+    width: 80px;
+    height: 80px;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
 .not-found-container .home-button:hover {
-    background-color: #444;
+    transform: scale(1.1);
 }

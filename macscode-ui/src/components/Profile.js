@@ -6,8 +6,8 @@ import {useNavigate} from 'react-router-dom';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {dracula} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import '../styles/Profile.css';
-import homeIcon from '../icons/logo192.png';
 import '../styles/Loading.css';
+import TopBar from "./TopBar";
 
 const Profile = () => {
     const {auth} = useContext(AuthContext);
@@ -170,6 +170,7 @@ const Profile = () => {
 
     return (
         <div className="profile-page">
+            <TopBar/>
             <div className="profile-container">
                 <div className="profile-info-container">
                     <div className="profile-header">
@@ -268,12 +269,6 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-            <img
-                src={homeIcon}
-                alt="Home"
-                className="home-button"
-                onClick={() => navigate('/')}
-            />
             {showCode && (
                 <div className="code-popup">
                     <div className="code-popup-content">

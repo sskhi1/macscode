@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/NotFound.css';
-import homeIcon from "../icons/logo192.png";
+import homeIcon from "../icons/M.png";
 
 const NotFound = () => {
     const navigate = useNavigate();
