@@ -1,0 +1,16 @@
+.difficulty {
+    font-weight: bold;
+    color: #fff;
+}
+
+.difficulty.easy {
+    color: #4CAF50;
+}
+
+.difficulty.medium {
+    color: #FFC107;
+}
+
+.difficulty.hard {
+    color: #F44336;
+}

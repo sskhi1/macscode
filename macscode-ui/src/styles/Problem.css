@@ -1,0 +1,146 @@
+.problem-container {
+    display: flex;
+    height: 100vh;
+}
+
+.problem-left {
+    flex: 1;
+    background-color: #252525;
+    color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.problem-right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.problem-right-upper {
+    flex: 0 0 55%;
+    background-color: #252525;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+.problem-right-lower {
+    flex: 0 0 45%;
+    background-color: #252525;
+    padding: 20px;
+    box-sizing: border-box;
+    border-top: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.run-button,
+.submit-button {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.run-button:hover,
+.submit-button:hover {
+    background-color: #0056b3;
+}
+
+.view-results-button {
+    margin-left: auto;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+}
+
+.view-results-button.visible {
+    display: block;
+}
+
+.error-message {
+    color: red;
+    padding: 20px;
+}
+
+.test-cases {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: #252525;
+    color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.test-cases-tabs {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 10px;
+    background-color: #333333;
+    border: 1px solid #444444;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    text-align: center;
+    color: #ffffff;
+}
+
+.tab-button.active {
+    background-color: #444444;
+    border-bottom: 1px solid #444444;
+    font-weight: bold;
+}
+
+.test-case-content {
+    background-color: #333333;
+    border: 1px solid #444444;
+    border-top: none;
+    padding: 10px;
+    overflow: auto;
+    height: calc(100% - 50px);
+}
+
+.test-case-content h4, .test-case-content h5 {
+    margin: 0;
+    color: #ffffff;
+}
+
+.test-case-content pre {
+    background-color: #1e1e1e;
+    padding: 10px;
+    border-radius: 4px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
+
+.test-case-result {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #e8f5e9;
+    border: 1px solid #4caf50;
+    border-radius: 4px;
+}
+
+.test-case-result.fail {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}

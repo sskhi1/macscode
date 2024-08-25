@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import '../styles/Home.css';
+import '../styles/Difficulty.css';
 import useFetchSubmissions from "./useFetchSubmissions";
 import TypeBanners from "./homepage/TypeBanners";
 import TopicsGrid from "./homepage/TopicsGrid";

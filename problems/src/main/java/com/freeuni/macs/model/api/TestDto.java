@@ -14,4 +14,6 @@ public class TestDto {
     private int testNum;
 
     private String input;
+
+    private String expectedOutput;
 }

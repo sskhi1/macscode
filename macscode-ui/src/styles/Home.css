@@ -63,23 +63,6 @@
     padding: 0 10px;
 }
 
-.difficulty {
-    font-weight: bold;
-    color: #fff;
-}
-
-.difficulty.easy {
-    color: #4CAF50;
-}
-
-.difficulty.medium {
-    color: #FFC107;
-}
-
-.difficulty.hard {
-    color: #F44336;
-}
-
 .status-icon {
     display: flex;
     align-items: center;
@@ -269,4 +252,12 @@
 .search-container input[type="search"]::placeholder {
     color: #aaa;
     font-style: italic;
+}
+
+.problem-item {
+    cursor: pointer;
+}
+
+.problem-item:hover {
+    background-color: #3a3b3c;
 }

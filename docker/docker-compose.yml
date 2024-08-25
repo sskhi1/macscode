@@ -21,6 +21,17 @@ services:
     volumes:
       - ./problemsdb:/data/db
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
   auth-service:
     container_name: auth-service
@@ -50,5 +61,6 @@ services:
 
 volumes:
   pgdata:
+  rabbitmq_data:
 networks:
   macscode_network:

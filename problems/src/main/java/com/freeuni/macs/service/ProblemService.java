@@ -17,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,17 +29,20 @@ public class ProblemService {
     private final ProblemRepository problemRepository;
     private final UserSubmissionRepository userSubmissionRepository;
     private final TestService testService;
-    private final String EXECUTION_API_URL;
+    private final RabbitMQProducer rabbitMQProducer;
+    private final RabbitMQResponseListener rabbitMQResponseListener;
 
     @Autowired
     public ProblemService(final ProblemRepository problemRepository,
                           final UserSubmissionRepository userSubmissionRepository,
                           final TestService testService,
-                          final @Value("${execution.service.url}") String executionApiUrl) {
-        this.userSubmissionRepository = userSubmissionRepository;
+                          final RabbitMQProducer rabbitMQProducer,
+                          final RabbitMQResponseListener rabbitMQResponseListener) {
         this.problemRepository = problemRepository;
         this.testService = testService;
-        this.EXECUTION_API_URL = executionApiUrl;
+        this.rabbitMQProducer = rabbitMQProducer;
+        this.rabbitMQResponseListener = rabbitMQResponseListener;
+        this.userSubmissionRepository = userSubmissionRepository;
     }
 
     private ProblemDto convertProblemToProblemDto(Problem problem) {
@@ -57,6 +59,7 @@ public class ProblemService {
         problemDto.setPublicTestCases(publicTests.stream()
                 .map(singleTest -> TestDto.builder()
                         .input(singleTest.getInput())
+                        .expectedOutput(singleTest.getOutput())
                         .testNum(singleTest.getTestNum())
                         .build())
                 .toList()
@@ -106,35 +109,27 @@ public class ProblemService {
 
     private List<SubmitResponse> runProblemOnTests(SubmitRequest solution, Problem problem, List<Test> problemTests, boolean isSubmission) {
         SubmissionRequest submissionRequest = getSubmissionRequest(solution, problem, problemTests);
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<SubmissionRequest> requestEntity = new HttpEntity<>(submissionRequest, headers);
-
-        ParameterizedTypeReference<List<SubmitResponse>> typeRef = new ParameterizedTypeReference<>() {
-        };
-        ResponseEntity<List<SubmitResponse>> responseEntity = restTemplate.exchange(
-                String.format("%s/submission", EXECUTION_API_URL),
-                HttpMethod.POST,
-                requestEntity,
-                typeRef);
+        rabbitMQProducer.sendSubmissionRequest(submissionRequest);
+        List<SubmitResponse> responses;
+        try {
+            responses = rabbitMQResponseListener.getResponses();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         if (isSubmission) {
-            List<SubmitResponse> submitResponses = responseEntity.getBody();
-            assert submitResponses != null;
+            assert responses != null;
             UserSubmission submission = UserSubmission.builder()
                     .submitterUsername(getCurrentUser())
                     .problem(problem)
                     .solutionFileContent(solution.getSolution())
                     .submissionDate(new Date())
-                    .result(determineSubmissionResult(submitResponses))
+                    .result(determineSubmissionResult(responses))
                     .build();
             userSubmissionRepository.save(submission);
         }
 
-        return responseEntity.getBody();
+        return responses;
     }
 
     private String determineSubmissionResult(List<SubmitResponse> submitResponses) {

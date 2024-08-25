@@ -1,0 +1,10 @@
+.solution-template {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ace_editor {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import PrivateRoute from './components/routes/PrivateRoute';
 import Profile from "./components/Profile";
+import Problem from "./components/Problem";
 import NotFound from "./components/NotFound";
 
 const AppRoutes = () => {
@@ -24,9 +25,14 @@ const AppRoutes = () => {
                 <PrivateRoute>
                     <Profile/>
                 </PrivateRoute>
-            }
+                }
             />
-
+            <Route path="/problem/:course/:order" element={
+                    <PrivateRoute>
+                        <Problem />
+                    </PrivateRoute>
+                }
+            />
             <Route path="*" element={<NotFound />} />
         </Routes>
     );

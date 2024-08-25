@@ -1,18 +1,25 @@
 import React from 'react';
-import {FaCheckCircle, FaRegCircle, FaTimesCircle} from 'react-icons/fa';
+import { FaCheckCircle, FaRegCircle, FaTimesCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 import '../../styles/Home.css';
 
 const ProblemList = ({problems, getStatus}) => {
+    const navigate = useNavigate();
+
     const statusIcons = {
         Done: <FaCheckCircle color="green"/>,
         Attempted: <FaTimesCircle color="orange"/>,
         ToDo: <FaRegCircle color="gray"/>
     };
 
+    const handleProblemClick = (problem) => {
+        navigate(`/problem/${problem.problemId.course}/${problem.problemId.order}`);
+    };
+
     return (
         <ul className="problem-list">
             {problems.map((problem) => (
-                <li key={problem.id} className="problem-item">
+                <li key={problem.id} className="problem-item" onClick={() => handleProblemClick(problem)}>
                     <span className="column status status-icon">
                         {statusIcons[getStatus(problem)]}
                     </span>
