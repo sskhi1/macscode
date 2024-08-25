@@ -15,6 +15,7 @@ import java.util.List;
 public class ExecutionResultsExtractor {
 
     private static final String COMPILE_ERROR = "COMPILE_ERROR";
+    private static final String KAREL = "KAREL";
     private static final String KAREL_CRASHED = "KAREL_CRASHED";
     private static final String NO_BEEPER = "NO_BEEPER";
 
@@ -33,10 +34,8 @@ public class ExecutionResultsExtractor {
                 String result = readOneLineFromFile(currentPath);
                 if (result.contains(COMPILE_ERROR)) {
                     allTestCaseResults.add(new SingleTestCaseResult(i, result, extractCompileError(currentPath)));
-                } else if (result.contains(KAREL_CRASHED)) {
-                    allTestCaseResults.add(new SingleTestCaseResult(i, result, "Karel crashed to a wall"));
-                } else if (result.contains(NO_BEEPER)) {
-                    allTestCaseResults.add(new SingleTestCaseResult(i, result, "No beepers present trying to pick beeper"));
+                } else if (result.contains(KAREL)) {
+                    allTestCaseResults.add(extractKarel(currentPath, prefixPath, i));
                 } else {
                     allTestCaseResults.add(new SingleTestCaseResult(i, result));
                 }
@@ -45,6 +44,18 @@ public class ExecutionResultsExtractor {
             throw new RuntimeException(e);
         }
         return allTestCaseResults;
+    }
+
+    private SingleTestCaseResult extractKarel(String filePath, String resultPath, int testNum) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        reader.readLine(); // Consume KAREL
+        String result = reader.readLine(); // Consume result
+        BufferedReader instructionsReader = new BufferedReader(new FileReader(resultPath + "/instructions.txt"));
+        StringBuilder compileInfoBuilder = new StringBuilder();
+        for (String line = instructionsReader.readLine(); line != null; line = instructionsReader.readLine()) {
+            compileInfoBuilder.append(line).append(" ");
+        }
+        return new SingleTestCaseResult(testNum, result, compileInfoBuilder.toString());
     }
 
     private String extractCompileError(String filePath) throws IOException {

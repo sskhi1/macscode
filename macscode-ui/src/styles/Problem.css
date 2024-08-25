@@ -4,7 +4,7 @@
 }
 
 .problem-left {
-    flex: 1;
+    flex: 2;
     background-color: #252525;
     color: #ffffff;
     padding: 20px;
@@ -13,13 +13,14 @@
 }
 
 .problem-right {
-    flex: 2;
+    flex: 3;
     display: flex;
     flex-direction: column;
 }
 
+
 .problem-right-upper {
-    flex: 0 0 55%;
+    flex: 0 0 47%;
     background-color: #252525;
     padding: 20px;
     box-sizing: border-box;
@@ -27,7 +28,7 @@
 }
 
 .problem-right-lower {
-    flex: 0 0 45%;
+    flex: 0 0 53%;
     background-color: #252525;
     padding: 20px;
     box-sizing: border-box;

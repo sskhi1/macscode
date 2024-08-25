@@ -1,12 +1,28 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Karel {
 
+    private static final String INSTRUCTIONS_OUTPUT_PATH = "/app/execution/result/instructions.txt";
+
+    private static BufferedWriter instructionsWriter;
     private static int w; // width of the grid
     private static int h; // height of the grid
     private static int[][] grid; // grid representing beepers
     private static int n; // Karel's x-coordinate
     private static int m; // Karel's y-coordinate
+
+    private static void write(String instruction) {
+        try {
+            instructionsWriter.write(instruction);
+            instructionsWriter.write('\n');
+            instructionsWriter.flush();
+        } catch (IOException ignored) {
+
+        }
+    }
 
     public int getW() {
         return w;
@@ -75,9 +91,15 @@ public class Karel {
         m = h - 1;
         direction = Direction.NORTH;
         borders = new boolean[w][h][4];
+        try {
+            instructionsWriter = new BufferedWriter(new FileWriter(INSTRUCTIONS_OUTPUT_PATH));
+        } catch (IOException ignored) {
+            ignored.printStackTrace();
+        }
     }
 
     public static void move() {
+        write("move");
         if (frontIsClear()) {
             switch (direction) {
                 case NORTH:
@@ -100,6 +122,7 @@ public class Karel {
     }
 
     public static void turnLeft() {
+        write("turnLeft");
         switch (direction) {
             case NORTH:
                 direction = Direction.WEST;
@@ -117,6 +140,7 @@ public class Karel {
     }
 
     public static void turnRight() {
+        write("turnRight");
         switch (direction) {
             case NORTH:
                 direction = Direction.EAST;
@@ -134,6 +158,7 @@ public class Karel {
     }
 
     public static void turnAround() {
+        write("turnAround");
         switch (direction) {
             case NORTH:
                 direction = Direction.SOUTH;
@@ -151,6 +176,7 @@ public class Karel {
     }
 
     public static void pickBeeper() {
+        write("pickBeeper");
         if (grid[m][n] > 0) {
             grid[m][n]--;
         } else {
@@ -160,6 +186,7 @@ public class Karel {
     }
 
     public static void putBeeper() {
+        write("putBeeper");
         grid[m][n]++;
     }
 

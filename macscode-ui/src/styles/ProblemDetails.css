@@ -19,10 +19,6 @@
     color: #b0b0b0;
 }
 
-.problem-description, .problem-topics {
-    margin-bottom: 20px;
-}
-
 .problem-description h3, .problem-topics h3 {
     border-bottom: 2px solid #007bff;
     padding-bottom: 5px;
