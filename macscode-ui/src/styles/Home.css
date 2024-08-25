@@ -97,13 +97,13 @@
 
 .banner {
     flex: 1 0 220px;
-    max-width: 220px;
-    height: 100px;
+    max-width: 230px;
+    height: 130px;
     margin: 5px;
     padding: 20px;
     border-radius: 10px;
     color: white;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
     background-size: cover;
