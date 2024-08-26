@@ -108,6 +108,7 @@ public class CodeRunner {
     public List<SingleTestCaseResult> run(List<ProblemSolutionFile> problemSolution,
                                           List<SingleTestCase> problemTestCases,
                                           String type) {
+        CodeImportAdder.addImportsToCode(problemSolution, type);
         Path executionDir = createExecutionDir(problemSolution, problemTestCases);
         runContainer(executionDir, problemTestCases.size(), type);
         return executionResultsExtractorService.getResultsFromExecutionDir(executionDir);
