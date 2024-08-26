@@ -16,6 +16,7 @@ const Problem = () => {
     const [error, setError] = useState('');
     const [code, setCode] = useState('');
     const [testCases, setTestCases] = useState([]);
+    const [selectedTestCase, setSelectedTestCase] = useState(null);
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -65,6 +66,7 @@ const Problem = () => {
                 setProblem(response.data);
                 setCode(response.data.solutionFileTemplate);
                 setTestCases(response.data.publicTestCases || []);
+                setSelectedTestCase(response.data.publicTestCases[0]);
             } catch (error) {
                 console.error('Error fetching problem', error);
                 setError('Error fetching problem details. Please try again later.');
@@ -125,6 +127,10 @@ const Problem = () => {
         });
     };
 
+    const handleTestCaseSelect = (testCase) => {
+        setSelectedTestCase(testCase);
+    };
+
     if (error) {
         return <div className="error-message">{error}</div>;
     }
@@ -138,7 +144,7 @@ const Problem = () => {
             <TopBar/>
             <div className="content-container">
                 <div className="problem-left">
-                    <ProblemDetails problem={problem}/>
+                    <ProblemDetails problem={problem} selectedTestCase={selectedTestCase}/>
                 </div>
                 <div className="problem-right">
                     <div className="problem-right-upper">
@@ -148,7 +154,7 @@ const Problem = () => {
                         />
                     </div>
                     <div className="problem-right-lower">
-                        <TestCases testCases={testCases}/>
+                        <TestCases testCases={testCases} onSelect={handleTestCaseSelect}/>
                         <div className="button-container">
                             <button className="run-button" onClick={handleRun}>
                                 Run
