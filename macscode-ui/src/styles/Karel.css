@@ -1,0 +1,98 @@
+.karel-world {
+    display: grid;
+}
+
+.cell {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(3, 2, 2, 0.42);
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    width: 5%;
+    height: 5%;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+.karel-robot {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    background: url('../images/karel-robot.png') no-repeat center center;
+    background-size: contain;
+}
+
+.karel-0 { transform: rotate(270deg); }
+.karel-1 { transform: rotate(0deg); }
+.karel-2 { transform: rotate(90deg); }
+.karel-3 { transform: rotate(180deg); }
+
+.beeper {
+    position: absolute;
+    transform: rotate(45deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 50%;
+    background-color: #0799c7;
+    border-radius: 8%;
+}
+
+.beeper-content {
+    transform: rotate(-45deg);
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+
+
+.wall {
+    position: absolute;
+    background: #818ca1;
+    /*border-radius: 100%;*/
+}
+
+.wall-north {
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.wall-east {
+    top: 0;
+    right: -3px;
+    bottom: 0;
+    width: 6px;
+}
+
+.wall-south {
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.wall-west {
+    top: 0;
+    left: -3px;
+    bottom: 0;
+    width: 6px;
+}
+
+.karel-world-borders {
+    font-family: monospace;
+    margin: 10px;
+}
