@@ -12,9 +12,6 @@ spring:
     username: guest
     password: guest
 
-execution:
-  service:
-    url: http://localhost:8085
 jwt:
   secret: macscodesecretkeymacscodesecretkeymacscodesecretkeymacscodese
   expiration-time: 1209600000  # 2 weeks
