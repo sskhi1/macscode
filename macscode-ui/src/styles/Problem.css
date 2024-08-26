@@ -1,6 +1,13 @@
 .problem-container {
-    display: flex;
+    flex-direction: column;
     height: 100vh;
+}
+
+.content-container {
+    display: flex;
+    flex-grow: 1;
+    padding-top: 60px;
+    overflow: hidden;
 }
 
 .problem-left {
@@ -25,6 +32,8 @@
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .problem-right-lower {
@@ -35,12 +44,14 @@
     border-top: 1px solid #ccc;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 }
 
 .button-container {
     display: flex;
     align-items: center;
     margin-top: 10px;
+    flex-wrap: wrap;
 }
 
 .run-button,
@@ -52,6 +63,7 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .run-button:hover,
@@ -145,3 +157,35 @@
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
+
+.discussion-section {
+    display: none;
+    padding-top: 100px;
+    margin-top: -100px;
+}
+
+.scroll-button {
+    display: block;
+    margin: 25px auto;
+    padding: 15px 30px;
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scroll-button:hover {
+    background-color: green;
+    transform: translateY(-2px);
+}
+
+.scroll-button:active {
+    background-color: darkgreen;
+    transform: translateY(0);
+}
+

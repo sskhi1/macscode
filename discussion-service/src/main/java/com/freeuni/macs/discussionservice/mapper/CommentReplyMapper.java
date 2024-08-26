@@ -2,6 +2,7 @@ package com.freeuni.macs.discussionservice.mapper;
 
 import com.freeuni.macs.discussionservice.model.CommentReply;
 import com.freeuni.macs.discussionservice.model.api.CommentReplyDTO;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class CommentReplyMapper {
         }
 
         return CommentReplyDTO.builder()
-                .id(reply.getId())
-                .commentId(reply.getCommentId())
+                .id(reply.getId().toString())
+                .commentId(reply.getCommentId().toString())
                 .reply(reply.getReply())
                 .username(reply.getUsername())
                 .replyDate(reply.getReplyDate())
@@ -30,8 +31,8 @@ public class CommentReplyMapper {
         }
 
         return CommentReply.builder()
-                .id(replyDTO.getId())
-                .commentId(replyDTO.getCommentId())
+                .id(new ObjectId(replyDTO.getId()))
+                .commentId(new ObjectId(replyDTO.getCommentId()))
                 .reply(replyDTO.getReply())
                 .username(replyDTO.getUsername())
                 .replyDate(replyDTO.getReplyDate())

@@ -86,8 +86,8 @@ const Profile = () => {
         }
     };
 
-    const handleProblemClick = (problemUrl) => {
-        navigate(`/problems/${problemUrl}`);
+    const handleProblemClick = (problem) => {
+        navigate(`/problem/${problem.problemId.course}/${problem.problemId.order}`);
     };
 
     const countAcceptedCodes = (type) => {
@@ -233,7 +233,7 @@ const Profile = () => {
                             >
                                 <div
                                     className="problem-name"
-                                    onClick={() => handleProblemClick(submission.problem.name.replace(/ /g, '-'))}
+                                    onClick={() => handleProblemClick(submission.problem)}
                                     style={{cursor: 'pointer', color: '#ffb700'}}
                                 >
                                     {submission.problem.name}

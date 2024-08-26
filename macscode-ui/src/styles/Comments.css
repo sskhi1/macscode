@@ -1,0 +1,159 @@
+.comments-summary {
+    margin-bottom: 1em;
+    font-size: 1.2em;
+    color: #1e4fa9;
+}
+
+.comments-count {
+    font-weight: bold;
+}
+
+.comments-container {
+    max-width: 95vw;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.comment {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #2c2c2c;
+    border-radius: 5px;
+    color: #fff;
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.comment-username {
+    color: #ff8c00;
+}
+
+.comment-date {
+    color: #888;
+}
+
+.comment-body {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.reply-button {
+    margin-top: 10px;
+    color: #ff8c00;
+    background: none;
+    border: 1px solid #ff8c00;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.reply-button:hover {
+    background-color: #ff8c00;
+    color: #1e1e1e;
+}
+
+.add-comment,
+.add-reply {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.add-comment .ql-container,
+.add-reply .ql-container {
+    flex: 1;
+    border-radius: 5px;
+    background-color: #3c3c3c;
+    border: 1px solid #555;
+    color: #fff;
+    box-sizing: border-box;
+}
+
+.add-comment .ql-toolbar,
+.add-reply .ql-toolbar {
+    border: 1px solid #555;
+    border-bottom: none;
+}
+
+.add-comment textarea,
+.add-reply textarea {
+    display: none;
+}
+
+.add-comment button,
+.add-reply button {
+    margin-top: 10px;
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-comment button:hover,
+.add-reply button:hover {
+    background-color: #060e3d;
+}
+
+.replies-section {
+    margin-top: 15px;
+    padding-left: 20px;
+    border-left: 2px solid #444;
+}
+
+.reply {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #2c2c2c;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.reply-username {
+    color: #ff8c00;
+}
+
+.reply-date {
+    color: #888;
+}
+
+.reply-body {
+    font-size: 15px;
+}
+
+.ql-toolbar {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.ql-container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-height: 100px;
+}
+
+.comment-body, .reply-body {
+    white-space: pre-wrap;
+}

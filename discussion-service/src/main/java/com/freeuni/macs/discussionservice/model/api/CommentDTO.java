@@ -4,8 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Date;
 
@@ -15,9 +13,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class CommentDTO {
 
-    private ObjectId id;
+    private String id;
 
-    private ObjectId problemId;
+    private String problemId;
 
     private String comment;
 

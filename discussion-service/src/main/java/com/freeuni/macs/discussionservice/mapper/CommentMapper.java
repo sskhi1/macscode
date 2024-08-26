@@ -2,6 +2,7 @@ package com.freeuni.macs.discussionservice.mapper;
 
 import com.freeuni.macs.discussionservice.model.Comment;
 import com.freeuni.macs.discussionservice.model.api.CommentDTO;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class CommentMapper {
         }
 
         return CommentDTO.builder()
-                .id(comment.getId())
-                .problemId(comment.getProblemId())
+                .id(comment.getId().toString())
+                .problemId(comment.getProblemId().toString())
                 .comment(comment.getComment())
                 .username(comment.getUsername())
                 .commentDate(comment.getCommentDate())
@@ -30,8 +31,8 @@ public class CommentMapper {
         }
 
         return Comment.builder()
-                .id(commentDTO.getId())
-                .problemId(commentDTO.getProblemId())
+                .id(new ObjectId(commentDTO.getId()))
+                .problemId(new ObjectId(commentDTO.getProblemId()))
                 .comment(commentDTO.getComment())
                 .username(commentDTO.getUsername())
                 .commentDate(commentDTO.getCommentDate())

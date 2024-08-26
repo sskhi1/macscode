@@ -7,6 +7,8 @@ import TestCases from './TestCases';
 import ResultsModal from './ResultsModal';
 import '../styles/Problem.css';
 import { Client } from '@stomp/stompjs';
+import TopBar from "./TopBar";
+import Comments from "./Comments";
 
 const Problem = () => {
     const { course, order } = useParams();
@@ -20,6 +22,7 @@ const Problem = () => {
     const [responseReceived, setResponseReceived] = useState(false);
 
     const clientRef = useRef(null);
+    const discussionRef = useRef(null); // Ref for the discussion section
 
     useEffect(() => {
         clientRef.current = new Client({
@@ -107,6 +110,21 @@ const Problem = () => {
         setShowResults(false);
     };
 
+    const scrollToDiscussion = () => {
+        const discussionElement = discussionRef.current;
+
+        discussionElement.style.display = 'block';
+
+        const topOffset = -10;
+        const elementPosition = discussionElement.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - topOffset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    };
+
     if (error) {
         return <div className="error-message">{error}</div>;
     }
@@ -117,39 +135,49 @@ const Problem = () => {
 
     return (
         <div className="problem-container">
-            <div className="problem-left">
-                <ProblemDetails problem={problem} />
-            </div>
-            <div className="problem-right">
-                <div className="problem-right-upper">
-                    <SolutionTemplate
-                        solutionFileTemplate={code}
-                        onChange={handleCodeChange}
-                    />
+            <TopBar/>
+            <div className="content-container">
+                <div className="problem-left">
+                    <ProblemDetails problem={problem}/>
                 </div>
-                <div className="problem-right-lower">
-                    <TestCases testCases={testCases} />
-                    <div className="button-container">
-                        <button className="run-button" onClick={handleRun}>
-                            Run
-                        </button>
-                        <button className="submit-button" onClick={handleSubmit}>
-                            Submit
-                        </button>
-                        <button
-                            className={`view-results-button ${hasSubmitted && responseReceived ? 'visible' : ''}`}
-                            onClick={() => setShowResults(true)}
-                        >
-                            View Results
-                        </button>
+                <div className="problem-right">
+                    <div className="problem-right-upper">
+                        <SolutionTemplate
+                            solutionFileTemplate={code}
+                            onChange={handleCodeChange}
+                        />
+                    </div>
+                    <div className="problem-right-lower">
+                        <TestCases testCases={testCases}/>
+                        <div className="button-container">
+                            <button className="run-button" onClick={handleRun}>
+                                Run
+                            </button>
+                            <button className="submit-button" onClick={handleSubmit}>
+                                Submit
+                            </button>
+                            <button
+                                className={`view-results-button ${hasSubmitted && responseReceived ? 'visible' : ''}`}
+                                onClick={() => setShowResults(true)}
+                            >
+                                View Results
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+            <button className="scroll-button" onClick={scrollToDiscussion}>
+                Go to Comments
+            </button>
+            <br/>
             <ResultsModal
                 show={showResults}
                 results={results}
                 onClose={handleCloseResults}
             />
+            <div ref={discussionRef} className="discussion-section">
+                <Comments problemId={problem.id} />
+            </div>
         </div>
     );
 };
