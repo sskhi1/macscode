@@ -1,6 +1,6 @@
 ## Build  (once)
 ```bash
-docker build -t cpp-code-runner .
+docker build --no-cache -t cpp-code-runner .
 ```
 
 ## Clean up (Before run)
