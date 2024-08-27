@@ -7,10 +7,12 @@ import TestCases from './TestCases';
 import ResultsModal from './ResultsModal';
 import Submissions from './Submissions';
 import '../styles/Problem.css';
+import '../styles/Karel.css';
 import { Client } from '@stomp/stompjs';
 import TopBar from './TopBar';
 import Comments from './Comments';
 import {v4 as uuidv4} from 'uuid';
+import KarelWorld from "./KarelWorld";
 
 const Problem = () => {
     const { course, order } = useParams();
@@ -26,6 +28,8 @@ const Problem = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [responseReceived, setResponseReceived] = useState(false);
     const [activeTab, setActiveTab] = useState('description');
+    const [showKarelWorld, setShowKarelWorld] = useState(false); // State to control popup visibility
+
 
     const clientRef = useRef(null);
     const discussionRef = useRef(null);
@@ -76,6 +80,14 @@ const Problem = () => {
 
     const handleCodeChange = (newCode) => {
         setCode(newCode);
+    };
+
+    const handleShowDemo = () => {
+        setShowKarelWorld(true);
+    };
+
+    const closePopup = () => {
+        setShowKarelWorld(false);
     };
 
     const handleRun = () => {
@@ -209,6 +221,32 @@ const Problem = () => {
                             >
                                 {isSubmitting ? <div className="loading-spinner"></div> : 'Submit'}
                             </button>
+                            <button
+                                className="show-demo-button"
+                                onClick={handleShowDemo}
+                                disabled={isRunning || isSubmitting}
+                                style={{
+                                    opacity: isRunning || isSubmitting ? 0.5 : 1,
+                                    cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer',
+                                }}
+                            >
+                                Demo
+                            </button>
+
+                            {showKarelWorld && (
+                                <div className="popup-overlay">
+                                    <div className="popup-content">
+                                        <button className="close-button" onClick={closePopup}>
+                                            Close
+                                        </button>
+                                        <KarelWorld
+                                            testCaseInput={selectedTestCase.input}
+                                            results={results}
+                                            testNum={selectedTestCase.testNum}
+                                        />
+                                    </div>
+                                </div>
+                            )}
                             <button
                                 className={`view-results-button ${hasSubmitted && responseReceived ? 'visible' : ''}`}
                                 onClick={() => setShowResults(true)}

@@ -45,12 +45,14 @@ function KarelWorld({testCaseInput, results, testNum}) {
         karelY,
         karelDirection,
         grid,
-        borders
+        borders,
     } = parseKarelWorld(testCaseInput);
+
     const [currentX, setCurrentX] = useState(karelX);
     const [currentY, setCurrentY] = useState(karelY);
     const [currentDirection, setCurrentDirection] = useState(karelDirection);
     const [currentGrid, setCurrentGrid] = useState([...grid]);
+    const [currentStep, setCurrentStep] = useState(0); // Track the current step
 
     const instructions = results[testNum - 1]?.additionalInfo || [];
 
@@ -64,23 +66,19 @@ function KarelWorld({testCaseInput, results, testNum}) {
     };
 
     useEffect(() => {
-        if (instructions.length > 0) {
-            let i = 0;
+        if (instructions.length > 0 && currentStep < instructions.length) {
+            // Execute the current instruction
+            executeInstruction(instructions[currentStep]);
 
-            const interval = setInterval(() => {
-                if (i < instructions.length) {
-                    executeInstruction(instructions[i]);
-                    i++;
-                } else {
-                    clearInterval(interval);
-                }
-            }, 500);
+            // Move to the next step after a delay
+            const timeout = setTimeout(() => {
+                setCurrentStep((prevStep) => prevStep + 1);
+            }, 500); // Adjust the delay time as needed
 
-            return () => clearInterval(interval);
+            return () => clearTimeout(timeout);
         }
-    }, [instructions]);
+    }, [instructions, currentStep]); // Re-run the effect when instructions or currentStep changes
 
-    // Function to execute a single instruction
     const executeInstruction = (instruction) => {
         switch (instruction) {
             case 'move':
@@ -106,7 +104,6 @@ function KarelWorld({testCaseInput, results, testNum}) {
         }
     };
 
-    // Functions to handle different actions
     const moveForward = () => {
         let newX = currentX;
         let newY = currentY;
@@ -167,11 +164,11 @@ function KarelWorld({testCaseInput, results, testNum}) {
         return (
             <div key={`${x}-${y}`} className="cell" style={{width: cellSize, height: cellSize}}>
                 {isKarel && <div className={`karel-robot karel-${currentDirection}`}/>}
-                {cellContent > 0 && <div className="beeper">
-                    <div className="beeper-content">
-                        {cellContent}
+                {cellContent > 0 && (
+                    <div className="beeper">
+                        <div className="beeper-content">{cellContent}</div>
                     </div>
-                </div>}
+                )}
                 {walls[0] && <div className="wall wall-north"/>}
                 {walls[1] && <div className="wall wall-east"/>}
                 {walls[2] && <div className="wall wall-south"/>}
