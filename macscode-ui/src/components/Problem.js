@@ -116,6 +116,9 @@ const Problem = () => {
         setIsSubmitting(true);
         clientRef.current.publish({
             destination: '/app/submitSolution',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify({
                 problemId: problem.id,
                 solution: code,
