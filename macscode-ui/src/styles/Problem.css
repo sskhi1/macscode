@@ -14,7 +14,7 @@
     flex: 2;
     background-color: #252525;
     color: #ffffff;
-    padding: 20px;
+    padding: 3vh;
     box-sizing: border-box;
     overflow-y: auto;
 }
@@ -29,36 +29,39 @@
 .problem-right-upper {
     flex: 0 0 47%;
     background-color: #252525;
-    padding: 20px;
+    padding: 3vh;
     box-sizing: border-box;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    min-height: 69vh;
+    max-height: 69vh;
 }
 
 .problem-right-lower {
     flex: 0 0 53%;
     background-color: #252525;
-    padding: 20px;
+    padding: 3vh;
     box-sizing: border-box;
     border-top: 1px solid #ccc;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    max-height: 80vh;
 }
 
 .button-container {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 2vh;
     flex-wrap: wrap;
 }
 
 .run-button,
 .submit-button {
     width: 7vw;
-    margin-right: 10px;
-    padding: 10px 20px;
+    margin-right: 1vw;
+    padding: 1vw 2vw;
     background-color: #007bff;
     color: #fff;
     border: none;

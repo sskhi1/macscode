@@ -183,9 +183,6 @@ const Problem = () => {
                             solutionFileTemplate={code}
                             onChange={handleCodeChange}
                         />
-                    </div>
-                    <div className="problem-right-lower">
-                        <TestCases testCases={testCases} />
                         <div className="button-container">
                             <button
                                 className="run-button"
@@ -210,6 +207,9 @@ const Problem = () => {
                                 View Results
                             </button>
                         </div>
+                    </div>
+                    <div className="problem-right-lower">
+                        <TestCases testCases={testCases} />
                     </div>
                 </div>
             </div>
