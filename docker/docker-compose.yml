@@ -6,13 +6,10 @@ services:
       context: ../macscode-ui
     ports:
       - "3000:3000"
-
-  macscode-dummy-back:
-    container_name: macscode-dummy
-    build:
-      context: ../macscode
-    ports:
-      - "8080:8080"
+    networks:
+      - macscode_network
+    env_file:
+      - .env
   problems-db:
     container_name: problems-db
     image: mongo:latest
@@ -20,7 +17,10 @@ services:
       - 9100:27017
     volumes:
       - ./problemsdb:/data/db
-
+    networks:
+      - macscode_network
+    env_file:
+      - .env
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -32,7 +32,10 @@ services:
       RABBITMQ_DEFAULT_PASS: guest
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
-
+    networks:
+      - macscode_network
+    env_file:
+      - .env
   auth-service:
     container_name: auth-service
     build:
@@ -46,7 +49,36 @@ services:
       - macscode_network
     env_file:
       - .env
-
+  problems-service:
+    container_name: problems-service
+    build:
+      context: ../problems
+    ports:
+      - "8080:8080"
+    depends_on:
+      rabbitmq:
+        condition: service_started
+      problems-db:
+        condition: service_started
+    networks:
+      - macscode_network
+    env_file:
+      - .env
+  executor-service:
+    container_name: executor-service
+    build:
+      context: ../executor
+    depends_on:
+      problems-service:
+        condition: service_started
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+    privileged: true
+    networks:
+      - macscode_network
+    env_file:
+      - .env
   db:
     image: 'postgres:16.2'
     container_name: db
@@ -58,7 +90,6 @@ services:
       - macscode_network
     env_file:
       - .env
-
 volumes:
   pgdata:
   rabbitmq_data:

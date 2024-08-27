@@ -104,7 +104,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>executor</finalName>
+		<finalName>problems</finalName>
 	</build>
 
 </project>

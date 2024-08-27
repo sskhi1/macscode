@@ -4,12 +4,12 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests=true
 
 FROM openjdk:17-slim
 
 WORKDIR /app
 
-COPY --from=build /app/target/macscode-dummy.jar app.jar
+COPY --from=build /app/target/problems.jar app.jar
 
 CMD ["java", "-jar", "app.jar"]

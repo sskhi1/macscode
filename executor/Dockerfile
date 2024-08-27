@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package
+RUN mvn clean package -DskipTests=true
 
 FROM openjdk:17-slim
 
@@ -12,4 +12,9 @@ WORKDIR /app
 
 COPY --from=build /app/target/executor.jar app.jar
 
-CMD ["java", "-jar", "app.jar"]
+COPY --from=build /app/code-execution .
+
+RUN apt-get update && \
+    apt-get install -y docker.io
+
+CMD ["bash", "/app/run.sh"]

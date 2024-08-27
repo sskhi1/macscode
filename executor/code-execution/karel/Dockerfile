@@ -1,8 +1,10 @@
-FROM gcc:11.4.0
+FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY ./run.sh /app/run.sh
+COPY run.sh /app/run.sh
+
+COPY karel-essentials /app/karel-essentials
 
 RUN groupadd -r docker-code-runner && useradd -r -g docker-code-runner docker-code-runner
 
