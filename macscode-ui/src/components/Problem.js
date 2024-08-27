@@ -187,9 +187,6 @@ const Problem = () => {
                             solutionFileTemplate={code}
                             onChange={handleCodeChange}
                         />
-                    </div>
-                    <div className="problem-right-lower">
-                        <TestCases testCases={testCases} onSelect={handleTestCaseSelect}/>
                         <div className="button-container">
                             <button
                                 className="run-button"
@@ -214,6 +211,10 @@ const Problem = () => {
                                 View Results
                             </button>
                         </div>
+                    </div>
+                    <div className="problem-right-lower">
+
+                        <TestCases testCases={testCases} onSelect={handleTestCaseSelect}/>
                     </div>
                 </div>
             </div>
