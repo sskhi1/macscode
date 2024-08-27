@@ -30,7 +30,7 @@ const Profile = () => {
                 const decodedToken = jwtDecode(auth);
                 const username = decodedToken.sub;
 
-                const userResponse = await axios.get(`http://localhost:8081/auth/users/${username}`, {
+                const userResponse = await axios.get(`/auth-service/auth/users/${username}`, {
                     headers: {
                         Authorization: `Bearer ${auth}`
                     }
@@ -39,7 +39,7 @@ const Profile = () => {
                 setUpdatedName(userResponse.data.name);
                 setUpdatedEmail(userResponse.data.email);
 
-                const submissionsResponse = await axios.get(`http://localhost:8080/submissions/users/${username}`, {
+                const submissionsResponse = await axios.get(`/problems-service/submissions/users/${username}`, {
                     headers: {
                         Authorization: `Bearer ${auth}`
                     }
@@ -115,7 +115,7 @@ const Profile = () => {
             const decodedToken = jwtDecode(auth);
             const username = decodedToken.sub;
 
-            await axios.put(`http://localhost:8081/auth/users/update/${username}`, {
+            await axios.put(`/auth-service/auth/users/update/${username}`, {
                 name: updatedName,
                 email: updatedEmail,
             }, {

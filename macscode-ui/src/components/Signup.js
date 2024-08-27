@@ -22,7 +22,7 @@ const Signup = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:8081/auth/signup', {
+            await axios.post('/auth-service/auth/signup', {
                 name,
                 username,
                 email,

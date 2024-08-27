@@ -1,8 +1,8 @@
-FROM openjdk:17-jdk-slim
+FROM gcc:11.4.0
 
 WORKDIR /app
 
-COPY ./run.sh /app/run.sh
+COPY run.sh /app/run.sh
 
 RUN groupadd -r docker-code-runner && useradd -r -g docker-code-runner docker-code-runner
 

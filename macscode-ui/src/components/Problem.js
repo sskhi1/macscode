@@ -5,10 +5,11 @@ import ProblemDetails from './ProblemDetails';
 import SolutionTemplate from './SolutionTemplate';
 import TestCases from './TestCases';
 import ResultsModal from './ResultsModal';
+import Submissions from './Submissions';
 import '../styles/Problem.css';
 import { Client } from '@stomp/stompjs';
-import TopBar from "./TopBar";
-import Comments from "./Comments";
+import TopBar from './TopBar';
+import Comments from './Comments';
 
 const Problem = () => {
     const { course, order } = useParams();
@@ -19,15 +20,28 @@ const Problem = () => {
     const [selectedTestCase, setSelectedTestCase] = useState(null);
     const [results, setResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isRunning, setIsRunning] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [responseReceived, setResponseReceived] = useState(false);
+    const [activeTab, setActiveTab] = useState('description');
 
     const clientRef = useRef(null);
-    const discussionRef = useRef(null); // Ref for the discussion section
+    const discussionRef = useRef(null);
 
     useEffect(() => {
+        let webSocketURL;
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        // Not good thing to do but whatever. TODO: change this in the future
+        if (isDevelopment) {
+            webSocketURL = `ws://localhost:8080/websocket-endpoint/websocket`;
+        } else {
+            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+            webSocketURL = `${protocol}${window.location.host}/problems-service/websocket-endpoint/websocket`;
+        }
+
         clientRef.current = new Client({
-            brokerURL: 'ws://localhost:8080/websocket-endpoint/websocket',
+            brokerURL: webSocketURL,
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log('Connected to WebSocket');
@@ -37,6 +51,7 @@ const Problem = () => {
                     setResults(runResults);
                     setResponseReceived(true);
                     setShowResults(true);
+                    setIsRunning(false);
                 });
 
                 clientRef.current.subscribe('/topic/submitResult', (message) => {
@@ -44,6 +59,7 @@ const Problem = () => {
                     setResults(submitResults);
                     setResponseReceived(true);
                     setShowResults(true);
+                    setIsSubmitting(false);
                 });
             },
             onStompError: (frame) => {
@@ -62,7 +78,7 @@ const Problem = () => {
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/problems/${course}/${order}`);
+                const response = await axios.get(`/problems-service/problems/${course}/${order}`);
                 setProblem(response.data);
                 setCode(response.data.solutionFileTemplate);
                 setTestCases(response.data.publicTestCases || []);
@@ -80,11 +96,12 @@ const Problem = () => {
         setCode(newCode);
     };
 
-    const handleSubmit = () => {
-        if (!problem) return;
+    const handleRun = () => {
+        if (!problem || isRunning) return;
 
+        setIsRunning(true);
         clientRef.current.publish({
-            destination: '/app/submitSolution',
+            destination: '/app/runSolution',
             body: JSON.stringify({
                 problemId: problem.id,
                 solution: code,
@@ -94,11 +111,12 @@ const Problem = () => {
         setResponseReceived(false);
     };
 
-    const handleRun = () => {
-        if (!problem) return;
+    const handleSubmit = () => {
+        if (!problem || isSubmitting) return;
 
+        setIsSubmitting(true);
         clientRef.current.publish({
-            destination: '/app/runSolution',
+            destination: '/app/submitSolution',
             body: JSON.stringify({
                 problemId: problem.id,
                 solution: code,
@@ -141,10 +159,27 @@ const Problem = () => {
 
     return (
         <div className="problem-container">
-            <TopBar/>
+            <TopBar />
             <div className="content-container">
                 <div className="problem-left">
-                    <ProblemDetails problem={problem} selectedTestCase={selectedTestCase}/>
+                    <div className="tab-buttons">
+                        <button
+                            className={`tab-button ${activeTab === 'description' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('description')}
+                        >
+                            Description
+                        </button>
+                        <button
+                            className={`tab-button ${activeTab === 'submissions' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('submissions')}
+                        >
+                            Submissions
+                        </button>
+                    </div>
+                    <div className="tab-content">
+                        {activeTab === 'description' && <ProblemDetails problem={problem} selectedTestCase={selectedTestCase}/>}
+                        {activeTab === 'submissions' && <Submissions problemId={problem.id} />}
+                    </div>
                 </div>
                 <div className="problem-right">
                     <div className="problem-right-upper">
@@ -156,11 +191,21 @@ const Problem = () => {
                     <div className="problem-right-lower">
                         <TestCases testCases={testCases} onSelect={handleTestCaseSelect}/>
                         <div className="button-container">
-                            <button className="run-button" onClick={handleRun}>
-                                Run
+                            <button
+                                className="run-button"
+                                onClick={handleRun}
+                                disabled={isRunning || isSubmitting}
+                                style={{ opacity: isRunning || isSubmitting ? 0.5 : 1, cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer' }}
+                            >
+                                {isRunning ? <div className="loading-spinner"></div> : 'Run'}
                             </button>
-                            <button className="submit-button" onClick={handleSubmit}>
-                                Submit
+                            <button
+                                className="submit-button"
+                                onClick={handleSubmit}
+                                disabled={isSubmitting || isRunning}
+                                style={{ opacity: isSubmitting || isRunning ? 0.5 : 1, cursor: isSubmitting || isRunning ? 'not-allowed' : 'pointer' }}
+                            >
+                                {isSubmitting ? <div className="loading-spinner"></div> : 'Submit'}
                             </button>
                             <button
                                 className={`view-results-button ${hasSubmitted && responseReceived ? 'visible' : ''}`}
@@ -175,7 +220,7 @@ const Problem = () => {
             <button className="scroll-button" onClick={scrollToDiscussion}>
                 Go to Comments
             </button>
-            <br/>
+            <br />
             <ResultsModal
                 show={showResults}
                 results={results}

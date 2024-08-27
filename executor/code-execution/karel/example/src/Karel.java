@@ -209,10 +209,17 @@ public class Karel {
     }
 
     public static boolean leftIsClear() {
-        turnLeft();
-        boolean clear = frontIsClear();
-        turnRight();
-        return clear;
+        switch (direction) {
+            case NORTH:
+                return n > 0 && !borders[n - 1][m][1];
+            case EAST:
+                return m > 0 && !borders[n][m - 1][2];
+            case SOUTH:
+                return n < w - 1 && !borders[n][m][1];
+            case WEST:
+                return m < h - 1 && !borders[n][m][2];
+        }
+        return false;
     }
 
     public static boolean leftIsBlocked() {
@@ -220,10 +227,17 @@ public class Karel {
     }
 
     public static boolean rightIsClear() {
-        turnRight();
-        boolean clear = frontIsClear();
-        turnLeft();
-        return clear;
+        switch (direction) {
+            case NORTH:
+                return n < w - 1 && !borders[n][m][1];
+            case EAST:
+                return m < h - 1 && !borders[n][m][2];
+            case SOUTH:
+                return n > 0 && !borders[n - 1][m][1];
+            case WEST:
+                return m > 0 && !borders[n][m - 1][2];
+        }
+        return false;
     }
 
     public static boolean rightIsBlocked() {
