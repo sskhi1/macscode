@@ -7,7 +7,7 @@ body {
 .profile-page {
     display: flex;
     justify-content: center;
-    padding: 80px;
+    padding-top: 11vh;
 }
 
 .profile-container {

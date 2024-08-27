@@ -16,7 +16,7 @@ public interface UserSubmissionRepository extends MongoRepository<UserSubmission
 
     List<UserSubmission> findAllByProblemIdOrderBySubmissionDateDesc(ObjectId problemId);
 
-    List<UserSubmission> findAllBySubmitterUsernameAndProblemIdOrderBySubmissionDateDesc(String username, ObjectId problemId);
+    List<UserSubmission> findAllBySubmitterUsernameAndProblem_IdOrderBySubmissionDateDesc(String username, ObjectId problemId);
 
     Page<UserSubmission> findBySubmitterUsernameOrderBySubmissionDateDesc(String username, Pageable pageable);
 }

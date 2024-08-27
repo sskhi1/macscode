@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    background: #4b4848;
+    background: linear-gradient(135deg, #4b4848, #2e2b2b);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     position: fixed;
     top: 0;
@@ -20,9 +20,9 @@
 }
 
 .logo img {
-    width: 80px;
+    width: 10vh;
     height: auto;
-    margin-right: 50px;
+    margin-right: 10vw;
     transition: transform 0.3s ease;
 }
 
@@ -39,7 +39,7 @@
     text-decoration: none;
     color: white;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 2.5vh;
     padding: 10px;
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: 5px;
@@ -50,45 +50,47 @@
     transform: scale(1.05);
 }
 
-.user-profile {
-    margin-left: auto;
+.user-actions {
     display: flex;
     align-items: center;
+    gap: 4vw;
 }
 
-.profile-icon {
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    text-decoration: none;
     color: white;
-    cursor: pointer;
+    font-weight: 600;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.profile-icon:hover {
+.profile-icon {
+    height: 4vh;
+}
+
+.user-profile:hover .profile-icon {
     color: #FFC107;
     transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-    .top-bar {
-        padding: 10px 15px;
-        flex-direction: column;
-        height: auto;
-    }
+.username {
+    font-size: 2.5vh;
+}
 
-    .logo {
-        margin-bottom: 10px;
-    }
+.logout-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 3vh;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
 
-    .navigation {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .logo img {
-        width: 35px;
-    }
-
-    .user-profile {
-        margin-top: 10px;
-    }
+.logout-button:hover .logout-icon {
+    color: #FFC107;
+    transform: scale(1.05);
 }

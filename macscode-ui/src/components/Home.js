@@ -10,7 +10,6 @@ import ProblemList from "./homepage/ProblemList";
 import TopBar from "./TopBar";
 
 const Home = () => {
-    // const {auth} = useContext(AuthContext);
     const [problems, setProblems] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
