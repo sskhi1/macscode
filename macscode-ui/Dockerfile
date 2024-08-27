@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
@@ -6,8 +6,14 @@ COPY . .
 
 RUN npm install --production
 
+RUN npm run build
+
+FROM nginx:alpine
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --from=build /app/build /app/build
+
 EXPOSE 3000
 
-ENV DANGEROUSLY_DISABLE_HOST_CHECK=true
-
-CMD ["npm", "start"]
+CMD ["nginx", "-g", "daemon off;"]

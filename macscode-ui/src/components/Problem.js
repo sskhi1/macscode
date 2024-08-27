@@ -29,8 +29,18 @@ const Problem = () => {
     const discussionRef = useRef(null);
 
     useEffect(() => {
+        let webSocketURL;
+        const isDevelopment = process.env.NODE_ENV === 'development';
+        // Not good thing to do but whatever. TODO: change this in the future
+        if (isDevelopment) {
+            webSocketURL = `ws://localhost:8080/websocket-endpoint/websocket`;
+        } else {
+            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+            webSocketURL = `${protocol}${window.location.host}/problems-service/websocket-endpoint/websocket`;
+        }
+
         clientRef.current = new Client({
-            brokerURL: 'ws://localhost:8080/websocket-endpoint/websocket',
+            brokerURL: webSocketURL,
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log('Connected to WebSocket');
@@ -67,7 +77,7 @@ const Problem = () => {
     useEffect(() => {
         const fetchProblem = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/problems/${course}/${order}`);
+                const response = await axios.get(`/problems-service/problems/${course}/${order}`);
                 setProblem(response.data);
                 setCode(response.data.solutionFileTemplate);
                 setTestCases(response.data.publicTestCases || []);

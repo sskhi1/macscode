@@ -79,6 +79,19 @@ services:
       - macscode_network
     env_file:
       - .env
+  discussion-service:
+    container_name: discussion-service
+    build:
+      context: ../discussion-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      problems-db:
+        condition: service_started
+    networks:
+      - macscode_network
+    env_file:
+      - .env
   db:
     image: 'postgres:16.2'
     container_name: db

@@ -15,7 +15,7 @@ const useFetchSubmissions = () => {
                 const decodedToken = jwtDecode(auth);
                 const username = decodedToken.sub;
 
-                const response = await axios.get(`http://localhost:8080/submissions/users/${username}`, {
+                const response = await axios.get(`/problems-service/submissions/users/${username}`, {
                     headers: {
                         Authorization: `Bearer ${auth}`
                     }

@@ -23,7 +23,7 @@ const Comments = ({ problemId }) => {
 
         const fetchComments = async () => {
             try {
-                const response = await axios.get(`http://localhost:8082/discussion/comments/${problemId}`);
+                const response = await axios.get(`/discussion-service/discussion/comments/${problemId}`);
                 setComments(response.data);
                 setIsLoading(false);
             } catch (error) {
@@ -75,7 +75,7 @@ const Comments = ({ problemId }) => {
         if (!cleanedComment) return;
 
         try {
-            const response = await axios.post('http://localhost:8082/discussion/addComment', {
+            const response = await axios.post('/discussion-service/discussion/addComment', {
                 problemId,
                 comment: cleanedComment,
                 username,
@@ -186,7 +186,7 @@ const Comment = ({ comment, username, formatDate }) => {
     const fetchReplies = async () => {
         if (!showReplies) {
             try {
-                const response = await axios.get(`http://localhost:8082/discussion/replies/${comment.id}`);
+                const response = await axios.get(`/discussion-service/discussion/replies/${comment.id}`);
                 setReplies(response.data);
             } catch (error) {
                 console.error('Error fetching replies', error);
@@ -200,7 +200,7 @@ const Comment = ({ comment, username, formatDate }) => {
         if (!cleanedReply) return;
 
         try {
-            const response = await axios.post('http://localhost:8082/discussion/addReply', {
+            const response = await axios.post('/discussion-service/discussion/addReply', {
                 commentId: comment.id,
                 reply: cleanedReply,
                 username,

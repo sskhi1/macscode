@@ -56,7 +56,7 @@ const Home = () => {
     useEffect(() => {
         const fetchProblems = async () => {
             try {
-                const response = await fetch('http://localhost:8080/problems/all');
+                const response = await fetch('/problems-service/problems/all');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

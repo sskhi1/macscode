@@ -22,8 +22,7 @@ const Submissions = ({problemId}) => {
             try {
                 const decodedToken = jwtDecode(auth);
                 const username = decodedToken.sub;
-                console.log(`http://localhost:8080/submissions/problem/${problemId}/${username}`)
-                const response = await axios.get(`http://localhost:8080/submissions/problem/${problemId}/${username}`, {
+                const response = await axios.get(`/problems-service/submissions/problem/${problemId}/${username}`, {
                     headers: {
                         Authorization: `Bearer ${auth}`
                     }
