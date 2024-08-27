@@ -1,13 +1,13 @@
 {
-  "description": "Draw Checkerboard using beepers",
-  "name": "Checkerboard",
+  "description": "Find the least common multiple of given 2 numbers",
+  "name": "Least common multiple",
   "problem_id": {
     "order": 4,
     "course": "MET"
   },
-  "topics": ["Karel"],
-  "type": "KAREL",
-  "test_count": 3,
-  "difficulty": "Medium",
-  "public_test_count": 3
+  "topics": ["Math"],
+  "type": "JAVA",
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 2
 }

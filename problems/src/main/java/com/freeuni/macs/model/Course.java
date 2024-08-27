@@ -8,14 +8,14 @@ import lombok.Getter;
 @AllArgsConstructor
 @Schema(description = "Enum representing courses")
 public enum Course {
+    @Schema(description = "Programming Methodology - Karel")
+    KAREL("Programming Methodology - Karel"),
+
     @Schema(description = "Programming Methodology")
     MET("Programming Methodology"),
 
     @Schema(description = "Programming Abstractions")
-    ABS("Programming Abstractions"),
-
-    @Schema(description = "Programming Paradigms")
-    PAR("Programming Paradigms");
+    ABS("Programming Abstractions");
 
     private final String value;
 }

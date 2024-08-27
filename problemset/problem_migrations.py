@@ -15,6 +15,7 @@ tests_collection = db.tests
 
 arr = {
   "methodology",
+  "karel",
   "abstractions"
 }
 

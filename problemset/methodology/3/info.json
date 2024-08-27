@@ -1,13 +1,13 @@
 {
-  "description": "Fix avenues: fill columns (0, 4, 8, 12...) with beepers. End on the last column's first row facing east.",
-  "name": "StoneMason",
+  "description": "Find the number of divisors of n",
+  "name": "Divisor Count",
   "problem_id": {
     "order": 3,
     "course": "MET"
   },
-  "topics": ["Karel"],
-  "type": "KAREL",
-  "test_count": 3,
+  "topics": ["Math"],
+  "type": "JAVA",
+  "test_count": 4,
   "difficulty": "Easy",
-  "public_test_count": 3
+  "public_test_count": 2
 }

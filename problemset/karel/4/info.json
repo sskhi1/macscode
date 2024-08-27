@@ -1,0 +1,13 @@
+{
+  "description": "Draw Checkerboard using beepers",
+  "name": "Checkerboard",
+  "problem_id": {
+    "order": 4,
+    "course": "KAREL"
+  },
+  "topics": ["Karel"],
+  "type": "KAREL",
+  "test_count": 3,
+  "difficulty": "Medium",
+  "public_test_count": 3
+}

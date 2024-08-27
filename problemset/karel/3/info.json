@@ -1,0 +1,13 @@
+{
+  "description": "Fix avenues: fill columns (0, 4, 8, 12...) with beepers. End on the last column's first row facing east.",
+  "name": "StoneMason",
+  "problem_id": {
+    "order": 3,
+    "course": "KAREL"
+  },
+  "topics": ["Karel"],
+  "type": "KAREL",
+  "test_count": 3,
+  "difficulty": "Easy",
+  "public_test_count": 3
+}

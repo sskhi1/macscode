@@ -1,0 +1,13 @@
+{
+  "description": "Find the power of n to the m",
+  "name": "Power",
+  "problem_id": {
+    "order": 6,
+    "course": "MET"
+  },
+  "topics": ["Math"],
+  "type": "JAVA",
+  "test_count": 4,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}

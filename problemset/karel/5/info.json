@@ -1,0 +1,13 @@
+{
+  "description": "Put a beeper on the middle point of the first row.",
+  "name": "MidPointFinding",
+  "problem_id": {
+    "order": 5,
+    "course": "KAREL"
+  },
+  "topics": ["Karel"],
+  "type": "KAREL",
+  "test_count": 4,
+  "difficulty": "Hard",
+  "public_test_count": 4
+}

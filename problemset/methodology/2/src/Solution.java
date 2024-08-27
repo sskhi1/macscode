@@ -1,6 +1,7 @@
-public class Solution extends Karel {
+class Solution {
 
-    public void run() {
+    public int firstNSum(int n) {
 
     }
+
 }

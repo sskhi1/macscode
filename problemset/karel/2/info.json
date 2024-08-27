@@ -1,0 +1,13 @@
+{
+  "description": "Move karel out of the house, pick up the newspaper and return on the starting position.",
+  "name": "CollectNewspaper",
+  "problem_id": {
+    "order": 2,
+    "course": "KAREL"
+  },
+  "topics": ["Karel"],
+  "type": "KAREL",
+  "test_count": 1,
+  "difficulty": "Easy",
+  "public_test_count": 1
+}

@@ -14,7 +14,7 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [filteredResults, setFilteredResults] = useState([]);
-    const [sortConfig, setSortConfig] = useState({key: null, direction: 'none'});
+    const [sortConfig, setSortConfig] = useState({key: 'course', direction: 'asc'});
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedType, setSelectedType] = useState('all');
     const [topics, setTopics] = useState([]);
@@ -31,6 +31,7 @@ const Home = () => {
 
     const sortProblems = useCallback((problems, {key, direction}) => {
         const difficultyOrder = {'easy': 1, 'medium': 2, 'hard': 3};
+        const courseOrder = {'KAREL': 1, 'MET': 2, 'ABS': 3};
 
         if (!key || direction === 'none') return problems;
 
@@ -43,6 +44,8 @@ const Home = () => {
                 const rankA = difficultyOrder[a.difficulty.toLowerCase()];
                 const rankB = difficultyOrder[b.difficulty.toLowerCase()];
                 return direction === 'asc' ? rankA - rankB : rankB - rankA;
+            } else if (key === 'course') {
+                return courseOrder[a.problemId.course] - courseOrder[b.problemId.course]
             } else {
                 const itemA = a[key].toLowerCase();
                 const itemB = b[key].toLowerCase();

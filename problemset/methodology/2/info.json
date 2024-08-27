@@ -1,13 +1,13 @@
 {
-  "description": "Move karel out of the house, pick up the newspaper and return on the starting position.",
-  "name": "CollectNewspaper",
+  "description": "Find the sum of first n numbers",
+  "name": "First sum",
   "problem_id": {
     "order": 2,
     "course": "MET"
   },
-  "topics": ["Karel"],
-  "type": "KAREL",
-  "test_count": 1,
+  "topics": ["Math"],
+  "type": "JAVA",
+  "test_count": 4,
   "difficulty": "Easy",
-  "public_test_count": 1
+  "public_test_count": 2
 }

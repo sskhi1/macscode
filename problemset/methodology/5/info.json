@@ -1,13 +1,13 @@
 {
-  "description": "Put a beeper on the middle point of the first row.",
-  "name": "MidPointFinding",
+  "description": "Find the greatest common divisor of 2 numbers",
+  "name": "Greatest common divisor",
   "problem_id": {
     "order": 5,
     "course": "MET"
   },
-  "topics": ["Karel"],
-  "type": "KAREL",
+  "topics": ["Math"],
+  "type": "JAVA",
   "test_count": 4,
-  "difficulty": "Hard",
-  "public_test_count": 4
+  "difficulty": "Easy",
+  "public_test_count": 2
 }

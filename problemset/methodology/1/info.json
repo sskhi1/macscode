@@ -1,13 +1,13 @@
 {
-  "description": "Fill last row with beepers and move karel on the bottom right corner facing east.",
-  "name": "Fill Last Row",
+  "description": "Find maximum between 2 numbers",
+  "name": "Two Max",
   "problem_id": {
     "order": 1,
     "course": "MET"
   },
-  "topics": ["Karel"],
-  "type": "KAREL",
-  "test_count": 1,
+  "topics": ["Math"],
+  "type": "JAVA",
+  "test_count": 4,
   "difficulty": "Easy",
-  "public_test_count": 1
+  "public_test_count": 2
 }
