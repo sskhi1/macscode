@@ -43,7 +43,7 @@ function parseKarelWorld(data) {
     };
 }
 
-const ProblemDetails = ({ problem, selectedTestCase }) => {
+const ProblemDetails = ({ problem, selectedTestCase, results }) => {
     const difficultyClass = `difficulty ${problem.difficulty.toLowerCase()}`;
     const courseName = problem.problemId.course === "ABS"
         ? "Programming Abstractions"
@@ -62,7 +62,7 @@ const ProblemDetails = ({ problem, selectedTestCase }) => {
                 <p><strong>Course:</strong> {courseName}</p>
             </div>
             {problem.type === "KAREL" && selectedTestCase &&(
-                <KarelWorld {...parseKarelWorld(selectedTestCase.input)} />
+                <KarelWorld {...parseKarelWorld(selectedTestCase.input)} results={results} testNum={selectedTestCase.testNum} />
             )}
             <div className="problem-description">
                 <h3>Description</h3>

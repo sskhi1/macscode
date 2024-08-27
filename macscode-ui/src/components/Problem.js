@@ -182,7 +182,7 @@ const Problem = () => {
                         </button>
                     </div>
                     <div className="tab-content">
-                        {activeTab === 'description' && <ProblemDetails problem={problem} selectedTestCase={selectedTestCase}/>}
+                        {activeTab === 'description' && <ProblemDetails problem={problem} selectedTestCase={selectedTestCase} results={results}/>}
                         {activeTab === 'submissions' && <Submissions problemId={problem.id} />}
                     </div>
                 </div>

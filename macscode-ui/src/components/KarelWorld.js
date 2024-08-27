@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/Karel.css';
 
-function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borders }) {
+function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borders, results, testNum }) {
     // Calculate cell size based on screen width
     const cellSize = Math.min(window.innerWidth/ width * 0.35, 70);
 
@@ -37,6 +37,7 @@ function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borde
                 {[...Array(height)].map((_, y) =>
                     [...Array(width)].map((_, x) => renderCell(x, y))
                 )}
+                <div>{results[testNum-1].additionalInfo}</div>
             </div>
         </div>
     );
