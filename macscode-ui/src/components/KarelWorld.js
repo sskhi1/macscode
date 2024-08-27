@@ -1,13 +1,58 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/Karel.css';
 
-function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borders, results, testNum }) {
+function parseKarelWorld(data) {
+    const lines = data.trim().split('\n');
+
+    const width = parseInt(lines[0], 10);
+    const height = parseInt(lines[1], 10);
+
+    const karelX = parseInt(lines[2], 10);
+    const karelY = parseInt(lines[3], 10);
+    const karelDirection = parseInt(lines[4], 10);
+
+    const grid = [];
+    for (let i = 0; i < height; i++) {
+        const row = lines[5 + i].split(' ').map(Number);
+        grid.push(row);
+    }
+
+    const borders = Array.from({length: height}, () =>
+        Array.from({length: width}, () => [false, false, false, false])
+    );
+
+    for (let i = 5 + height; i < lines.length; i++) {
+        const [x, y, direction] = lines[i].split(' ').map(Number);
+        borders[height - y - 1][x][direction] = true;
+    }
+
+    return {
+        width,
+        height,
+        karelX,
+        karelY,
+        karelDirection,
+        grid,
+        borders,
+    };
+}
+
+function KarelWorld({testCaseInput, results, testNum}) {
+    const {
+        width,
+        height,
+        karelX,
+        karelY,
+        karelDirection,
+        grid,
+        borders
+    } = parseKarelWorld(testCaseInput);
     const [currentX, setCurrentX] = useState(karelX);
     const [currentY, setCurrentY] = useState(karelY);
     const [currentDirection, setCurrentDirection] = useState(karelDirection);
     const [currentGrid, setCurrentGrid] = useState([...grid]);
 
-    const instructions = results[testNum - 1]?.instructions || [];
+    const instructions = results[testNum - 1]?.additionalInfo || [];
 
     // Calculate cell size based on screen width
     const cellSize = Math.min(window.innerWidth / width * 0.35, 70);
@@ -29,13 +74,13 @@ function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borde
                 } else {
                     clearInterval(interval);
                 }
-            }, 500); // Adjust the speed of animation here (500ms for each step)
+            }, 500);
 
             return () => clearInterval(interval);
         }
-    }, [instructions]); // Dependency array watches for changes in instructions
+    }, [instructions]);
 
-
+    // Function to execute a single instruction
     const executeInstruction = (instruction) => {
         switch (instruction) {
             case 'move':
@@ -61,6 +106,7 @@ function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borde
         }
     };
 
+    // Functions to handle different actions
     const moveForward = () => {
         let newX = currentX;
         let newY = currentY;
@@ -119,15 +165,17 @@ function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borde
         const walls = borders[y][x];
 
         return (
-            <div key={`${x}-${y}`} className="cell" style={{ width: cellSize, height: cellSize }}>
-                {isKarel && <div className={`karel-robot karel-${currentDirection}`} />}
-                {cellContent > 0 && <div className="beeper"><div className="beeper-content">
-                    {cellContent}
-                </div></div>}
-                {walls[0] && <div className="wall wall-north" />}
-                {walls[1] && <div className="wall wall-east" />}
-                {walls[2] && <div className="wall wall-south" />}
-                {walls[3] && <div className="wall wall-west" />}
+            <div key={`${x}-${y}`} className="cell" style={{width: cellSize, height: cellSize}}>
+                {isKarel && <div className={`karel-robot karel-${currentDirection}`}/>}
+                {cellContent > 0 && <div className="beeper">
+                    <div className="beeper-content">
+                        {cellContent}
+                    </div>
+                </div>}
+                {walls[0] && <div className="wall wall-north"/>}
+                {walls[1] && <div className="wall wall-east"/>}
+                {walls[2] && <div className="wall wall-south"/>}
+                {walls[3] && <div className="wall wall-west"/>}
             </div>
         );
     };
@@ -138,6 +186,7 @@ function KarelWorld({ width, height, karelX, karelY, karelDirection, grid, borde
                 {[...Array(height)].map((_, y) =>
                     [...Array(width)].map((_, x) => renderCell(x, y))
                 )}
+                <div>INSTRUCTIONS: {instructions}</div>
             </div>
         </div>
     );
