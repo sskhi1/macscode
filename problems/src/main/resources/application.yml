@@ -1,4 +1,8 @@
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8087
   application:
     name: problems
   data:
@@ -15,10 +19,12 @@ spring:
 jwt:
   secret: macscodesecretkeymacscodesecretkeymacscodesecretkeymacscodese
   expiration-time: 1209600000  # 2 weeks
-logging:
-  level:
-    org:
-    springframework:
-      web:
-        socket: DEBUG
-        handler: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
