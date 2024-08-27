@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import axios from 'axios';
 import {AuthContext} from '../AuthContext';
-import {useNavigate, useParams} from 'react-router-dom';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {dracula} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import '../styles/Submissions.css';
@@ -14,7 +13,6 @@ const Submissions = ({problemId}) => {
     const [selectedCode, setSelectedCode] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState('java');
     const [showCode, setShowCode] = useState(false);
-    const navigate = useNavigate();
     const submissionsPerPage = 5;
 
     useEffect(() => {

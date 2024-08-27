@@ -1,4 +1,8 @@
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8087
   application:
     name: executor
   rabbitmq:
@@ -9,3 +13,12 @@ spring:
 
 server:
   port: 0
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

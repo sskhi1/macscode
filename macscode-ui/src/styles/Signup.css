@@ -3,11 +3,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #777777;
+    background-color: #252525;
 }
 
 .signup-form {
-    background-color: white;
+    background-color: #606060;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -21,7 +21,7 @@
 
 .signup-title {
     margin-bottom: 20px;
-    color: black;
+    color: #1c1c1c;
     font-size: 24px;
     font-weight: bold;
 }
@@ -51,7 +51,7 @@
 .signup-button {
     width: calc(100% - 20px);
     padding: 10px;
-    background-color: #ecec13;
+    background-color: orange;
     color: black;
     border: none;
     border-radius: 5px;
@@ -63,17 +63,17 @@
 }
 
 .signup-button:hover {
-    background-color: #ffcc00;
+    background-color: #d59b1a;
 }
 
 .login-link {
     margin-top: 20px;
     font-size: 14px;
-    color: black;
+    color: #3b3b3b;
 }
 
 .login-link a {
-    color: #1e4fa9;
+    color: orangered;
     text-decoration: none;
     font-weight: bold;
 }
@@ -84,12 +84,12 @@
 
 .error-message {
     color: #d9534f;
-    background-color: #f2dede;
+    background-color: #2a2929;
     border: 1px solid #d9534f;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 15px;
     width: 100%;
     box-sizing: border-box;
-    text-align: left;
+    text-align: center;
 }

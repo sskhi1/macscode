@@ -10,6 +10,7 @@ import '../styles/Problem.css';
 import { Client } from '@stomp/stompjs';
 import TopBar from './TopBar';
 import Comments from './Comments';
+import {v4 as uuidv4} from 'uuid';
 
 const Problem = () => {
     const { course, order } = useParams();
@@ -43,25 +44,6 @@ const Problem = () => {
         clientRef.current = new Client({
             brokerURL: webSocketURL,
             reconnectDelay: 5000,
-            onConnect: () => {
-                console.log('Connected to WebSocket');
-
-                clientRef.current.subscribe('/topic/runResult', (message) => {
-                    const runResults = JSON.parse(message.body);
-                    setResults(runResults);
-                    setResponseReceived(true);
-                    setShowResults(true);
-                    setIsRunning(false);
-                });
-
-                clientRef.current.subscribe('/topic/submitResult', (message) => {
-                    const submitResults = JSON.parse(message.body);
-                    setResults(submitResults);
-                    setResponseReceived(true);
-                    setShowResults(true);
-                    setIsSubmitting(false);
-                });
-            },
             onStompError: (frame) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
                 console.error('Additional details: ' + frame.body);
@@ -99,12 +81,22 @@ const Problem = () => {
     const handleRun = () => {
         if (!problem || isRunning) return;
 
+        const submissionId = uuidv4();
+        clientRef.current.subscribe(`/topic/runResult/${submissionId}`, (message) => {
+            const runResults = JSON.parse(message.body);
+            setResults(runResults);
+            setResponseReceived(true);
+            setShowResults(true);
+            setIsRunning(false);
+        });
+
         setIsRunning(true);
         clientRef.current.publish({
             destination: '/app/runSolution',
             body: JSON.stringify({
                 problemId: problem.id,
                 solution: code,
+                submissionId: submissionId
             }),
         });
         setHasSubmitted(true);
@@ -114,12 +106,25 @@ const Problem = () => {
     const handleSubmit = () => {
         if (!problem || isSubmitting) return;
 
+        const submissionId = uuidv4();
+        clientRef.current.subscribe(`/topic/submitResult/${submissionId}`, (message) => {
+            const submitResults = JSON.parse(message.body);
+            setResults(submitResults);
+            setResponseReceived(true);
+            setShowResults(true);
+            setIsSubmitting(false);
+        });
+
         setIsSubmitting(true);
         clientRef.current.publish({
             destination: '/app/submitSolution',
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            },
             body: JSON.stringify({
                 problemId: problem.id,
                 solution: code,
+                submissionId: submissionId
             }),
         });
         setHasSubmitted(true);

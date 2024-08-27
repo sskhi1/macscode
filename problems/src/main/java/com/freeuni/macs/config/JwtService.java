@@ -6,10 +6,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
@@ -67,5 +70,44 @@ public class JwtService {
 
     private Date extractExpiration(String jwt) {
         return extractClaim(jwt, Claims::getExpiration);
+    }
+
+    public UserDetails createUserDetailsForJwt(String username) {
+        return new UserDetails() {
+            @Override
+            public Collection<? extends GrantedAuthority> getAuthorities() {
+                return Collections.emptyList();  // No authorities are set
+            }
+
+            @Override
+            public String getPassword() {
+                return null;  // No password needed
+            }
+
+            @Override
+            public String getUsername() {
+                return username;
+            }
+
+            @Override
+            public boolean isAccountNonExpired() {
+                return true;
+            }
+
+            @Override
+            public boolean isAccountNonLocked() {
+                return true;
+            }
+
+            @Override
+            public boolean isCredentialsNonExpired() {
+                return true;
+            }
+
+            @Override
+            public boolean isEnabled() {
+                return true;
+            }
+        };
     }
 }
