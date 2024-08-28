@@ -7,8 +7,6 @@ public class Main {
         BufferedReader inputReader = new BufferedReader(new FileReader(args[0]));
         BufferedReader outputReader = new BufferedReader(new FileReader(args[1]));
         BufferedWriter outputWriter = new BufferedWriter(new FileWriter(args[2], true));
-        outputWriter.write("KAREL\n");
-        outputWriter.flush();
 
         Solution solution = new Solution();
 
