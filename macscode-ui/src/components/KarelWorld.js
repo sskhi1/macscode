@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Karel.css';
 
 function parseKarelWorld(data) {
@@ -52,9 +52,10 @@ function KarelWorld({testCaseInput, results, testNum}) {
     const [currentY, setCurrentY] = useState(karelY);
     const [currentDirection, setCurrentDirection] = useState(karelDirection);
     const [currentGrid, setCurrentGrid] = useState([...grid]);
-    const [currentStep, setCurrentStep] = useState(0); // Track the current step
+    const [instructionIndex, setInstructionIndex] = useState(0);
 
-    const instructions = results[testNum - 1]?.additionalInfo || [];
+    const instructions_str = results[testNum - 1]?.additionalInfo || "";
+    const instructions = instructions_str ? instructions_str.split(' ') : [];
 
     // Calculate cell size based on screen width
     const cellSize = Math.min(window.innerWidth / width * 0.35, 70);
@@ -66,18 +67,14 @@ function KarelWorld({testCaseInput, results, testNum}) {
     };
 
     useEffect(() => {
-        if (instructions.length > 0 && currentStep < instructions.length) {
-            // Execute the current instruction
-            executeInstruction(instructions[currentStep]);
-
-            // Move to the next step after a delay
-            const timeout = setTimeout(() => {
-                setCurrentStep((prevStep) => prevStep + 1);
-            }, 500); // Adjust the delay time as needed
-
-            return () => clearTimeout(timeout);
+        if (instructionIndex < instructions.length) {
+            const timeoutId = setTimeout(() => {
+                executeInstruction(instructions[instructionIndex]);
+                setInstructionIndex((prevIndex) => prevIndex + 1);
+            }, 500);
+            return () => clearTimeout(timeoutId);
         }
-    }, [instructions, currentStep]); // Re-run the effect when instructions or currentStep changes
+    }, [instructionIndex, instructions]);
 
     const executeInstruction = (instruction) => {
         switch (instruction) {
@@ -162,17 +159,17 @@ function KarelWorld({testCaseInput, results, testNum}) {
         const walls = borders[y][x];
 
         return (
-            <div key={`${x}-${y}`} className="cell" style={{width: cellSize, height: cellSize}}>
-                {isKarel && <div className={`karel-robot karel-${currentDirection}`}/>}
+            <div key={`${x}-${y}`} className="cell" style={{ width: cellSize, height: cellSize }}>
+                {isKarel && <div className={`karel-robot karel-${currentDirection}`} />}
                 {cellContent > 0 && (
                     <div className="beeper">
                         <div className="beeper-content">{cellContent}</div>
                     </div>
                 )}
-                {walls[0] && <div className="wall wall-north"/>}
-                {walls[1] && <div className="wall wall-east"/>}
-                {walls[2] && <div className="wall wall-south"/>}
-                {walls[3] && <div className="wall wall-west"/>}
+                {walls[0] && <div className="wall wall-north" />}
+                {walls[1] && <div className="wall wall-east" />}
+                {walls[2] && <div className="wall wall-south" />}
+                {walls[3] && <div className="wall wall-west" />}
             </div>
         );
     };
@@ -183,7 +180,11 @@ function KarelWorld({testCaseInput, results, testNum}) {
                 {[...Array(height)].map((_, y) =>
                     [...Array(width)].map((_, x) => renderCell(x, y))
                 )}
-                <div>INSTRUCTIONS: {instructions}</div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div>INSTRUCTIONS: {instructions}</div>
+                    <div style={{ marginTop: '10px' }}>INSTRUCTIONSF: {instructions}</div>
+                </div>
+
             </div>
         </div>
     );
