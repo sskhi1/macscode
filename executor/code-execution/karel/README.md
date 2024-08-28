@@ -1,6 +1,6 @@
 ## Build  (once)
 ```bash
-docker build -t karel-code-runner .
+docker build --no-cache -t karel-code-runner .
 ```
 
 ## Clean up (Before run)
