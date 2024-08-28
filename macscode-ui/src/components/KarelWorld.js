@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/Karel.css';
 
 function parseKarelWorld(data) {
@@ -53,6 +53,7 @@ function KarelWorld({testCaseInput, results, testNum}) {
     const [currentDirection, setCurrentDirection] = useState(karelDirection);
     const [currentGrid, setCurrentGrid] = useState([...grid]);
     const [instructionIndex, setInstructionIndex] = useState(0);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const instructions_str = results[testNum - 1]?.additionalInfo || "";
     const instructions = instructions_str ? instructions_str.split(' ') : [];
@@ -70,6 +71,7 @@ function KarelWorld({testCaseInput, results, testNum}) {
         setCurrentDirection(karelDirection);
         setCurrentGrid([...grid]);
         setInstructionIndex(0);
+        setErrorMessage('');
     }, [testCaseInput, results]);
 
     useEffect(() => {
@@ -110,26 +112,47 @@ function KarelWorld({testCaseInput, results, testNum}) {
     const moveForward = () => {
         let newX = currentX;
         let newY = currentY;
+        let hitWall = false;
 
         switch (currentDirection) {
             case 0: // North
-                newY = currentY + 1 < height ? currentY + 1 : currentY;
+                if (currentY + 1 < height && !borders[height - 1 - currentY][currentX][0] && !borders[height - 2 - currentY][currentX][2]) {
+                    newY = currentY + 1;
+                } else {
+                    hitWall = true;
+                }
                 break;
             case 1: // East
-                newX = currentX + 1 < width ? currentX + 1 : currentX;
+                if (currentX + 1 < width && !borders[height - 1 - currentY][currentX][1] && !borders[height - 1 - currentY][currentX + 1][3]) {
+                    newX = currentX + 1;
+                } else {
+                    hitWall = true;
+                }
                 break;
             case 2: // South
-                newY = currentY - 1 >= 0 ? currentY - 1 : currentY;
+                if (currentY - 1 >= 0 && !borders[height - 1 - currentY][currentX][2] && !borders[height - currentY][currentX][0]) {
+                    newY = currentY - 1;
+                } else {
+                    hitWall = true;
+                }
                 break;
             case 3: // West
-                newX = currentX - 1 >= 0 ? currentX - 1 : currentX;
+                if (currentX - 1 >= 0 && !borders[height - 1 - currentY][currentX][3] && !borders[height - 1 - currentY][currentX - 1][1]) {
+                    newX = currentX - 1;
+                } else {
+                    hitWall = true;
+                }
                 break;
             default:
                 break;
         }
 
-        setCurrentX(newX);
-        setCurrentY(newY);
+        if (hitWall) {
+            setErrorMessage('Error: Karel hit a wall!');
+        } else {
+            setCurrentX(newX);
+            setCurrentY(newY);
+        }
     };
 
     const turnLeft = () => {
@@ -149,6 +172,9 @@ function KarelWorld({testCaseInput, results, testNum}) {
         if (updatedGrid[height - 1 - currentY][currentX] > 0) {
             updatedGrid[height - 1 - currentY][currentX] -= 1;
             setCurrentGrid(updatedGrid);
+            setErrorMessage('');
+        } else {
+            setErrorMessage('Error: No beepers to pick up!');
         }
     };
 
@@ -165,17 +191,17 @@ function KarelWorld({testCaseInput, results, testNum}) {
         const walls = borders[y][x];
 
         return (
-            <div key={`${x}-${y}`} className="cell" style={{ width: cellSize, height: cellSize }}>
-                {isKarel && <div className={`karel-robot karel-${currentDirection}`} />}
+            <div key={`${x}-${y}`} className="cell" style={{width: cellSize, height: cellSize}}>
+                {isKarel && <div className={`karel-robot karel-${currentDirection}`}/>}
                 {cellContent > 0 && (
                     <div className="beeper">
                         <div className="beeper-content">{cellContent}</div>
                     </div>
                 )}
-                {walls[0] && <div className="wall wall-north" />}
-                {walls[1] && <div className="wall wall-east" />}
-                {walls[2] && <div className="wall wall-south" />}
-                {walls[3] && <div className="wall wall-west" />}
+                {walls[0] && <div className="wall wall-north"/>}
+                {walls[1] && <div className="wall wall-east"/>}
+                {walls[2] && <div className="wall wall-south"/>}
+                {walls[3] && <div className="wall wall-west"/>}
             </div>
         );
     };
@@ -186,12 +212,8 @@ function KarelWorld({testCaseInput, results, testNum}) {
                 {[...Array(height)].map((_, y) =>
                     [...Array(width)].map((_, x) => renderCell(x, y))
                 )}
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <div>INSTRUCTIONS: {instructions}</div>
-                    <div style={{ marginTop: '10px' }}>INSTRUCTIONSF: {instructions}</div>
-                </div>
-
             </div>
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
         </div>
     );
 }
