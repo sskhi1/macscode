@@ -57,14 +57,20 @@ function KarelWorld({testCaseInput, results, testNum}) {
     const instructions_str = results[testNum - 1]?.additionalInfo || "";
     const instructions = instructions_str ? instructions_str.split(' ') : [];
 
-    // Calculate cell size based on screen width
     const cellSize = Math.min(window.innerWidth / width * 0.35, 70);
 
-    // Grid style with calculated cell size
     const gridStyle = {
         gridTemplateColumns: `repeat(${width}, ${cellSize}px)`,
         gridTemplateRows: `repeat(${height}, ${cellSize}px)`,
     };
+
+    useEffect(() => {
+        setCurrentX(karelX);
+        setCurrentY(karelY);
+        setCurrentDirection(karelDirection);
+        setCurrentGrid([...grid]);
+        setInstructionIndex(0);
+    }, [testCaseInput, results]);
 
     useEffect(() => {
         if (instructionIndex < instructions.length) {

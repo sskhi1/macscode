@@ -28,8 +28,6 @@ const Problem = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [responseReceived, setResponseReceived] = useState(false);
     const [activeTab, setActiveTab] = useState('description');
-    const [showKarelWorld, setShowKarelWorld] = useState(false); // State to control popup visibility
-
 
     const clientRef = useRef(null);
     const discussionRef = useRef(null);
@@ -83,14 +81,10 @@ const Problem = () => {
     };
 
     const handleShowDemo = () => {
-        setShowKarelWorld(true);
+        handleRun(true);
     };
 
-    const closePopup = () => {
-        setShowKarelWorld(false);
-    };
-
-    const handleRun = () => {
+    const handleRun = (demoMode) => {
         if (!problem || isRunning) return;
 
         const submissionId = uuidv4();
@@ -98,7 +92,9 @@ const Problem = () => {
             const runResults = JSON.parse(message.body);
             setResults(runResults);
             setResponseReceived(true);
-            setShowResults(true);
+            if (!demoMode) {
+                setShowResults(true);
+            }
             setIsRunning(false);
         });
 
@@ -194,7 +190,13 @@ const Problem = () => {
                         </button>
                     </div>
                     <div className="tab-content">
-                        {activeTab === 'description' && <ProblemDetails problem={problem} selectedTestCase={selectedTestCase} results={results}/>}
+                        {activeTab === 'description' && (
+                            <ProblemDetails
+                                problem={problem}
+                                selectedTestCase={selectedTestCase}
+                                results={results}
+                            />
+                        )}
                         {activeTab === 'submissions' && <Submissions problemId={problem.id} />}
                     </div>
                 </div>
@@ -207,7 +209,7 @@ const Problem = () => {
                         <div className="button-container">
                             <button
                                 className="run-button"
-                                onClick={handleRun}
+                                onClick={() => handleRun(false)}
                                 disabled={isRunning || isSubmitting}
                                 style={{ opacity: isRunning || isSubmitting ? 0.5 : 1, cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer' }}
                             >
@@ -233,20 +235,6 @@ const Problem = () => {
                                 Demo
                             </button>
 
-                            {showKarelWorld && (
-                                <div className="popup-overlay">
-                                    <div className="popup-content">
-                                        <button className="close-button" onClick={closePopup}>
-                                            Close
-                                        </button>
-                                        <KarelWorld
-                                            testCaseInput={selectedTestCase.input}
-                                            results={results}
-                                            testNum={selectedTestCase.testNum}
-                                        />
-                                    </div>
-                                </div>
-                            )}
                             <button
                                 className={`view-results-button ${hasSubmitted && responseReceived ? 'visible' : ''}`}
                                 onClick={() => setShowResults(true)}
@@ -256,7 +244,6 @@ const Problem = () => {
                         </div>
                     </div>
                     <div className="problem-right-lower">
-
                         <TestCases testCases={testCases} onSelect={handleTestCaseSelect}/>
                     </div>
                 </div>
