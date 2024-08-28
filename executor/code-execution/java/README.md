@@ -1,6 +1,6 @@
 ## Build  (once)
 ```bash
-docker build -t java-code-runner .
+docker build --no-cache -t java-code-runner .
 ```
 
 ## Clean up (Before run)

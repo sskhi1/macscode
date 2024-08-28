@@ -1,7 +1,8 @@
 import React from 'react';
-import '../styles/ProblemDetails.css'; // Ensure you have the styles in ProblemDetails.css
+import '../styles/ProblemDetails.css';
+import KarelWorld from "./KarelWorld";
 
-const ProblemDetails = ({ problem }) => {
+const ProblemDetails = ({ problem, selectedTestCase, results, isDemo }) => {
     const difficultyClass = `difficulty ${problem.difficulty.toLowerCase()}`;
     const courseName = problem.problemId.course === "ABS"
         ? "Programming Abstractions"
@@ -19,6 +20,9 @@ const ProblemDetails = ({ problem }) => {
             <div className="problem-info">
                 <p><strong>Course:</strong> {courseName}</p>
             </div>
+            {problem.type === "KAREL" && selectedTestCase &&(
+                <KarelWorld testCaseInput = {selectedTestCase.input} results={results} testNum={selectedTestCase.testNum} isDemo={isDemo}/>
+            )}
             <div className="problem-description">
                 <h3>Description</h3>
                 <p>{problem.description}</p>

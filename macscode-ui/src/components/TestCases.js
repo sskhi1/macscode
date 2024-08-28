@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/Problem.css';
 
-const TestCases = ({ testCases }) => {
+const TestCases = ({ testCases, onSelect }) => {
     const [activeTab, setActiveTab] = useState(0);
+
+    useEffect(() => {
+        if (onSelect && testCases.length > 0) {
+            onSelect(testCases[activeTab]);
+        }
+    }, [activeTab, testCases, onSelect]);
 
     return (
         <div className="test-cases">

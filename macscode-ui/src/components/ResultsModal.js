@@ -21,7 +21,7 @@ const ResultsModal = ({ show, results, onClose }) => {
                         key={index}
                         className={`result-item ${result.result === 'PASS' ? 'pass' : 'fail'}`}
                     >
-                        <p><strong>Test Case {result.testNum}:</strong></p>
+                        <p><strong>Test Case {result.testNum + 1}:</strong></p>
                         <p><strong>Result:</strong> {resultMessages[result.result] || result.result}</p>
                         {result.additionalInfo && (
                             <p><strong>Additional Info:</strong> {result.additionalInfo}</p>

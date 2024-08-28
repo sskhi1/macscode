@@ -1,0 +1,186 @@
+.karel-world {
+    display: grid;
+}
+
+.cell {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(3, 2, 2, 0.42);
+}
+
+.cell::before {
+    content: '';
+    position: absolute;
+    width: 5%;
+    height: 5%;
+    background-color: #ffffff;
+    border-radius: 50%;
+}
+
+.karel-robot {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    background: url('../images/karel-robot.png') no-repeat center center;
+    background-size: contain;
+    z-index: 99999;
+}
+
+.karel-0 { transform: rotate(270deg); }
+.karel-1 { transform: rotate(0deg); }
+.karel-2 { transform: rotate(90deg); }
+.karel-3 { transform: rotate(180deg); }
+
+.beeper {
+    position: absolute;
+    transform: rotate(45deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 50%;
+    background-color: #0799c7;
+    border-radius: 8%;
+}
+
+.beeper-content {
+    transform: rotate(-45deg);
+    color: white;
+    font-weight: bold;
+    font-size: 0.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.wall {
+    position: absolute;
+    background: #818ca1;
+    /*border-radius: 100%;*/
+}
+
+.wall-north {
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.wall-east {
+    top: 0;
+    right: -3px;
+    bottom: 0;
+    width: 6px;
+}
+
+.wall-south {
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 6px;
+}
+
+.wall-west {
+    top: 0;
+    left: -3px;
+    bottom: 0;
+    width: 6px;
+}
+
+.error-popup {
+    width: 300px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #b65151;
+    border: 1px solid white;
+    z-index: 1000;
+    border-radius: 8px;
+    color: white;
+    padding: 15px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.error-popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.error-popup-icon {
+    width: 80px;
+    height: 80px;
+}
+
+.error-popup-content p {
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.error-popup-content button {
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: white;
+    color: #ad2323;
+    border: 2px solid white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.error-popup-content button:hover {
+    background-color: #ffcccb;
+    color: #ad2323;
+    border: 2px solid #ad2323;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.error-popup.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+.restore-button {
+    padding-top: 10px;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.restore-button:hover {
+    scale: 1.05;
+}
+
+.restore-button-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
