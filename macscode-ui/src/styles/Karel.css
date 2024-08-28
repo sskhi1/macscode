@@ -162,3 +162,25 @@
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
 }
+
+.restore-button {
+    padding-top: 10px;
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+}
+
+.restore-button:hover {
+    scale: 1.05;
+}
+
+.restore-button-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}

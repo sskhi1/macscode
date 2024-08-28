@@ -37,7 +37,7 @@ function parseKarelWorld(data) {
     };
 }
 
-function ErrorPopup({ message, onClose }) {
+function ErrorPopup({message, onClose}) {
     return (
         <div className="error-popup">
             <div className="error-popup-content">
@@ -53,7 +53,7 @@ function ErrorPopup({ message, onClose }) {
     );
 }
 
-function KarelWorld({ testCaseInput, results, testNum }) {
+function KarelWorld({testCaseInput, results, testNum, isDemo}) {
     const {
         width,
         height,
@@ -69,10 +69,8 @@ function KarelWorld({ testCaseInput, results, testNum }) {
     const [currentDirection, setCurrentDirection] = useState(karelDirection);
     const [currentGrid, setCurrentGrid] = useState([...grid]);
     const [instructionIndex, setInstructionIndex] = useState(0);
+    const [instructions, setInstructions] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
-
-    const instructions_str = results[testNum - 1]?.additionalInfo || "";
-    const instructions = instructions_str ? instructions_str.split(' ') : [];
 
     const cellSize = Math.min(window.innerWidth / width * 0.35, 70);
 
@@ -88,10 +86,16 @@ function KarelWorld({ testCaseInput, results, testNum }) {
         setCurrentGrid([...grid]);
         setInstructionIndex(0);
         setErrorMessage('');
+
+        if (isDemo) {
+            const instructions_str = results[testNum - 1]?.additionalInfo || "";
+            setInstructions(instructions_str ? instructions_str.split(' ') : []);
+        }
+
     }, [testCaseInput, results]);
 
     useEffect(() => {
-        if (instructionIndex < instructions.length && !errorMessage) {
+        if (instructionIndex < instructions.length && isDemo && !errorMessage) {
             const timeoutId = setTimeout(() => {
                 executeInstruction(instructions[instructionIndex]);
                 setInstructionIndex((prevIndex) => prevIndex + 1);
@@ -222,6 +226,16 @@ function KarelWorld({ testCaseInput, results, testNum }) {
         );
     };
 
+    const resetKarelWorld = () => {
+        setCurrentX(karelX);
+        setCurrentY(karelY);
+        setCurrentDirection(karelDirection);
+        setCurrentGrid([...grid]);
+        setInstructionIndex(0);
+        setInstructions([]);
+        setErrorMessage('');
+    };
+
     return (
         <div className="karel-world-container">
             <div className="karel-world" style={gridStyle}>
@@ -235,6 +249,14 @@ function KarelWorld({ testCaseInput, results, testNum }) {
                     onClose={() => setErrorMessage('')}
                 />
             )}
+            <button onClick={resetKarelWorld} className="restore-button">
+                <img
+                    src={require('../icons/restore.png')}
+                    alt="Restore"
+                    className="restore-button-icon"
+                />
+                Restore Karel's World
+            </button>
         </div>
     );
 }

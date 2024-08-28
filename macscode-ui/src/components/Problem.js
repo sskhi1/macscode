@@ -12,7 +12,6 @@ import { Client } from '@stomp/stompjs';
 import TopBar from './TopBar';
 import Comments from './Comments';
 import {v4 as uuidv4} from 'uuid';
-import KarelWorld from "./KarelWorld";
 
 const Problem = () => {
     const { course, order } = useParams();
@@ -28,6 +27,7 @@ const Problem = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [responseReceived, setResponseReceived] = useState(false);
     const [activeTab, setActiveTab] = useState('description');
+    const [isDemo, setIsDemo] = useState(false);
 
     const clientRef = useRef(null);
     const discussionRef = useRef(null);
@@ -81,10 +81,12 @@ const Problem = () => {
     };
 
     const handleShowDemo = () => {
+        setIsDemo(true);
         handleRun(true);
     };
 
     const handleRun = (demoMode) => {
+        setIsDemo(demoMode);
         if (!problem || isRunning) return;
 
         const submissionId = uuidv4();
@@ -109,9 +111,14 @@ const Problem = () => {
         });
         setHasSubmitted(true);
         setResponseReceived(false);
+
+        if (demoMode && results[selectedTestCase.testNum - 1].result === 'COMPILE_ERROR') {
+            setShowResults(true);
+        }
     };
 
     const handleSubmit = () => {
+        setIsDemo(false);
         if (!problem || isSubmitting) return;
 
         const submissionId = uuidv4();
@@ -195,6 +202,7 @@ const Problem = () => {
                                 problem={problem}
                                 selectedTestCase={selectedTestCase}
                                 results={results}
+                                isDemo={isDemo}
                             />
                         )}
                         {activeTab === 'submissions' && <Submissions problemId={problem.id} />}
