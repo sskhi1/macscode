@@ -37,7 +37,18 @@ function parseKarelWorld(data) {
     };
 }
 
-function KarelWorld({testCaseInput, results, testNum}) {
+function ErrorPopup({ message, onClose }) {
+    return (
+        <div className="error-popup">
+            <div className="error-popup-content">
+                <p>{message}</p>
+                <button onClick={onClose}>Close</button>
+            </div>
+        </div>
+    );
+}
+
+function KarelWorld({ testCaseInput, results, testNum }) {
     const {
         width,
         height,
@@ -75,14 +86,14 @@ function KarelWorld({testCaseInput, results, testNum}) {
     }, [testCaseInput, results]);
 
     useEffect(() => {
-        if (instructionIndex < instructions.length) {
+        if (instructionIndex < instructions.length && !errorMessage) {
             const timeoutId = setTimeout(() => {
                 executeInstruction(instructions[instructionIndex]);
                 setInstructionIndex((prevIndex) => prevIndex + 1);
             }, 500);
             return () => clearTimeout(timeoutId);
         }
-    }, [instructionIndex, instructions]);
+    }, [instructionIndex, instructions, errorMessage]);
 
     const executeInstruction = (instruction) => {
         switch (instruction) {
@@ -213,7 +224,12 @@ function KarelWorld({testCaseInput, results, testNum}) {
                     [...Array(width)].map((_, x) => renderCell(x, y))
                 )}
             </div>
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {errorMessage && (
+                <ErrorPopup
+                    message={errorMessage}
+                    onClose={() => setErrorMessage('')}
+                />
+            )}
         </div>
     );
 }

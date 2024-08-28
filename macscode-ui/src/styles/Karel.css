@@ -91,44 +91,73 @@
     width: 6px;
 }
 
-.karel-world-borders {
-    font-family: monospace;
-    margin: 10px;
+.error-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ad2323;
+    border: 1px solid white;
+    z-index: 1000;
+    border-radius: 8px;
+    color: white;
+    padding: 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+.error-popup-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    z-index: 1000;
+    gap: 15px;
 }
 
-.popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    position: relative;
-    width: 80%;
-    max-width: 600px;
-    z-index: 1001;
-    overflow: hidden;
-    max-height: 80vh;
-    overflow-y: auto;
+.error-popup-content p {
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-
-.close-button-karel {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 16px;
+.error-popup-content button {
+    padding: 5px 10px;
     cursor: pointer;
+    font-size: 13px;
+    background-color: white;
+    color: #ad2323;
+    border: 2px solid white;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+.error-popup-content button:hover {
+    background-color: #ffcccb;
+    color: #ad2323;
+    border: 2px solid #ad2323;
+}
+
+.karel-world-container {
+    position: relative;
+    z-index: 99999;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Trigger the popup animation when it's displayed */
+.error-popup.show {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
 }
