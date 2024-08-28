@@ -41,8 +41,13 @@ function ErrorPopup({ message, onClose }) {
     return (
         <div className="error-popup">
             <div className="error-popup-content">
+                <img
+                    src={require('../images/error.png')}
+                    alt="Error"
+                    className="error-popup-icon"
+                />
                 <p>{message}</p>
-                <button onClick={onClose}>Close</button>
+                <button onClick={onClose}>Ok</button>
             </div>
         </div>
     );
@@ -159,7 +164,7 @@ function KarelWorld({ testCaseInput, results, testNum }) {
         }
 
         if (hitWall) {
-            setErrorMessage('Error: Karel hit a wall!');
+            setErrorMessage('Karel hit a wall!');
         } else {
             setCurrentX(newX);
             setCurrentY(newY);
@@ -185,7 +190,7 @@ function KarelWorld({ testCaseInput, results, testNum }) {
             setCurrentGrid(updatedGrid);
             setErrorMessage('');
         } else {
-            setErrorMessage('Error: No beepers to pick up!');
+            setErrorMessage('No beepers to pick up!');
         }
     };
 

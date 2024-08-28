@@ -92,16 +92,17 @@
 }
 
 .error-popup {
+    width: 300px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #ad2323;
+    background-color: #b65151;
     border: 1px solid white;
     z-index: 1000;
     border-radius: 8px;
     color: white;
-    padding: 20px;
+    padding: 15px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
     transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
@@ -112,6 +113,11 @@
     align-items: center;
     justify-content: center;
     gap: 15px;
+}
+
+.error-popup-icon {
+    width: 80px;
+    height: 80px;
 }
 
 .error-popup-content p {
@@ -127,6 +133,7 @@
     padding: 5px 10px;
     cursor: pointer;
     font-size: 13px;
+    font-weight: bold;
     background-color: white;
     color: #ad2323;
     border: 2px solid white;
@@ -140,11 +147,6 @@
     border: 2px solid #ad2323;
 }
 
-.karel-world-container {
-    position: relative;
-    z-index: 99999;
-}
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -156,7 +158,6 @@
     }
 }
 
-/* Trigger the popup animation when it's displayed */
 .error-popup.show {
     transform: translate(-50%, -50%) scale(1);
     opacity: 1;
