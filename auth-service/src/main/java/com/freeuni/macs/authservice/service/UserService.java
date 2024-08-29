@@ -1,6 +1,7 @@
 package com.freeuni.macs.authservice.service;
 
 import com.freeuni.macs.authservice.exception.UserAuthException;
+import com.freeuni.macs.authservice.model.Role;
 import com.freeuni.macs.authservice.model.api.AuthResponse;
 import com.freeuni.macs.authservice.model.api.SignInRequest;
 import com.freeuni.macs.authservice.model.api.UserDTO;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -79,5 +81,24 @@ public class UserService {
         user.setEmail(userDto.getEmail());
 
         userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void deleteUserByUsername(String username) {
+        userRepository.deleteByUsername(username);
+    }
+
+    public void makeUserAdmin(String username) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setRole(Role.ADMIN);
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found with username: " + username);
+        }
     }
 }

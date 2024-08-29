@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useState, useEffect, useRef} from 'react';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ProblemDetails from './ProblemDetails';
 import SolutionTemplate from './SolutionTemplate';
@@ -7,14 +7,16 @@ import TestCases from './TestCases';
 import ResultsModal from './ResultsModal';
 import Submissions from './Submissions';
 import '../styles/Problem.css';
+import {Client} from '@stomp/stompjs';
 import '../styles/Karel.css';
-import { Client } from '@stomp/stompjs';
 import TopBar from './TopBar';
 import Comments from './Comments';
 import {v4 as uuidv4} from 'uuid';
+import {jwtDecode} from 'jwt-decode';
+import AllSubmissions from "./admin/AllSubmissions";
 
 const Problem = () => {
-    const { course, order } = useParams();
+    const {course, order} = useParams();
     const [problem, setProblem] = useState(null);
     const [error, setError] = useState('');
     const [code, setCode] = useState('');
@@ -27,10 +29,19 @@ const Problem = () => {
     const [hasSubmitted, setHasSubmitted] = useState(false);
     const [responseReceived, setResponseReceived] = useState(false);
     const [activeTab, setActiveTab] = useState('description');
+    const [userRole, setUserRole] = useState('');
     const [isDemo, setIsDemo] = useState(false);
 
     const clientRef = useRef(null);
     const discussionRef = useRef(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            setUserRole(decodedToken.role);
+        }
+    }, []);
 
     useEffect(() => {
         const fetchProblem = async () => {
@@ -166,7 +177,7 @@ const Problem = () => {
 
     return (
         <div className="problem-container">
-            <TopBar />
+            <TopBar/>
             <div className="content-container">
                 <div className="problem-left">
                     <div className="tab-buttons">
@@ -182,17 +193,19 @@ const Problem = () => {
                         >
                             Submissions
                         </button>
+                        {userRole === 'ADMIN' && (
+                            <button
+                                className={`tab-button ${activeTab === 'all-submissions' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('all-submissions')}
+                            >
+                                All Submissions
+                            </button>
+                        )}
                     </div>
                     <div className="tab-content">
-                        {activeTab === 'description' && (
-                            <ProblemDetails
-                                problem={problem}
-                                selectedTestCase={selectedTestCase}
-                                results={results}
-                                isDemo={isDemo}
-                            />
-                        )}
-                        {activeTab === 'submissions' && <Submissions problemId={problem.id} />}
+                        {activeTab === 'description' && <ProblemDetails problem={problem}/>}
+                        {activeTab === 'submissions' && <Submissions problemId={problem.id}/>}
+                        {activeTab === 'all-submissions' && userRole === 'ADMIN' && <AllSubmissions problemId={problem.id}/>}
                     </div>
                 </div>
                 <div className="problem-right">
@@ -206,7 +219,10 @@ const Problem = () => {
                                 className="run-button"
                                 onClick={() => handleRun(false)}
                                 disabled={isRunning || isSubmitting}
-                                style={{ opacity: isRunning || isSubmitting ? 0.5 : 1, cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer' }}
+                                style={{
+                                    opacity: isRunning || isSubmitting ? 0.5 : 1,
+                                    cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer'
+                                }}
                             >
                                 {isRunning ? <div className="loading-spinner"></div> : 'Run'}
                             </button>
@@ -214,7 +230,10 @@ const Problem = () => {
                                 className="submit-button"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting || isRunning}
-                                style={{ opacity: isSubmitting || isRunning ? 0.5 : 1, cursor: isSubmitting || isRunning ? 'not-allowed' : 'pointer' }}
+                                style={{
+                                    opacity: isSubmitting || isRunning ? 0.5 : 1,
+                                    cursor: isSubmitting || isRunning ? 'not-allowed' : 'pointer'
+                                }}
                             >
                                 {isSubmitting ? <div className="loading-spinner"></div> : 'Submit'}
                             </button>
@@ -246,14 +265,14 @@ const Problem = () => {
             <button className="scroll-button" onClick={scrollToDiscussion}>
                 Go to Comments
             </button>
-            <br />
+            <br/>
             <ResultsModal
                 show={showResults}
                 results={results}
                 onClose={handleCloseResults}
             />
             <div ref={discussionRef} className="discussion-section">
-                <Comments problemId={problem.id} />
+                <Comments problemId={problem.id}/>
             </div>
         </div>
     );

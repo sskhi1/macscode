@@ -1,0 +1,195 @@
+.control-panel-container {
+    margin-top: 10vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #252525;
+    padding: 20px;
+    color: white;
+    border-radius: 8px;
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.control-panel-tabs-container {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.control-panel-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #888888;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    color: white;
+    margin: 0 5px;
+}
+
+.control-panel-tab:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+.control-panel-active {
+    background-color: orange;
+    color: black;
+}
+
+.control-panel-content-container {
+    background-color: #2d2f34;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+
+.control-panel-user-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.control-panel-user-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.control-panel-user-item:last-child {
+    border-bottom: none;
+}
+
+.control-panel-user-item:hover {
+    background-color: #3a3a3a;
+}
+
+.problem-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.problem-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+.problem-item:last-child {
+    border-bottom: none;
+}
+
+.problem-item:hover {
+    background-color: #3a3a3a;
+}
+
+.column {
+    flex: 1;
+    padding: 0 10px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination-button {
+    background-color: #888888;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+    background-color: #e0e0e0;
+    color: black;
+}
+
+.pagination-button.active {
+    background-color: orange;
+    color: black;
+}
+
+.control-panel-user-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.delete-button, .make-admin-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 4vw;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}
+
+.make-admin-button {
+    background-color: gold;
+    color: black;
+    margin-right: 3vw;
+}
+
+.make-admin-button:hover {
+    background-color: goldenrod;
+}
+
+.control-panel-user-item {
+    cursor: pointer;
+}
+
+.search-bar {
+    width: 20%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background-color: #444;
+    color: #f0f0f0;
+    font-size: 1em;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.search-bar::placeholder {
+    color: #999;
+}
+
+.search-bar:focus {
+    border-color: #f5a623;
+    background-color: #555;
+    outline: none;
+}
+
+.admin-star {
+    color: gold;
+    font-size: 1.5em;
+    margin-right: 8.5vw;
+}
+
+

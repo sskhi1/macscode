@@ -10,12 +10,18 @@ import { useNavigate } from 'react-router-dom';
 const TopBar = () => {
     const { auth, setAuth } = useContext(AuthContext);
     const [username, setUsername] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         if (auth) {
-            const decodedToken = jwtDecode(auth);
-            setUsername(decodedToken.sub);
+            try {
+                const decodedToken = jwtDecode(auth);
+                setUsername(decodedToken.sub);
+                setIsAdmin(decodedToken.role === 'ADMIN');
+            } catch (error) {
+                console.error('Error decoding token', error);
+            }
         }
     }, [auth]);
 
@@ -35,6 +41,11 @@ const TopBar = () => {
             <nav className="navigation">
                 <a href="/">Problemset</a>
             </nav>
+            {isAdmin && (
+                <nav className="navigation">
+                    <a href="/control-panel">Control Panel</a>
+                </nav>
+            )}
             <div className="user-actions">
                 <a href="/profile" className="user-profile">
                     <FontAwesomeIcon icon={faUserCircle} size="2x" className="profile-icon" />

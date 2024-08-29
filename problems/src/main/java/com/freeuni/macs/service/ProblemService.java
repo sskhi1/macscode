@@ -91,6 +91,11 @@ public class ProblemService {
                 .toList();
     }
 
+    public void deleteProblemById(ObjectId id) {
+        log.warn("Deleting Problem. ID: {}", id.toString());
+        problemRepository.deleteById(id);
+    }
+
     public List<SubmitResponse> submitProblem(final SubmitRequest solution) {
         ObjectId problemId = new ObjectId(solution.getProblemId());
         List<Test> problemTests = testService.getTestsByProblemId(problemId);

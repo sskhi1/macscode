@@ -1,26 +1,25 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import axios from 'axios';
-import { AuthContext } from '../AuthContext';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import '../styles/Submissions.css';
-import { jwtDecode } from "jwt-decode";
+import {AuthContext} from '../../AuthContext';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {dracula} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import '../../styles/Submissions.css';
+import {useNavigate} from "react-router-dom";
 
-const Submissions = ({ problemId }) => {
-    const { auth } = useContext(AuthContext);
+const AllSubmissions = ({problemId}) => {
+    const {auth} = useContext(AuthContext);
     const [submissions, setSubmissions] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCode, setSelectedCode] = useState(null);
     const [selectedLanguage, setSelectedLanguage] = useState('java');
     const [showCode, setShowCode] = useState(false);
-    const submissionsPerPage = 5;
+    const submissionsPerPage = 10;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchSubmissions = async () => {
             try {
-                const decodedToken = jwtDecode(auth);
-                const username = decodedToken.sub;
-                const response = await axios.get(`/problems-service/submissions/problem/${problemId}/${username}`, {
+                const response = await axios.get(`/problems-service/submissions/problems/${problemId}`, {
                     headers: {
                         Authorization: `Bearer ${auth}`
                     }
@@ -34,12 +33,16 @@ const Submissions = ({ problemId }) => {
         if (auth) {
             fetchSubmissions();
         }
-    }, [auth, problemId]);
+    }, [auth]);
 
     const handleCodeClick = (solutionFileContent, language) => {
         setSelectedCode(solutionFileContent);
         setSelectedLanguage(language);
         setShowCode(true);
+    };
+
+    const handleUsernameClick = (username) => {
+        navigate(`/profile/${username}`)
     };
 
     const handlePageChange = (pageNumber) => {
@@ -74,11 +77,17 @@ const Submissions = ({ problemId }) => {
             <div className="submissions-container">
                 <h3>Submissions</h3>
                 {submissions.length === 0 ? (
-                    <p className="no-submissions-message">You Have No Submissions on This Problem</p>
+                    <p className="no-submissions-message">There are No Submissions on This Problem</p>
                 ) : (
                     <div className="submissions-list">
                         {currentSubmissions.map(submission => (
                             <div className="submission-item" key={submission.id.toString()}>
+                                <div
+                                    className="submitter-username"
+                                    onClick={() => handleUsernameClick(submission.submitterUsername)}
+                                >
+                                    {submission.submitterUsername}
+                                </div>
                                 <div className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
                                     {submission.result}
                                 </div>
@@ -125,4 +134,4 @@ const Submissions = ({ problemId }) => {
     );
 };
 
-export default Submissions;
+export default AllSubmissions;

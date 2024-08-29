@@ -41,7 +41,7 @@ public class UserSubmissionService {
 
     public List<UserSubmissionDto> getProblemSubmissions(String problemId) {
         ObjectId id = new ObjectId(problemId);
-        List<UserSubmission> problemSubmissions = userSubmissionRepository.findAllByProblemIdOrderBySubmissionDateDesc(id);
+        List<UserSubmission> problemSubmissions = userSubmissionRepository.findAllByProblem_IdOrderBySubmissionDateDesc(id);
 
         return UserSubmissionMapper.toDtoList(problemSubmissions);
     }

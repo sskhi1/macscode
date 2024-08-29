@@ -5,6 +5,7 @@ import com.freeuni.macs.authservice.model.api.AuthResponse;
 import com.freeuni.macs.authservice.model.api.SignInRequest;
 import com.freeuni.macs.authservice.model.api.SignUpRequest;
 import com.freeuni.macs.authservice.model.api.UserDTO;
+import com.freeuni.macs.authservice.model.db.User;
 import com.freeuni.macs.authservice.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -52,5 +53,20 @@ public class UserController {
             @RequestBody UserDTO userDto) {
         userService.updateUser(username, userDto);
         return ResponseEntity.ok("User updated successfully.");
+    }
+
+    @GetMapping("/users/all")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
+    @DeleteMapping("/{username}")
+    public void deleteUserByUsername(@PathVariable String username) {
+        userService.deleteUserByUsername(username);
+    }
+
+    @PatchMapping("/{username}/make-admin")
+    public void makeUserAdmin(@PathVariable String username) {
+        userService.makeUserAdmin(username);
     }
 }

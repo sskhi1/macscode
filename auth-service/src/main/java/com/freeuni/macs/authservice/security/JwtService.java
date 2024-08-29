@@ -57,7 +57,10 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        HashMap<String, Object> claims = new HashMap<>();
+        claims.put("role", userDetails.getAuthorities().stream()
+                .findFirst().orElseThrow(() -> new RuntimeException("Role not found")).getAuthority());
+        return generateToken(claims, userDetails);
     }
 
     public boolean isTokenValid(String jwt, UserDetails userDetails) {

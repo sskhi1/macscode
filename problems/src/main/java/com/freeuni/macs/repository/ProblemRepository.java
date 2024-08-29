@@ -17,4 +17,6 @@ public interface ProblemRepository extends MongoRepository<Problem, ObjectId> {
     List<Problem> findAllByProblemIdCourse(Course course);
 
     Problem findTopByProblemIdCourseOrderByProblemIdOrderDesc(Course course);
+
+    void deleteById(ObjectId id);
 }
