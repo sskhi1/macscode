@@ -33,33 +33,6 @@ const Problem = () => {
     const discussionRef = useRef(null);
 
     useEffect(() => {
-        let webSocketURL;
-        const isDevelopment = process.env.NODE_ENV === 'development';
-        // Not good thing to do but whatever. TODO: change this in the future
-        if (isDevelopment) {
-            webSocketURL = `ws://localhost:8080/websocket-endpoint/websocket`;
-        } else {
-            const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
-            webSocketURL = `${protocol}${window.location.host}/problems-service/websocket-endpoint/websocket`;
-        }
-
-        clientRef.current = new Client({
-            brokerURL: webSocketURL,
-            reconnectDelay: 5000,
-            onStompError: (frame) => {
-                console.error('Broker reported error: ' + frame.headers['message']);
-                console.error('Additional details: ' + frame.body);
-            },
-        });
-
-        clientRef.current.activate();
-
-        return () => {
-            clientRef.current.deactivate();
-        };
-    }, []);
-
-    useEffect(() => {
         const fetchProblem = async () => {
             try {
                 const response = await axios.get(`/problems-service/problems/${course}/${order}`);
@@ -85,66 +58,80 @@ const Problem = () => {
         handleRun(true);
     };
 
-    const handleRun = (demoMode) => {
+    const handleRun = async (demoMode) => {
         setIsDemo(demoMode);
         if (!problem || isRunning) return;
 
-        const submissionId = uuidv4();
-        clientRef.current.subscribe(`/topic/runResult/${submissionId}`, (message) => {
-            const runResults = JSON.parse(message.body);
-            setResults(runResults);
-            setResponseReceived(true);
-            if (!demoMode) {
-                setShowResults(true);
-            }
-            setIsRunning(false);
-        });
-
         setIsRunning(true);
-        clientRef.current.publish({
-            destination: '/app/runSolution',
-            body: JSON.stringify({
-                problemId: problem.id,
-                solution: code,
-                submissionId: submissionId
-            }),
-        });
         setHasSubmitted(true);
         setResponseReceived(false);
 
-        if (demoMode && results[selectedTestCase.testNum - 1].result === 'COMPILE_ERROR') {
-            setShowResults(true);
+        try {
+            const response = await fetch('/problems-service/problems/run', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    problemId: problem.id,
+                    solution: code
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to run the solution');
+            }
+
+            const runResults = await response.json();
+            setResults(runResults);
+            setResponseReceived(true);
+
+            if (!demoMode || (demoMode && runResults[selectedTestCase.testNum - 1].result === 'COMPILE_ERROR')) {
+                setShowResults(true);
+            }
+        } catch (error) {
+            console.error('Error running solution:', error);
+        } finally {
+            setIsRunning(false);
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setIsDemo(false);
         if (!problem || isSubmitting) return;
 
-        const submissionId = uuidv4();
-        clientRef.current.subscribe(`/topic/submitResult/${submissionId}`, (message) => {
-            const submitResults = JSON.parse(message.body);
+        setIsSubmitting(true);
+        setHasSubmitted(true);
+        setResponseReceived(false);
+
+        try {
+            const response = await fetch('/problems-service/problems/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    problemId: problem.id,
+                    solution: code
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit the solution');
+            }
+
+            const submitResults = await response.json();
             setResults(submitResults);
             setResponseReceived(true);
             setShowResults(true);
+        } catch (error) {
+            console.error('Error submitting solution:', error);
+        } finally {
             setIsSubmitting(false);
-        });
-
-        setIsSubmitting(true);
-        clientRef.current.publish({
-            destination: '/app/submitSolution',
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
-            body: JSON.stringify({
-                problemId: problem.id,
-                solution: code,
-                submissionId: submissionId
-            }),
-        });
-        setHasSubmitted(true);
-        setResponseReceived(false);
+        }
     };
+
 
     const handleCloseResults = () => {
         setShowResults(false);

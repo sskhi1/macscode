@@ -6,5 +6,4 @@ import lombok.Data;
 public class SubmitRequest {
     private String problemId;
     private String solution;
-    private String submissionId;
 }

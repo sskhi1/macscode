@@ -51,7 +51,8 @@ public class ExecutionResultsExtractor {
         String result = reader.readLine();
         if (result.equals(KAREL))
             result = reader.readLine();
-        BufferedReader instructionsReader = new BufferedReader(new FileReader(resultPath + "/instructions.txt"));
+        String instructionsPath = resultPath + "/instructions_" + (testNum + 1) + ".txt";
+        BufferedReader instructionsReader = new BufferedReader(new FileReader(instructionsPath));
         StringBuilder compileInfoBuilder = new StringBuilder();
         for (String line = instructionsReader.readLine(); line != null; line = instructionsReader.readLine()) {
             compileInfoBuilder.append(line).append(" ");
