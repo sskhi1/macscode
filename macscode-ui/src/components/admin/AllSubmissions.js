@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
 import {AuthContext} from '../../AuthContext';
 import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
@@ -77,21 +77,24 @@ const AllSubmissions = ({problemId}) => {
             <div className="submissions-container">
                 <h3>Submissions</h3>
                 {submissions.length === 0 ? (
-                    <p className="no-submissions-message">There are No Submissions on This Problem</p>
+                    <p className="no-message">There are no submissions for this problem</p>
                 ) : (
                     <div className="submissions-list">
                         {currentSubmissions.map(submission => (
                             <div className="submission-item" key={submission.id.toString()}>
                                 <div
+                                    style={{flex: 1.5}}
                                     className="submitter-username"
                                     onClick={() => handleUsernameClick(submission.submitterUsername)}
                                 >
                                     {submission.submitterUsername}
                                 </div>
-                                <div className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
+                                <div style={{flex: 0.5}}
+                                     className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
                                     {submission.result}
                                 </div>
-                                <div className="date">
+                                <div className="date" style={{flex: 2.5}}
+                                >
                                     {new Date(submission.submissionDate).toLocaleString('en-US', {
                                         dateStyle: 'short',
                                         timeStyle: 'short'
@@ -109,7 +112,7 @@ const AllSubmissions = ({problemId}) => {
                 )}
                 {totalPages > 1 && (
                     <div className="pagination">
-                        {Array.from({ length: totalPages }, (_, index) => (
+                        {Array.from({length: totalPages}, (_, index) => (
                             <button
                                 key={index + 1}
                                 className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}

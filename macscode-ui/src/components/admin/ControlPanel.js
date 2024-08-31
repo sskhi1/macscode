@@ -4,6 +4,7 @@ import '../../styles/ControlPanel.css';
 import TopBar from '../TopBar';
 import { AuthContext } from "../../AuthContext";
 import { useNavigate } from "react-router-dom";
+import Modal from '../Modal';
 
 const ControlPanel = () => {
     const { auth } = useContext(AuthContext);
@@ -18,6 +19,7 @@ const ControlPanel = () => {
     const [usersPerPage, setUsersPerPage] = useState(10);
     const problemsPerPage = 10;
     const [confirmAction, setConfirmAction] = useState(null);
+    const [confirmData, setConfirmData] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
 
@@ -93,9 +95,11 @@ const ControlPanel = () => {
     };
 
     const confirmDeleteProblem = (problemId) => {
-        if (window.confirm("Are you sure you want to delete this problem?")) {
-            handleDeleteProblem(problemId);
-        }
+        setConfirmData({
+            action: () => handleDeleteProblem(problemId),
+            message: "Are you sure you want to delete this problem?"
+        });
+        setConfirmAction('delete');
     };
 
     const handleDeleteUser = async (username) => {
@@ -113,9 +117,11 @@ const ControlPanel = () => {
     };
 
     const confirmDeleteUser = (username) => {
-        if (window.confirm("Are you sure you want to delete this user?")) {
-            handleDeleteUser(username);
-        }
+        setConfirmData({
+            action: () => handleDeleteUser(username),
+            message: "Are you sure you want to delete this user?"
+        });
+        setConfirmAction('delete');
     };
 
     const handleMakeAdmin = async (username) => {
@@ -132,9 +138,11 @@ const ControlPanel = () => {
     };
 
     const confirmMakeAdmin = (username) => {
-        if (window.confirm("Are you sure you want to make this user Admin?")) {
-            handleMakeAdmin(username);
-        }
+        setConfirmData({
+            action: () => handleMakeAdmin(username),
+            message: "Are you sure you want to make this user an Admin?"
+        });
+        setConfirmAction('make-admin');
     };
 
     const handlePageChange = (pageNumber) => {
@@ -164,7 +172,7 @@ const ControlPanel = () => {
                         placeholder="Search Users"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-bar"
+                        className="control-panel-search-bar"
                     />
                     <ul className="control-panel-user-list">
                         {currentUsers.map(user => (
@@ -177,7 +185,7 @@ const ControlPanel = () => {
                                 <div className="control-panel-user-actions">
                                     {!(user.role === "ADMIN") && (
                                         <button
-                                            className="make-admin-button"
+                                            className="control-panel-make-admin-button"
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 confirmMakeAdmin(user.username);
@@ -186,9 +194,9 @@ const ControlPanel = () => {
                                             Make Admin
                                         </button>
                                     )}
-                                    {user.role === "ADMIN" && <span className="admin-star">⭐</span>}
+                                    {user.role === "ADMIN" && <span className="control-panel-admin-star">⭐</span>}
                                     <button
-                                        className="delete-button"
+                                        className="control-panel-delete-button"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             confirmDeleteUser(user.username);
@@ -201,11 +209,11 @@ const ControlPanel = () => {
                         ))}
                     </ul>
                     {totalUserPages > 1 && (
-                        <div className="pagination">
+                        <div className="control-panel-pagination">
                             {Array.from({ length: totalUserPages }, (_, index) => (
                                 <button
                                     key={index + 1}
-                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                    className={`control-panel-pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
                                     onClick={() => handlePageChange(index + 1)}
                                 >
                                     {index + 1}
@@ -224,19 +232,19 @@ const ControlPanel = () => {
                         placeholder="Search Problems"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="search-bar"
+                        className="control-panel-search-bar"
                     />
-                    <ul className="problem-list">
+                    <ul className="control-panel-problem-list">
                         {currentProblems.map((problem) => (
-                            <li key={problem.id} className="problem-item" onClick={() => handleProblemClick(problem)}>
+                            <li key={problem.id} className="control-panel-problem-item" onClick={() => handleProblemClick(problem)}>
                                 <span className="column title">{problem.problemId.order}. {problem.name}</span>
-                                <span className="column type">{problem.type}</span>
-                                <span className={`column difficulty ${problem.difficulty.toLowerCase()}`}>
+                                <span className="control-panel-column type">{problem.type}</span>
+                                <span className={`control-panel-column difficulty ${problem.difficulty.toLowerCase()}`}>
                                     {problem.difficulty}
                                 </span>
-                                <span className="column topics">{problem.topics.join(', ')}</span>
+                                <span className="control-panel-column topics">{problem.topics.join(', ')}</span>
                                 <button
-                                    className="delete-button"
+                                    className="control-panel-delete-button"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         confirmDeleteProblem(problem.id);
@@ -248,11 +256,11 @@ const ControlPanel = () => {
                         ))}
                     </ul>
                     {totalProblemPages > 1 && (
-                        <div className="pagination">
+                        <div className="control-panel-pagination">
                             {Array.from({ length: totalProblemPages }, (_, index) => (
                                 <button
                                     key={index + 1}
-                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                    className={`control-panel-pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
                                     onClick={() => handlePageChange(index + 1)}
                                 >
                                     {index + 1}
@@ -273,37 +281,31 @@ const ControlPanel = () => {
                     className={`control-panel-tab ${activeTab === 'manage-users' ? 'control-panel-active' : ''}`}
                     onClick={() => setActiveTab('manage-users')}
                 >
-                    <h2>Manage Users</h2>
+                    <h3>Manage Users</h3>
                 </div>
                 <div
                     className={`control-panel-tab ${activeTab === 'manage-problems' ? 'control-panel-active' : ''}`}
                     onClick={() => setActiveTab('manage-problems')}
                 >
-                    <h2>Manage Problems</h2>
+                    <h3>Manage Problems</h3>
                 </div>
             </div>
             <div className="control-panel-content-container">
                 {renderContent()}
             </div>
-            {confirmAction && (
-                <div className="confirmation-popup">
-                    <p>Are you sure you want to make this user an admin?</p>
-                    <button
-                        className="confirm-button"
-                        onClick={() => {
-                            confirmAction();
-                            setConfirmAction(null);
-                        }}
-                    >
-                        Yes
-                    </button>
-                    <button
-                        className="cancel-button"
-                        onClick={() => setConfirmAction(null)}
-                    >
-                        No
-                    </button>
-                </div>
+            {confirmAction && confirmData && (
+                <Modal
+                    message={confirmData.message}
+                    onConfirm={() => {
+                        confirmData.action();
+                        setConfirmAction(null);
+                        setConfirmData(null);
+                    }}
+                    onCancel={() => {
+                        setConfirmAction(null);
+                        setConfirmData(null);
+                    }}
+                />
             )}
         </div>
     );

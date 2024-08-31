@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axios from 'axios';
-import { AuthContext } from '../AuthContext';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import {AuthContext} from '../AuthContext';
+import {Prism as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {dracula} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import '../styles/Submissions.css';
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
-const Submissions = ({ problemId }) => {
-    const { auth } = useContext(AuthContext);
+const Submissions = ({problemId}) => {
+    const {auth} = useContext(AuthContext);
     const [submissions, setSubmissions] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedCode, setSelectedCode] = useState(null);
@@ -74,12 +74,13 @@ const Submissions = ({ problemId }) => {
             <div className="submissions-container">
                 <h3>Submissions</h3>
                 {submissions.length === 0 ? (
-                    <p className="no-submissions-message">You Have No Submissions on This Problem</p>
+                    <p className="no-message">You have no submissions for this problem</p>
                 ) : (
                     <div className="submissions-list">
                         {currentSubmissions.map(submission => (
                             <div className="submission-item" key={submission.id.toString()}>
-                                <div className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
+                                <div style={{flex: 0.5}}
+                                     className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
                                     {submission.result}
                                 </div>
                                 <div className="date">
@@ -100,7 +101,7 @@ const Submissions = ({ problemId }) => {
                 )}
                 {totalPages > 1 && (
                     <div className="pagination">
-                        {Array.from({ length: totalPages }, (_, index) => (
+                        {Array.from({length: totalPages}, (_, index) => (
                             <button
                                 key={index + 1}
                                 className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}

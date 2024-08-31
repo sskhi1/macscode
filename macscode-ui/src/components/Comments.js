@@ -5,6 +5,8 @@ import '../styles/Comments.css';
 import { AuthContext } from '../AuthContext';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { FaPlus } from 'react-icons/fa';
+
 
 const Comments = ({ problemId }) => {
     const { auth } = useContext(AuthContext);
@@ -12,7 +14,7 @@ const Comments = ({ problemId }) => {
     const [newComment, setNewComment] = useState('');
     const [username, setUsername] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const [commentsPerPage] = useState(10);
+    const [commentsPerPage] = useState(5);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -110,6 +112,13 @@ const Comments = ({ problemId }) => {
         );
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleAddComment();
+        }
+    };
+
     return (
         <div className="comments-container">
             <div className="add-comment">
@@ -119,8 +128,11 @@ const Comments = ({ problemId }) => {
                     placeholder="Add your comment..."
                     modules={modules}
                     formats={formats}
+                    onKeyDown={handleKeyDown}
                 />
-                <button onClick={handleAddComment}>Submit</button>
+                <button onClick={handleAddComment}>
+                    <FaPlus />
+                </button>
             </div>
             <div className="comments-summary">
                 <span className="comments-count">Total Comments: {comments.length}</span>
@@ -130,17 +142,64 @@ const Comments = ({ problemId }) => {
                     <Comment key={comment.id} comment={comment} username={username} formatDate={formatDate} />
                 ))}
             </div>
-            <div className="pagination">
-                {Array.from({ length: totalPages }, (_, index) => (
-                    <button
-                        key={index + 1}
-                        className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                        onClick={() => handlePageChange(index + 1)}
-                    >
-                        {index + 1}
-                    </button>
-                ))}
-            </div>
+            {totalPages > 1 && (
+                <div className="pagination">
+                    {currentPage > 1 && (
+                        <button
+                            className="pagination-button"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                        >
+                            &laquo;
+                        </button>
+                    )}
+                    {Array.from({ length: totalPages }, (_, index) => {
+                        if (totalPages > 5) {
+                            if (index + 1 === currentPage || index + 1 === 1 || index + 1 === totalPages) {
+                                return (
+                                    <button
+                                        key={index + 1}
+                                        className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                        onClick={() => handlePageChange(index + 1)}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                );
+                            } else if (index + 1 === currentPage - 1 || index + 1 === currentPage + 1) {
+                                return (
+                                    <button
+                                        key={index + 1}
+                                        className="pagination-button"
+                                        onClick={() => handlePageChange(index + 1)}
+                                    >
+                                        {index + 1}
+                                    </button>
+                                );
+                            } else if (index + 1 === currentPage - 2 || index + 1 === currentPage + 2) {
+                                return <span style={{ color: 'white' }}>...</span>;
+                            } else {
+                                return null;
+                            }
+                        } else {
+                            return (
+                                <button
+                                    key={index + 1}
+                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            );
+                        }
+                    })}
+                    {currentPage < totalPages && (
+                        <button
+                            className="pagination-button"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                        >&raquo;
+                        </button>
+                    )}
+                </div>
+            )}
         </div>
     );
 };
@@ -212,6 +271,13 @@ const Comment = ({ comment, username, formatDate }) => {
         }
     };
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleAddReply();
+        }
+    };
+
     return (
         <div className="comment">
             <div className="comment-header">
@@ -220,7 +286,7 @@ const Comment = ({ comment, username, formatDate }) => {
             </div>
             <div className="comment-body" dangerouslySetInnerHTML={{ __html: comment.comment }}></div>
             <button className="reply-button" onClick={fetchReplies}>
-                {showReplies ? 'Hide Replies' : 'Show Replies'}
+                {showReplies ? 'Hide Replies  ▾' : 'Show Replies  ▸'}
             </button>
             {showReplies && (
                 <div className="replies-section">
@@ -240,8 +306,11 @@ const Comment = ({ comment, username, formatDate }) => {
                             placeholder="Add your reply..."
                             modules={modules}
                             formats={formats}
+                            onKeyDown={handleKeyDown}
                         />
-                        <button onClick={handleAddReply}>Submit</button>
+                        <button onClick={handleAddReply}>
+                            <FaPlus />
+                        </button>
                     </div>
                 </div>
             )}

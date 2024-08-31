@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import '../styles/Home.css';
-import '../styles/Difficulty.css';
-import useFetchSubmissions from "./useFetchSubmissions";
-import TypeBanners from "./homepage/TypeBanners";
-import TopicsGrid from "./homepage/TopicsGrid";
-import Filters from "./homepage/Filters";
-import TableHeader from "./homepage/TableHeader";
-import ProblemList from "./homepage/ProblemList";
-import TopBar from "./TopBar";
+import '../../styles/Home.css';
+import '../../styles/Difficulty.css';
+import TypeBanners from "./TypeBanners";
+import TopicsGrid from "./TopicsGrid";
+import Filters from "./Filters";
+import TableHeader from "./TableHeader";
+import ProblemList from "./ProblemList";
+import TopBar from "../TopBar";
+import useFetchSubmissions from "../useFetchSubmissions";
 
 const Home = () => {
     const [problems, setProblems] = useState([]);

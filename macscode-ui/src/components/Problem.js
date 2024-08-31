@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import ProblemDetails from './ProblemDetails';
@@ -7,11 +7,9 @@ import TestCases from './TestCases';
 import ResultsModal from './ResultsModal';
 import Submissions from './Submissions';
 import '../styles/Problem.css';
-import {Client} from '@stomp/stompjs';
 import '../styles/Karel.css';
 import TopBar from './TopBar';
 import Comments from './Comments';
-import {v4 as uuidv4} from 'uuid';
 import {jwtDecode} from 'jwt-decode';
 import AllSubmissions from "./admin/AllSubmissions";
 
@@ -203,10 +201,20 @@ const Problem = () => {
                         )}
                     </div>
                     <div className="tab-content">
-                        {activeTab === 'description' && <ProblemDetails problem={problem}/>}
+                        {activeTab === 'description' && (
+                            <ProblemDetails
+                                problem={problem}
+                                selectedTestCase={selectedTestCase}
+                                results={results}
+                                isDemo={isDemo}
+                            />)}
                         {activeTab === 'submissions' && <Submissions problemId={problem.id}/>}
-                        {activeTab === 'all-submissions' && userRole === 'ADMIN' && <AllSubmissions problemId={problem.id}/>}
+                        {activeTab === 'all-submissions' && userRole === 'ADMIN' &&
+                            <AllSubmissions problemId={problem.id}/>}
                     </div>
+                    <button className="scroll-button" onClick={scrollToDiscussion}>
+                        Go to Comments
+                    </button>
                 </div>
                 <div className="problem-right">
                     <div className="problem-right-upper">
@@ -237,17 +245,19 @@ const Problem = () => {
                             >
                                 {isSubmitting ? <div className="loading-spinner"></div> : 'Submit'}
                             </button>
-                            <button
-                                className="show-demo-button"
-                                onClick={handleShowDemo}
-                                disabled={isRunning || isSubmitting}
-                                style={{
-                                    opacity: isRunning || isSubmitting ? 0.5 : 1,
-                                    cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer',
-                                }}
-                            >
-                                Demo
-                            </button>
+                            {problem.type === 'KAREL' && (
+                                <button
+                                    className="show-demo-button"
+                                    onClick={handleShowDemo}
+                                    disabled={isRunning || isSubmitting}
+                                    style={{
+                                        opacity: isRunning || isSubmitting ? 0.5 : 1,
+                                        cursor: isRunning || isSubmitting ? 'not-allowed' : 'pointer',
+                                    }}
+                                >
+                                    Demo
+                                </button>
+                            )}
 
                             <button
                                 className={`view-results-button ${hasSubmitted && responseReceived ? 'visible' : ''}`}
@@ -262,9 +272,6 @@ const Problem = () => {
                     </div>
                 </div>
             </div>
-            <button className="scroll-button" onClick={scrollToDiscussion}>
-                Go to Comments
-            </button>
             <br/>
             <ResultsModal
                 show={showResults}

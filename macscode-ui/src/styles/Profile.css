@@ -50,64 +50,19 @@ body {
     color: #b0b0b0;
 }
 
-.submissions-container {
-    min-height: 100px;
-    flex-grow: 1;
-    background-color: #292929;
-    padding: 20px;
-    border-radius: 10px;
+.profile-header-info {
+    text-align: left;
 }
 
-.submissions-container h3 {
-    color: #fff;
-    margin-bottom: 20px;
+.profile-header-info h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #ffffff;
 }
 
-.submissions-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.submission-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: #333;
-    border-radius: 5px;
-    align-items: center;
-}
-
-.submission-item div {
-    color: #e0e0e0;
-}
-
-.submission-item .problem-name {
-    flex: 2.5;
-}
-
-.submission-item .result {
-    flex: 2;
-    font-weight: bold;
-    text-align: center;
-}
-
-.submission-item .date {
-    flex: 2;
-    text-align: center;
-}
-
-.submission-item .result.accepted {
-    color: #219321;
-}
-
-.submission-item .result.rejected {
-    color: #cc0101;
-}
-
-.submission-item:hover {
-    background-color: #3a3a3a;
-    cursor: pointer;
+.profile-header-info p {
+    margin: 10px 0 15px 0;
+    color: rgba(255, 255, 255, 0.67);
 }
 
 .home-button {
@@ -147,7 +102,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9);
+    background-color: rgba(73, 70, 70, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,10 +113,10 @@ body {
     position: relative;
     background: #343434;
     color: #dcdcdc;
-    border-radius: 8px;
-    padding: 20px;
+    border-radius: 10px;
+    padding: 10px;
     width: 90%;
-    max-width: 900px;
+    max-width: 90%;
     max-height: 80%;
     overflow-y: auto;
 }
@@ -191,39 +146,16 @@ pre {
 
 .methodology-label {
     color: purple;
+    font-weight: bold;
 }
 
 .abstractions-label {
-    color: orange;
+    color: coral;
+    font-weight: bold;
 }
 
 .count {
     color: inherit;
-}
-
-.pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.pagination-button {
-    background-color: #444;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    margin: 0 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.pagination-button.active {
-    background-color: #888;
-}
-
-.pagination-button:hover {
-    background-color: #666;
 }
 
 ::-webkit-scrollbar {
@@ -286,10 +218,12 @@ pre {
 }
 
 .profile-header button {
+    width: 100%;
     background-color: orange;
     color: #fff;
     border: none;
-    padding: 10px;
+    padding: 8px;
+    font-weight: bold;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
@@ -297,5 +231,7 @@ pre {
 }
 
 .profile-header button:hover {
-    background-color: #cbb111;
+    color: orange;
+    font-weight: bold;
+    background-color: #ffffff;
 }

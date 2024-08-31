@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaCheckCircle, FaRegCircle, FaTimesCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/Home.css';
@@ -24,8 +24,14 @@ const ProblemList = ({ problems, getStatus }) => {
     const totalPages = Math.ceil(problems.length / problemsPerPage);
 
     const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
+        if (pageNumber >= 1 && pageNumber <= totalPages) {
+            setCurrentPage(pageNumber);
+        }
     };
+
+    if (problems.length === 0) {
+        return <div className="no-message">No problems available</div>;
+    }
 
     return (
         <div>
@@ -44,19 +50,62 @@ const ProblemList = ({ problems, getStatus }) => {
                     </li>
                 ))}
             </ul>
-            {totalPages > 1 && (
-                <div className="pagination">
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <button
-                            key={index + 1}
-                            className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                            onClick={() => handlePageChange(index + 1)}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
-                </div>
-            )}
+            <div className="pagination">
+                {currentPage > 1 && (
+                    <button
+                        className="pagination-button"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                        &laquo;
+                    </button>
+                )}
+                {Array.from({ length: totalPages }, (_, index) => {
+                    if (totalPages > 5) {
+                        if (index + 1 === currentPage || index + 1 === 1 || index + 1 === totalPages) {
+                            return (
+                                <button
+                                    key={index + 1}
+                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            );
+                        } else if (index + 1 === currentPage - 1 || index + 1 === currentPage + 1) {
+                            return (
+                                <button
+                                    key={index + 1}
+                                    className="pagination-button"
+                                    onClick={() => handlePageChange(index + 1)}
+                                >
+                                    {index + 1}
+                                </button>
+                            );
+                        } else if (index + 1 === currentPage - 2 || index + 1 === currentPage + 2) {
+                            return <span key={index + 1}>...</span>;
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        return (
+                            <button
+                                key={index + 1}
+                                className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        );
+                    }
+                })}
+                {currentPage < totalPages && (
+                    <button
+                        className="pagination-button"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                    >&raquo;
+                    </button>
+                )}
+            </div>
         </div>
     );
 };

@@ -32,13 +32,13 @@
 }
 
 .result-item.pass {
-    background-color: #2a6b2f;
-    border-color: #1f4d1a;
+    background-color: darkgreen;
+    border-color: grey;
 }
 
 .result-item.fail {
-    background-color: #5c1f1f;
-    border-color: #3e1212;
+    background-color: #882828;
+    border-color: grey;
 }
 
 .close-button {

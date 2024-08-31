@@ -79,7 +79,7 @@
 .view-results-button {
     margin-left: auto;
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color: green;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -89,6 +89,10 @@
 
 .view-results-button.visible {
     display: block;
+}
+
+.view-results-button:hover {
+    background: seagreen;
 }
 
 .error-message {
@@ -171,13 +175,14 @@
 
 .scroll-button {
     display: block;
-    margin: 25px auto;
+    margin: 20px 0 0 0;
     padding: 15px 30px;
     background-color: orange;
     color: white;
     border: none;
     border-radius: 25px;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -185,7 +190,9 @@
 }
 
 .scroll-button:hover {
-    background-color: green;
+    background-color: white;
+    color: orange;
+    font-weight: bold;
     transform: translateY(-2px);
 }
 

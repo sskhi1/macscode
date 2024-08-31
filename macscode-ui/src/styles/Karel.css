@@ -28,10 +28,21 @@
     z-index: 99999;
 }
 
-.karel-0 { transform: rotate(270deg); }
-.karel-1 { transform: rotate(0deg); }
-.karel-2 { transform: rotate(90deg); }
-.karel-3 { transform: rotate(180deg); }
+.karel-0 {
+    transform: rotate(270deg);
+}
+
+.karel-1 {
+    transform: rotate(0deg);
+}
+
+.karel-2 {
+    transform: rotate(90deg);
+}
+
+.karel-3 {
+    transform: rotate(180deg);
+}
 
 .beeper {
     position: absolute;
@@ -164,7 +175,6 @@
 }
 
 .restore-button {
-    padding-top: 10px;
     background: transparent;
     border: none;
     color: white;
@@ -173,6 +183,7 @@
     transition: background-color 0.3s ease;
     display: flex;
     align-items: center;
+    margin-right: 40px;
 }
 
 .restore-button:hover {
@@ -184,3 +195,24 @@
     height: 40px;
     margin-right: 5px;
 }
+
+.controls-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.speed-controller {
+    display: flex;
+    align-items: center;
+}
+
+.speed-controller label {
+    margin-right: 10px;
+    font-size: 13px
+}
+
+.speed-controller input {
+    margin-left: 10px;
+}
+

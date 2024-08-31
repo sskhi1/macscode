@@ -71,6 +71,7 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
     const [instructionIndex, setInstructionIndex] = useState(0);
     const [instructions, setInstructions] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
+    const [speed, setSpeed] = useState(500);
 
     const cellSize = Math.min(window.innerWidth / width * 0.35, 70);
 
@@ -99,10 +100,10 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
             const timeoutId = setTimeout(() => {
                 executeInstruction(instructions[instructionIndex]);
                 setInstructionIndex((prevIndex) => prevIndex + 1);
-            }, 500);
+            }, speed);
             return () => clearTimeout(timeoutId);
         }
-    }, [instructionIndex, instructions, errorMessage]);
+    }, [instructionIndex, instructions, errorMessage, speed]);
 
     const executeInstruction = (instruction) => {
         switch (instruction) {
@@ -236,6 +237,11 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
         setErrorMessage('');
     };
 
+    const handleSpeedChange = (e) => {
+        const reversedValue = 1000 - e.target.value;
+        setSpeed(reversedValue);
+    };
+
     return (
         <div className="karel-world-container">
             <div className="karel-world" style={gridStyle}>
@@ -249,14 +255,27 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
                     onClose={() => setErrorMessage('')}
                 />
             )}
-            <button onClick={resetKarelWorld} className="restore-button">
-                <img
-                    src={require('../icons/restore.png')}
-                    alt="Restore"
-                    className="restore-button-icon"
-                />
-                Restore Karel's World
-            </button>
+            <div className="controls-container">
+                <button onClick={resetKarelWorld} className="restore-button">
+                    <img
+                        src={require('../icons/restore.png')}
+                        alt="Restore"
+                        className="restore-button-icon"
+                    />
+                    Restore Karel's World
+                </button>
+                <div className="speed-controller">
+                    <label htmlFor="speed-slider">Speed:</label>
+                    <input
+                        id="speed-slider"
+                        type="range"
+                        min="0"
+                        max="1000"
+                        value={1000 - speed}
+                        onChange={handleSpeedChange}
+                    />
+                </div>
+            </div>
         </div>
     );
 }

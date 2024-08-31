@@ -219,48 +219,101 @@ const UserProfile = () => {
                 </div>
                 <div className="submissions-container">
                     <h3>Recent Submissions</h3>
-                    <div className="submissions-list">
-                        {currentSubmissions.map(submission => (
-                            <div
-                                className="submission-item"
-                                key={submission.id.toString()}
-                            >
-                                <div
-                                    className="problem-name"
-                                    onClick={() => handleProblemClick(submission.problem)}
-                                    style={{cursor: 'pointer', color: '#ffb700'}}
-                                >
-                                    {submission.problem.name}
-                                </div>
-                                <div className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
-                                    {submission.result}
-                                </div>
-                                <div className="date">
-                                    {new Date(submission.submissionDate).toLocaleString('en-US', {
-                                        dateStyle: 'short',
-                                        timeStyle: 'short'
-                                    })}
-                                </div>
-                                <button
-                                    className="view-code-button"
-                                    onClick={() => handleCodeClick(submission.solutionFileContent, "java")}
-                                >
-                                    View Code
-                                </button>
+                    {submissions.length === 0 ? (
+                        <p className="no-message">No submissions available</p>
+                    ) : (
+                        <>
+                            <div className="submissions-list">
+                                {currentSubmissions.map(submission => (
+                                    <div
+                                        className="submission-item"
+                                        key={submission.id.toString()}
+                                    >
+                                        <div
+                                            className="problem-name"
+                                            onClick={() => handleProblemClick(submission.problem)}
+                                            style={{cursor: 'pointer', color: '#ffb700'}}
+                                        >
+                                            {submission.problem.name}
+                                        </div>
+                                        <div className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
+                                            {submission.result}
+                                        </div>
+                                        <div className="date">
+                                            {new Date(submission.submissionDate).toLocaleString('en-US', {
+                                                dateStyle: 'short',
+                                                timeStyle: 'short'
+                                            })}
+                                        </div>
+                                        <button
+                                            className="view-code-button"
+                                            onClick={() => handleCodeClick(submission.solutionFileContent, "java")}
+                                        >
+                                            View Code
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                    <div className="pagination">
-                        {Array.from({length: totalPages}, (_, index) => (
-                            <button
-                                key={index + 1}
-                                className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                                onClick={() => handlePageChange(index + 1)}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                    </div>
+                            {totalPages > 1 && (
+                                <div className="pagination">
+                                    {currentPage > 1 && (
+                                        <button
+                                            className="pagination-button"
+                                            onClick={() => handlePageChange(currentPage - 1)}
+                                        >
+                                            &laquo;
+                                        </button>
+                                    )}
+                                    {Array.from({ length: totalPages }, (_, index) => {
+                                        if (totalPages > 5) {
+                                            if (index + 1 === currentPage || index + 1 === 1 || index + 1 === totalPages) {
+                                                return (
+                                                    <button
+                                                        key={index + 1}
+                                                        className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                                        onClick={() => handlePageChange(index + 1)}
+                                                    >
+                                                        {index + 1}
+                                                    </button>
+                                                );
+                                            } else if (index + 1 === currentPage - 1 || index + 1 === currentPage + 1) {
+                                                return (
+                                                    <button
+                                                        key={index + 1}
+                                                        className="pagination-button"
+                                                        onClick={() => handlePageChange(index + 1)}
+                                                    >
+                                                        {index + 1}
+                                                    </button>
+                                                );
+                                            } else if (index + 1 === currentPage - 2 || index + 1 === currentPage + 2) {
+                                                return <span style={{ color: 'white' }}>...</span>;
+                                            } else {
+                                                return null;
+                                            }
+                                        } else {
+                                            return (
+                                                <button
+                                                    key={index + 1}
+                                                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                                    onClick={() => handlePageChange(index + 1)}
+                                                >
+                                                    {index + 1}
+                                                </button>
+                                            );
+                                        }
+                                    })}
+                                    {currentPage < totalPages && (
+                                        <button
+                                            className="pagination-button"
+                                            onClick={() => handlePageChange(currentPage + 1)}
+                                        >&raquo;
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
             {showCode && (

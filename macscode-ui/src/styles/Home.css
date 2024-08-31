@@ -261,3 +261,9 @@
 .problem-item:hover {
     background-color: #3a3b3c;
 }
+
+.no-message {
+    font-size: 1em;
+    color: #888;
+    margin: 20px 0;
+}
