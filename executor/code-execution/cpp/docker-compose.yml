@@ -9,4 +9,4 @@ services:
     environment:
       - test_count=2
       - time_limit=1
-      - memory_limit=26210
+      - memory_limit=262100

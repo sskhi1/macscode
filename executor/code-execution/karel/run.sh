@@ -11,6 +11,8 @@ cp /app/karel-essentials/* src/
 compile_error_tmp_file=$(mktemp)
 javac src/*.java 2> "$compile_error_tmp_file"
 
+ulimit -t 1
+
 # Check and write compile errors to every test result
 if [ $? -ne 0 ]; then
   for test_num in $(seq 1 "${test_count}")
@@ -34,5 +36,7 @@ do
     echo "KAREL_CRASHED" > result/result_"${test_num}".txt
   elif [[ ${exit_code} -eq 24 ]]; then
     echo "NO_BEEPER" > result/result_"${test_num}".txt
+  elif [[ ${exit_code} -eq 137 ]]; then
+    echo "TLE" > result/result_"${test_num}".txt
   fi
 done
