@@ -1,0 +1,5 @@
+number of queries: 4
+call ResizableArray 10
+call setAt 3 12345
+call getAt 3
+call size

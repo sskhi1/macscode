@@ -1,0 +1,13 @@
+{
+  "description": "Implement resizable array that holds integer using dynamic array. User must be able to change it's size",
+  "name": "Resizable Array",
+  "problem_id": {
+    "order": 8,
+    "course": "ABS"
+  },
+  "topics": ["Recursion"],
+  "type": "CPP",
+  "test_count": 2,
+  "difficulty": "Medium",
+  "public_test_count": 2
+}

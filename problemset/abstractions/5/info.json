@@ -1,0 +1,13 @@
+{
+  "description": "Given a list of positive numbers, check if there exists a subset, that has sum n",
+  "name": "Subset sum",
+  "problem_id": {
+    "order": 5,
+    "course": "ABS"
+  },
+  "topics": ["Recursion"],
+  "type": "CPP",
+  "test_count": 5,
+  "difficulty": "Medium",
+  "public_test_count": 3
+}

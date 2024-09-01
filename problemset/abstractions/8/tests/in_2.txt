@@ -1,0 +1,12 @@
+number of queries: 11
+call ResizableArray 15
+call size
+call setAt 0 10
+call getAt 0
+call setAt 14 5
+call getAt 14
+call resize 1
+call size
+call resize 100
+call size
+call getAt 14
