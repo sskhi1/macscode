@@ -1,0 +1,12 @@
+11
+board
+pear
+bee
+bee
+lemon
+elderberry
+mango
+watermelon
+cherry
+mango
+bee

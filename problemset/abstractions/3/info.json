@@ -1,0 +1,13 @@
+{
+  "description": "Find the n-th Fibonacci number. Note that: f(0) = 0, f(1) = 0, f(n) = f(n - 1) + f(n - 2)",
+  "name": "Fib",
+  "problem_id": {
+    "order": 3,
+    "course": "ABS"
+  },
+  "topics": ["Math", "Recursion"],
+  "type": "CPP",
+  "test_count": 10,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}

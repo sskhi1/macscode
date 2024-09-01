@@ -1,0 +1,13 @@
+{
+  "description": "Check whether the given number is power of two.",
+  "name": "Power of two",
+  "problem_id": {
+    "order": 2,
+    "course": "ABS"
+  },
+  "topics": ["Math", "Recursion"],
+  "type": "CPP",
+  "test_count": 10,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}

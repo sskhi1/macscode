@@ -1,0 +1,13 @@
+{
+  "description": "Given a vector of strings, find the string that is the most frequent in the vector. There exists only one such string",
+  "name": "Most string",
+  "problem_id": {
+    "order": 4,
+    "course": "ABS"
+  },
+  "topics": ["Map"],
+  "type": "CPP",
+  "test_count": 6,
+  "difficulty": "Easy",
+  "public_test_count": 2
+}
