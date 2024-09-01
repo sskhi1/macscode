@@ -1,38 +1,67 @@
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .signup-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 100vh;
-    background-color: #252525;
+    background: linear-gradient(-45deg, #1c1c1c, #434343, #0d0d0d, #2c2c2c);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    color: #fff;
+    position: relative;
+    padding: 0 7%;
+}
+
+.signup-container::before {
+    content: "Join MacsCode to start your journey towards becoming a skilled developer.";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.1);
+    text-align: left;
+    width: 50%;
+    padding-left: 50px;
+    z-index: 1;
 }
 
 .signup-form {
-    background-color: #606060;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 400px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    margin-left: auto;
+    backdrop-filter: blur(5px);
 }
 
 .signup-title {
+    text-align: center;
     margin-bottom: 20px;
-    color: #1c1c1c;
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 1.5rem;
+    color: grey;
 }
 
 .signup-input {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
-    margin: 10px 0;
-    border: 2px solid black;
+    margin-bottom: 10px;
     border-radius: 5px;
-    font-size: 16px;
+    border: none;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.signup-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .password-container {
@@ -42,40 +71,40 @@
 
 .eye-icon {
     position: absolute;
-    right: 15px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .signup-button {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
     background-color: orange;
-    color: black;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    color: white;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-top: 20px;
 }
 
 .signup-button:hover {
-    background-color: #d59b1a;
+    color: orange;
+    background-color: white;
 }
 
 .login-link {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #3b3b3b;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .login-link a {
     color: orangered;
-    text-decoration: none;
     font-weight: bold;
+    text-decoration: none;
 }
 
 .login-link a:hover {
@@ -83,9 +112,9 @@
 }
 
 .error-message {
-    color: #d9534f;
+    color: indianred;
     background-color: #2a2929;
-    border: 1px solid #d9534f;
+    border: 1px solid indianred;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 15px;

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
 import '../styles/Login.css';
 import '../styles/Loading.css';
+import logo from '../icons/M.png';
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -32,8 +33,8 @@ const Login = () => {
     return (
         <div className="login-container">
             <form onSubmit={handleLogin} className="login-form">
-                <h2 className="login-title">Login</h2>
-                {error && <div className="error-message">{error}</div>} {/* Error message display */}
+                <img src={logo} alt="Logo" className="login-logo" />
+                {error && <div className="error-message">{error}</div>} {}
                 <input
                     type="text"
                     value={username}

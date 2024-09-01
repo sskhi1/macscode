@@ -82,9 +82,9 @@
     flex: 1 0 220px;
     max-width: 230px;
     height: 130px;
-    margin: 5px;
+    margin: 20px;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -92,24 +92,52 @@
     background-size: cover;
     background-position: center;
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, filter 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+    filter: brightness(0.9);
 }
 
 .banner:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
     background-color: rgba(255, 255, 255, 0.1);
+    filter: brightness(1.1);
 }
 
 .banner.active {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.75);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    filter: brightness(1.2);
 }
+
+.banner:active {
+    transform: translateY(0px) scale(0.98);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+    100% { transform: translateY(0px); }
+}
+
+.banner:hover::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    animation: float 2s infinite ease-in-out; /* Subtle floating animation */
+}
+
 
 .banner.java {
     background-image: url('../images/java.png');

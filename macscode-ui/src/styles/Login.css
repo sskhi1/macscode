@@ -1,52 +1,92 @@
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 .login-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     height: 100vh;
-    background-color: #252525;
+    background: linear-gradient(-45deg, #1c1c1c, #434343, #0d0d0d, #2c2c2c);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    color: #fff;
+    position: relative;
+    padding: 0 5%;
+}
+
+.login-container::before {
+    content: "MacsCode is the perfect platform to enhance your skills and expand your knowledge, helping you grow as a developer.";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.1);
+    text-align: center;
+    width: 50%;
+    padding-left: 50px;
+    z-index: 1;
+    animation: moveText 15s ease infinite;
+}
+
+@keyframes moveText {
+    0% { transform: translateY(-50%) translateX(0%); }
+    50% { transform: translateY(-50%) translateX(5%); }
+    100% { transform: translateY(-50%) translateX(0%); }
 }
 
 .login-form {
-    background-color: #606060;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 30%;
+    margin-left: auto;
+    backdrop-filter: blur(5px);
 }
 
-.login-title {
-    margin-bottom: 20px;
-    color: #1c1c1c;
-    font-size: 24px;
-    font-weight: bold;
+.login-logo {
+    display: block;
+    margin: 0 auto auto auto;
+    width: 100px;
+    height: auto;
 }
 
 .login-input {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
-    margin: 10px 0;
-    border: 2px solid black;
+    margin-bottom: 10px;
     border-radius: 5px;
-    font-size: 16px;
+    border: none;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.login-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .login-button {
-    width: calc(100% - 20px);
+    width: 100%;
     padding: 10px;
     background-color: orange;
-    color: black;
     border: none;
     border-radius: 5px;
-    font-size: 16px;
+    color: white;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .login-button:hover {
-    background-color: #d59b1a;
+    background-color: white;
+    color: orange;
 }
 
 @media (max-width: 400px) {
@@ -57,9 +97,8 @@
 }
 
 .signup-link {
-    margin-top: 20px;
-    font-size: 14px;
-    color: #3b3b3b;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .signup-link a {
@@ -71,4 +110,3 @@
 .signup-link a:hover {
     text-decoration: underline;
 }
-

@@ -138,7 +138,10 @@ const Home = () => {
         <div className="container">
             <TopBar/>
             {isLoading ? (
-                <p>Loading problems...</p>
+                <div className="loading-container">
+                    <div className="spinner"></div>
+                    <div className="loading-text">Loading...</div>
+                </div>
             ) : error ? (
                 <p>Error loading problems: {error}</p>
             ) : (

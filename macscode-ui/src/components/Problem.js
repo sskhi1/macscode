@@ -166,7 +166,7 @@ const Problem = () => {
     };
 
     if (error) {
-        return <div className="error-message">{error}</div>;
+        return <div style={{ textAlign: 'center' }} className="no-message">{error}</div>;
     }
 
     if (!problem) {

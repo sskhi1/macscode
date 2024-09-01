@@ -95,11 +95,6 @@
     background: seagreen;
 }
 
-.error-message {
-    color: red;
-    padding: 20px;
-}
-
 .test-cases {
     display: flex;
     flex-direction: column;
