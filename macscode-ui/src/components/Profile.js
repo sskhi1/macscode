@@ -201,19 +201,18 @@ const Profile = () => {
                     </div>
                     <div className="statistics-container">
                         <h3>Statistics</h3>
-                        {methodologyCount > 0 && (
-                            <p className="statistics-text">
-                                <span className="methodology-label">Methodology:</span> <span
-                                className="count">{methodologyCount}</span> {methodologyCount === 1 ? 'Problem Solved' : 'Problems Solved'}
-                            </p>
-                        )}
-                        {abstractionsCount > 0 && (
-                            <p className="statistics-text">
-                                <span className="abstractions-label">Abstractions:</span> <span
-                                className="count">{abstractionsCount}</span> {abstractionsCount === 1 ? 'Problem Solved' : 'Problems Solved'}
-                            </p>
-                        )}
-                        <h4>Topics</h4>
+                        <p className="statistics-text">
+                            <span className="methodology-label">Methodology:</span> <span
+                            className="count">{methodologyCount}</span> {methodologyCount === 1 ? 'Problem Solved' : 'Problems Solved'}
+                        </p>
+                        <p className="statistics-text">
+                            <span className="abstractions-label">Abstractions:</span> <span
+                            className="count">{abstractionsCount}</span> {abstractionsCount === 1 ? 'Problem Solved' : 'Problems Solved'}
+                        </p>
+                        {
+                            topicsCount.length > 0 &&
+                            <h4>Topics</h4>
+                        }
                         <div className="topics-container">
                             {Object.keys(topicsCount).map((topic) => (
                                 <span key={topic} className="topic-box">
@@ -242,7 +241,8 @@ const Profile = () => {
                                         >
                                             {submission.problem.name}
                                         </div>
-                                        <div className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
+                                        <div
+                                            className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
                                             {submission.result}
                                         </div>
                                         <div className="date">
@@ -270,7 +270,7 @@ const Profile = () => {
                                             &laquo;
                                         </button>
                                     )}
-                                    {Array.from({ length: totalPages }, (_, index) => {
+                                    {Array.from({length: totalPages}, (_, index) => {
                                         if (totalPages > 5) {
                                             if (index + 1 === currentPage || index + 1 === 1 || index + 1 === totalPages) {
                                                 return (
@@ -293,7 +293,7 @@ const Profile = () => {
                                                     </button>
                                                 );
                                             } else if (index + 1 === currentPage - 2 || index + 1 === currentPage + 2) {
-                                                return <span style={{ color: 'white' }}>...</span>;
+                                                return <span style={{color: 'white'}}>...</span>;
                                             } else {
                                                 return null;
                                             }

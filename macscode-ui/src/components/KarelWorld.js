@@ -92,8 +92,7 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
             const instructions_str = results[testNum - 1]?.additionalInfo || "";
             setInstructions(instructions_str ? instructions_str.split(' ') : []);
         }
-
-    }, [testCaseInput, results]);
+    }, [testCaseInput, results, testNum, isDemo]);
 
     useEffect(() => {
         if (instructionIndex < instructions.length && isDemo && !errorMessage) {
@@ -103,7 +102,7 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
             }, speed);
             return () => clearTimeout(timeoutId);
         }
-    }, [instructionIndex, instructions, errorMessage, speed]);
+    }, [instructionIndex, instructions, errorMessage, speed, isDemo]);
 
     const executeInstruction = (instruction) => {
         switch (instruction) {
@@ -207,6 +206,11 @@ function KarelWorld({testCaseInput, results, testNum, isDemo}) {
 
     const renderCell = (x, y) => {
         const adjustedY = height - 1 - y;
+
+        if (y >= currentGrid.length || x >= currentGrid[y].length) {
+            return <div key={`${x}-${y}`} className="cell" style={{width: cellSize, height: cellSize}}/>;
+        }
+
         const isKarel = x === currentX && adjustedY === currentY;
         const cellContent = currentGrid[y][x];
         const walls = borders[y][x];
