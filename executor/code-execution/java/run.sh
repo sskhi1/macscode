@@ -9,8 +9,6 @@ echo "${test_count}" > result/test_count.txt
 compile_error_tmp_file=$(mktemp)
 javac src/*.java 2> "$compile_error_tmp_file"
 
-ulimit -t 1
-
 # Check and write compile errors to every test result
 if [ $? -ne 0 ]; then
   for test_num in $(seq 1 "${test_count}")
@@ -21,6 +19,8 @@ if [ $? -ne 0 ]; then
   done
   exit
 fi
+
+ulimit -t 1
 
 for test_num in $(seq 1 "${test_count}")
 do
