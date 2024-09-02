@@ -25,7 +25,7 @@ const ControlPanel = () => {
 
     const fetchUsers = useCallback(async () => {
         try {
-            const response = await axios.get('/auth/users/all', {
+            const response = await axios.get('/auth-service/auth/users/all', {
                 headers: {
                     Authorization: `Bearer ${auth}`
                 }
