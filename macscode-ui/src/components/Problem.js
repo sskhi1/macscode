@@ -268,7 +268,7 @@ const Problem = () => {
                         </div>
                     </div>
                     <div className="problem-right-lower">
-                        <TestCases testCases={testCases} onSelect={handleTestCaseSelect}/>
+                        <TestCases testCases={testCases} onSelect={handleTestCaseSelect} problemType={problem.type}/>
                     </div>
                 </div>
             </div>
@@ -277,6 +277,7 @@ const Problem = () => {
                 show={showResults}
                 results={results}
                 onClose={handleCloseResults}
+                problemType={problem.type}
             />
             <div ref={discussionRef} className="discussion-section">
                 <Comments problemId={problem.id}/>

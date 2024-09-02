@@ -7,7 +7,7 @@ const resultMessages = {
     COMPILE_ERROR: "Compile Error"
 };
 
-const ResultsModal = ({ show, results, onClose }) => {
+const ResultsModal = ({ show, results, onClose, problemType }) => {
     if (!show) {
         return null;
     }
@@ -23,7 +23,7 @@ const ResultsModal = ({ show, results, onClose }) => {
                     >
                         <p><strong>Test Case {result.testNum + 1}:</strong></p>
                         <p><strong>Result:</strong> {resultMessages[result.result] || result.result}</p>
-                        {result.additionalInfo && (
+                        {result.additionalInfo && problemType !== "KAREL" &&(
                             <p><strong>Additional Info:</strong> {result.additionalInfo}</p>
                         )}
                     </div>

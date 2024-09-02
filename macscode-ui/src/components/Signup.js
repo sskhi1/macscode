@@ -15,12 +15,44 @@ const Signup = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    const validateUsername = (username) => {
+        const usernameRegex = /^[a-zA-Z0-9]{3,15}$/;
+        return usernameRegex.test(username);
+    };
+
+    const validatePassword = (password) => {
+        const passwordRegex = /^[A-Za-z\d.,!?@$%^&*()_+~`|}{[\]:;"'<>,.?/\\]{8,}$/;
+        return passwordRegex.test(password);
+    };
+
+    const validateEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
     const handleSignup = async (e) => {
         e.preventDefault();
+
+        if (!validateUsername(username)) {
+            setError('Username must be 3-15 characters long and contain only letters and numbers.');
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            setError('Password must be at least 8 characters long and contain both letters and numbers.');
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            setError('Please enter a valid email address.');
+            return;
+        }
+
         if (password !== confirmPassword) {
             setError('Passwords do not match');
             return;
         }
+
         try {
             await axios.post('/auth-service/auth/signup', {
                 name,
@@ -31,7 +63,12 @@ const Signup = () => {
             navigate('/login');
         } catch (error) {
             console.error('Error signing up', error);
-            setError('Error signing up. Please check your details and try again.');
+
+            if (error.response && error.response.status === 401) {
+                setError('Username already exists. Please choose a different username.');
+            } else {
+                setError('Error signing up. Please check your details and try again.');
+            }
         }
     };
 

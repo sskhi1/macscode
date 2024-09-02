@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/Problem.css';
 
-const TestCases = ({ testCases, onSelect }) => {
+const TestCases = ({testCases, onSelect, problemType}) => {
     const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
@@ -23,17 +23,19 @@ const TestCases = ({ testCases, onSelect }) => {
                     </button>
                 ))}
             </div>
-            <div className="test-case-content">
-                <h4>Test Case {activeTab + 1}</h4>
-                <div>
-                    <h5>Input</h5>
-                    <pre>{testCases[activeTab].input}</pre>
+            {problemType !== "KAREL" &&
+                <div className="test-case-content">
+                    <h4>Test Case {activeTab + 1}</h4>
+                    <div>
+                        <h5>Input</h5>
+                        <pre>{testCases[activeTab].input}</pre>
+                    </div>
+                    <div>
+                        <h5>Expected Output</h5>
+                        <pre>{testCases[activeTab].expectedOutput}</pre>
+                    </div>
                 </div>
-                <div>
-                    <h5>Expected Output</h5>
-                    <pre>{testCases[activeTab].expectedOutput}</pre>
-                </div>
-            </div>
+            }
         </div>
     );
 };

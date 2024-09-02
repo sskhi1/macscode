@@ -210,15 +210,49 @@ const ControlPanel = () => {
                     </ul>
                     {totalUserPages > 1 && (
                         <div className="control-panel-pagination">
-                            {Array.from({ length: totalUserPages }, (_, index) => (
+                            {currentPage > 1 && (
                                 <button
-                                    key={index + 1}
-                                    className={`control-panel-pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                                    onClick={() => handlePageChange(index + 1)}
+                                    className="control-panel-pagination-button"
+                                    onClick={() => handlePageChange(currentPage - 1)}
                                 >
-                                    {index + 1}
+                                    &laquo; Prev
                                 </button>
-                            ))}
+                            )}
+
+                            {Array.from({ length: totalUserPages }, (_, index) => {
+                                if (
+                                    index + 1 === currentPage ||
+                                    index + 1 === 1 ||
+                                    index + 1 === totalUserPages ||
+                                    (index + 1 >= currentPage - 1 && index + 1 <= currentPage + 1)
+                                ) {
+                                    return (
+                                        <button
+                                            key={index + 1}
+                                            className={`control-panel-pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                            onClick={() => handlePageChange(index + 1)}
+                                        >
+                                            {index + 1}
+                                        </button>
+                                    );
+                                } else if (
+                                    (index + 1 === currentPage - 2 && currentPage - 2 > 1) ||
+                                    (index + 1 === currentPage + 2 && currentPage + 2 < totalProblemPages)
+                                ) {
+                                    return <span key={index + 1} className="control-panel-pagination-ellipsis">...</span>;
+                                } else {
+                                    return null;
+                                }
+                            })}
+
+                            {currentPage < totalUserPages && (
+                                <button
+                                    className="control-panel-pagination-button"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                >
+                                    Next &raquo;
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>
@@ -257,15 +291,49 @@ const ControlPanel = () => {
                     </ul>
                     {totalProblemPages > 1 && (
                         <div className="control-panel-pagination">
-                            {Array.from({ length: totalProblemPages }, (_, index) => (
+                            {totalProblemPages > 5 && (
                                 <button
-                                    key={index + 1}
-                                    className={`control-panel-pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
-                                    onClick={() => handlePageChange(index + 1)}
+                                    className="control-panel-pagination-button"
+                                    onClick={() => handlePageChange(currentPage - 1)}
+                                    disabled={currentPage === 1}
                                 >
-                                    {index + 1}
+                                    &laquo; Prev
                                 </button>
-                            ))}
+                            )}
+                            {Array.from({ length: totalProblemPages }, (_, index) => {
+                                if (
+                                    index + 1 === currentPage ||
+                                    index + 1 === 1 ||
+                                    index + 1 === totalProblemPages ||
+                                    (index + 1 >= currentPage - 1 && index + 1 <= currentPage + 1)
+                                ) {
+                                    return (
+                                        <button
+                                            key={index + 1}
+                                            className={`control-panel-pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                                            onClick={() => handlePageChange(index + 1)}
+                                        >
+                                            {index + 1}
+                                        </button>
+                                    );
+                                } else if (
+                                    (index + 1 === currentPage - 2 && currentPage - 2 > 1) ||
+                                    (index + 1 === currentPage + 2 && currentPage + 2 < totalProblemPages)
+                                ) {
+                                    return <span key={index + 1} className="control-panel-pagination-ellipsis">...</span>;
+                                } else {
+                                    return null;
+                                }
+                            })}
+                            {totalProblemPages > 5 && (
+                                <button
+                                    className="control-panel-pagination-button"
+                                    onClick={() => handlePageChange(currentPage + 1)}
+                                    disabled={currentPage === totalProblemPages}
+                                >
+                                    Next &raquo;
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>

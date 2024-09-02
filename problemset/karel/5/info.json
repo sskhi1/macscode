@@ -1,5 +1,5 @@
 {
-  "description": "Put a beeper on the middle point of the first row.",
+  "description": "Place a beeper at the midpoint of the first row. If there is an even number of columns, place the beeper on the right of the two middle points. The world is always square-shaped.",
   "name": "MidPointFinding",
   "problem_id": {
     "order": 5,
@@ -7,7 +7,7 @@
   },
   "topics": ["Karel"],
   "type": "KAREL",
-  "test_count": 4,
+  "test_count": 3,
   "difficulty": "Hard",
-  "public_test_count": 4
+  "public_test_count": 2
 }
