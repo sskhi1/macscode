@@ -79,25 +79,24 @@ const AllSubmissions = ({problemId}) => {
                 {submissions.length === 0 ? (
                     <p className="no-message">There are no submissions for this problem</p>
                 ) : (
-                    <div className="submissions-list">
+                    <div className="submissions-list" style={{ fontSize: '0.8rem' }}>
                         {currentSubmissions.map(submission => (
-                            <div className="submission-item" key={submission.id.toString()}>
+                            <div className="submission-item" key={submission.id.toString()} style={{ display: 'grid', gridTemplateColumns: '0.5fr 1fr 1fr 1fr', alignItems: 'center', gap: '0.5rem' }}>
                                 <div
-                                    style={{flex: 1.5}}
                                     className="submitter-username"
                                     onClick={() => handleUsernameClick(submission.submitterUsername)}
                                 >
                                     {submission.submitterUsername}
                                 </div>
-                                <div style={{flex: 0.5}}
-                                     className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}>
+                                <div
+                                    className={`result ${submission.result === 'ACCEPTED' ? 'accepted' : 'rejected'}`}
+                                >
                                     {submission.result}
                                 </div>
-                                <div className="date" style={{flex: 2.5}}
-                                >
+                                <div className="date">
                                     {new Date(submission.submissionDate).toLocaleString('en-US', {
                                         dateStyle: 'short',
-                                        timeStyle: 'short'
+                                        timeStyle: 'short',
                                     })}
                                 </div>
                                 <button
