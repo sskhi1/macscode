@@ -31,7 +31,7 @@ const SolutionTemplate = ({ solutionFileTemplate, onChange }) => {
                     showGutter: true,
                     showPrintMargin: false,
                     tabSize: 4,
-                    fontSize: "20px"
+                    fontSize: "14px"
                 }}
                 width="100%"
                 height="400px"
