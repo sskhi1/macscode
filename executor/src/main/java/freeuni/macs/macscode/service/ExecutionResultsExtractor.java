@@ -30,20 +30,30 @@ public class ExecutionResultsExtractor {
         try {
             int testCasesCount = Integer.parseInt(readOneLineFromFile(String.format("%s/test_count.txt", prefixPath)));
             for (int i = 0; i < testCasesCount; ++i) {
-                String currentPath = String.format("%s/result_%d.txt", prefixPath, i + 1);
-                String result = readOneLineFromFile(currentPath);
-                if (result.contains(COMPILE_ERROR)) {
-                    allTestCaseResults.add(new SingleTestCaseResult(i, result, extractCompileError(currentPath)));
-                } else if (result.contains(KAREL) || result.contains(KAREL_CRASHED) || result.contains(NO_BEEPER)) {
-                    allTestCaseResults.add(extractKarel(currentPath, prefixPath, i));
-                } else {
-                    allTestCaseResults.add(new SingleTestCaseResult(i, result));
-                }
+                extracted(prefixPath, i, allTestCaseResults);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return allTestCaseResults;
+    }
+
+    private void extracted(String prefixPath, int i, List<SingleTestCaseResult> allTestCaseResults) {
+        try {
+            String currentPath = String.format("%s/result_%d.txt", prefixPath, i + 1);
+            String result = readOneLineFromFile(currentPath);
+            if (result == null) {
+                allTestCaseResults.add(new SingleTestCaseResult(i, "RUNTIME_ERROR"));
+            } else if (result.contains(COMPILE_ERROR)) {
+                allTestCaseResults.add(new SingleTestCaseResult(i, result, extractCompileError(currentPath)));
+            } else if (result.contains(KAREL) || result.contains(KAREL_CRASHED) || result.contains(NO_BEEPER)) {
+                allTestCaseResults.add(extractKarel(currentPath, prefixPath, i));
+            } else {
+                allTestCaseResults.add(new SingleTestCaseResult(i, result));
+            }
+        } catch (IOException e) {
+            allTestCaseResults.add(new SingleTestCaseResult(i, "RUNTIME_ERROR"));
+        }
     }
 
     private SingleTestCaseResult extractKarel(String filePath, String resultPath, int testNum) throws IOException {
