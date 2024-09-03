@@ -30,7 +30,8 @@ const SolutionTemplate = ({ solutionFileTemplate, onChange }) => {
                     enableSnippets: true,
                     showGutter: true,
                     showPrintMargin: false,
-                    tabSize: 4
+                    tabSize: 4,
+                    fontSize: "20px"
                 }}
                 width="100%"
                 height="400px"
