@@ -165,7 +165,7 @@ const Profile = () => {
         </div>;
     }
 
-    const methodologyCount = countAcceptedCodes('MET');
+    const methodologyCount = countAcceptedCodes('MET') + countAcceptedCodes('KAREL');
     const abstractionsCount = countAcceptedCodes('ABS');
 
     return (

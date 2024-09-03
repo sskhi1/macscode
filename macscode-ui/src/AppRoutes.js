@@ -10,6 +10,8 @@ import NotFound from "./components/NotFound";
 import BlockedRoute from "./components/routes/BlockedRoute";
 import UserProfile from "./components/admin/UserProfile";
 import ControlPanel from "./components/admin/ControlPanel";
+import ProblemCreation from "./components/ProblemCreation";
+import ProblemDraftsList from "./components/ProblemDraftsList";
 
 const AppRoutes = () => {
     return (
@@ -33,6 +35,22 @@ const AppRoutes = () => {
             <Route path="/problem/:course/:order" element={
                     <PrivateRoute>
                         <Problem />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/problem-drafts"
+                element={
+                    <PrivateRoute>
+                        <ProblemDraftsList />
+                    </PrivateRoute>
+                }
+            />
+            <Route
+                path="/problem-creation"
+                element={
+                    <PrivateRoute>
+                        <ProblemCreation />
                     </PrivateRoute>
                 }
             />

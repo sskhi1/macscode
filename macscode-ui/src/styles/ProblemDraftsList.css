@@ -1,0 +1,139 @@
+.drafts-container {
+    width: 70%;
+    margin: 15vh auto 0;
+    padding: 40px;
+    background: linear-gradient(135deg, #3e3c3c, #292727);
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+}
+
+.drafts-title {
+    text-align: center;
+    color: #f0f0f0;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, lightskyblue, white);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.no-drafts {
+    color: #bbb;
+    font-size: 1.1rem;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.drafts-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.draft-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid #555;
+    background-color: #2e2e2e;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.draft-item:hover {
+    background-color: #444444;
+}
+
+.draft-item:last-child {
+    border-bottom: none;
+}
+
+.draft-info {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #f1f1f1;
+}
+
+.draft-id,
+.draft-name {
+    margin-right: 25px;
+}
+
+.edit-draft-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.pagination-button {
+    padding: 8px 16px;
+    margin: 0 6px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #3a3a3a;
+    color: #e8e8e8;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 1rem;
+}
+
+.pagination-button.active {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.pagination-button:hover {
+    background-color: #666;
+    transform: translateY(-2px);
+}
+
+.edit-draft-button,
+.delete-draft-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    width: 120px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+
+.edit-draft-button {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.edit-draft-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.delete-draft-button {
+    background-color: #f44336;
+    color: #ffffff;
+}
+
+.delete-draft-button:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}

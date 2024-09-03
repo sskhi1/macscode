@@ -43,6 +43,16 @@ const TopBar = () => {
             </nav>
             {isAdmin && (
                 <nav className="navigation">
+                    <a href="/problem-drafts">Problem Drafts</a>
+                </nav>
+            )}
+            {isAdmin && (
+                <nav className="navigation">
+                    <a href="/problem-creation">Add Problems</a>
+                </nav>
+            )}
+            {isAdmin && (
+                <nav className="navigation">
                     <a href="/control-panel">Control Panel</a>
                 </nav>
             )}

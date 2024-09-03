@@ -2,7 +2,7 @@
   "description": "Implement resizable array that holds integer using dynamic array. User must be able to change it's size",
   "name": "Resizable Array",
   "problem_id": {
-    "order": 8,
+    "order": 6,
     "course": "ABS"
   },
   "topics": ["Recursion"],
